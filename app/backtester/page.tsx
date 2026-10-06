@@ -1,2 +1,48 @@
-import Shell from "../../components/Shell"; import Topbar from "../../components/Topbar"; import { Badge, Card, Stat } from "../../components/UI";
-export default function BacktesterPage(){return <Shell><Topbar eyebrow="Research" title="Backtester" description="Replay the same signal, validation and risk pipeline against historical market data."/><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"><Stat label="Trades" value="0" note="Run a backtest"/><Stat label="Win rate" value="—"/><Stat label="Profit factor" value="—"/><Stat label="Net P&L" value="$0.00"/></div><div className="mt-6 grid gap-6 lg:grid-cols-[1fr_1.4fr]"><Card className="p-6"><h2 className="text-sm font-medium">New backtest</h2><div className="mt-5 space-y-4">{[["Source","Select source"],["Symbol","XAUUSD"],["Period","Last 30 days"],["Risk mode","Risk %"],["Risk value","1.00%"]].map(([l,v])=><label key={l} className="block"><span className="text-xs text-neutral-600">{l}</span><div className="mt-1 rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2.5 text-sm text-neutral-400">{v}</div></label>)}<button className="w-full rounded-xl bg-white px-4 py-2.5 text-sm font-medium text-black">Run backtest</button></div></Card><Card className="p-6"><div className="flex items-center justify-between"><h2 className="text-sm font-medium">Results</h2><Badge>Waiting</Badge></div><div className="mt-6 flex min-h-64 items-center justify-center border border-dashed border-white/10 rounded-xl text-center"><div><div className="text-sm text-neutral-400">No backtest run yet</div><p className="mt-2 max-w-sm text-xs text-neutral-700">Results will use the same Core pipeline as live execution, keeping backtest and copier behavior aligned.</p></div></div></Card></div></Shell>}
+import Shell from "../../components/Shell";
+import PageHeader from "../../components/PageHeader";
+import { Icon } from "../../components/Icons";
+import { Badge, Button, Card, EmptyState, SectionTitle, Stat } from "../../components/UI";
+
+const fields = [
+  ["Fonte", "Selecionar fonte"],
+  ["Símbolo", "XAUUSD"],
+  ["Período", "Últimos 30 dias"],
+  ["Modo de risco", "Risco %"],
+  ["Valor de risco", "1.00%"],
+];
+
+export default function BacktesterPage() {
+  return (
+    <Shell>
+      <PageHeader eyebrow="Pesquisa" title="Backtest" description="Reproduza o mesmo pipeline de sinais, validação e risco sobre dados históricos de mercado." />
+      <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+        <Stat label="Operações" value="0" note="Execute um backtest" icon={<Icon name="trades" size={18} />} />
+        <Stat label="Taxa de acerto" value="—" icon={<Icon name="trophy" size={18} />} accent="green" />
+        <Stat label="Fator de lucro" value="—" icon={<Icon name="analytics" size={18} />} />
+        <Stat label="P&L líquido" value="$0.00" icon={<Icon name="dollar" size={18} />} accent="green" />
+      </div>
+      <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
+        <Card className="p-5 sm:p-6">
+          <SectionTitle title="Novo backtest" description="Configuração ainda não conectada ao motor de backtest." />
+          <dl className="mt-5 space-y-4">
+            {fields.map(([l, v]) => (
+              <div key={l}>
+                <dt className="text-xs text-fg-subtle">{l}</dt>
+                <dd className="control mt-1.5 flex items-center text-fg-muted">{v}</dd>
+              </div>
+            ))}
+          </dl>
+          <Button variant="primary" disabled className="mt-5 w-full" title="Disponível em breve">Executar backtest</Button>
+        </Card>
+        <Card className="flex flex-col p-5 sm:p-6">
+          <SectionTitle title="Resultados" action={<Badge>Aguardando</Badge>} />
+          <EmptyState
+            className="mt-5 min-h-64 flex-1"
+            title="Nenhum backtest executado"
+            description="Os resultados usarão o mesmo pipeline do núcleo da execução real, mantendo backtest e copiador alinhados."
+          />
+        </Card>
+      </div>
+    </Shell>
+  );
+}

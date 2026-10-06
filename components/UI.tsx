@@ -1,3 +1,128 @@
-export function Card({children,className=""}:{children:React.ReactNode;className?:string}){return <div className={`rounded-[10px] border border-[#18364f] bg-[#081b2b] ${className}`}>{children}</div>}
-export function Badge({children,tone="neutral"}:{children:React.ReactNode;tone?:"neutral"|"green"|"amber"|"red"|"blue"}){const m={neutral:"border-[#2a435a] bg-[#102437] text-[#a9bacb]",green:"border-[#0aa97d]/50 bg-[#073c35] text-[#18dca4]",amber:"border-[#b98526]/50 bg-[#3b2e13] text-[#f0c35c]",red:"border-[#db4353]/50 bg-[#3b1620] text-[#ff6472]",blue:"border-[#178fd1]/50 bg-[#092f49] text-[#39b8ff]"};return <span className={`inline-flex items-center rounded-[5px] border px-2 py-1 text-[9px] font-semibold ${m[tone]}`}>{children}</span>}
-export function Stat({label,value,note,positive,icon,accent="blue"}:{label:string;value:string;note?:string;positive?:boolean;icon?:React.ReactNode;accent?:"blue"|"green"|"red"|"amber"}){const c={blue:"text-[#12a8ff] bg-[#0b78bd]/15",green:"text-[#00d99d] bg-[#00ad80]/12",red:"text-[#ff5364] bg-[#e13d51]/12",amber:"text-[#f2c45e] bg-[#c8942d]/12"}[accent];return <div className="stat-card"><div className="flex items-center gap-3">{icon&&<div className={`stat-icon ${c}`}>{icon}</div>}<div className="min-w-0"><div className="truncate text-[10px] text-[#91a5b9]">{label}</div><div className={`mt-1 truncate text-[20px] font-bold leading-none ${positive===false?"text-[#ff4f61]":"text-white"}`}>{value}</div>{note&&<div className="mt-1 text-[8px] text-[#6f8499]">{note}</div>}</div></div></div>}
+import type { ButtonHTMLAttributes, ReactNode } from "react";
+
+export type Tone = "neutral" | "green" | "amber" | "red" | "blue";
+
+export function cx(...parts: Array<string | false | null | undefined>) {
+  return parts.filter(Boolean).join(" ");
+}
+
+export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return <div className={cx("rounded-xl border border-line bg-surface", className)}>{children}</div>;
+}
+
+const badgeTones: Record<Tone, string> = {
+  neutral: "border-line-strong/70 bg-surface-2 text-fg-muted",
+  green: "border-success/35 bg-success-soft text-success",
+  amber: "border-warning/35 bg-warning-soft text-warning",
+  red: "border-danger/35 bg-danger-soft text-danger",
+  blue: "border-brand/40 bg-brand-soft/70 text-[#5cc2ff]",
+};
+
+export function Badge({ children, tone = "neutral", className }: { children: ReactNode; tone?: Tone; className?: string }) {
+  return (
+    <span className={cx("inline-flex items-center gap-1 whitespace-nowrap rounded-md border px-2 py-0.5 text-[11px] font-medium leading-5", badgeTones[tone], className)}>
+      {children}
+    </span>
+  );
+}
+
+const statAccent = {
+  blue: "text-brand bg-brand/12",
+  green: "text-success bg-success/12",
+  red: "text-danger bg-danger/12",
+  amber: "text-warning bg-warning/12",
+};
+
+export function Stat({
+  label,
+  value,
+  note,
+  positive,
+  icon,
+  accent = "blue",
+}: {
+  label: string;
+  value: string;
+  note?: string;
+  positive?: boolean;
+  icon?: ReactNode;
+  accent?: keyof typeof statAccent;
+}) {
+  const valueColor = positive === false ? "text-danger" : positive === true && value !== "—" ? "text-success" : "text-fg";
+  return (
+    <div className="flex min-h-[84px] items-center gap-3 rounded-xl border border-line bg-surface p-4">
+      {icon && <div className={cx("flex size-10 shrink-0 items-center justify-center rounded-lg", statAccent[accent])}>{icon}</div>}
+      <div className="min-w-0">
+        <div className="truncate text-xs text-fg-subtle">{label}</div>
+        <div className={cx("tabular mt-1 truncate text-xl font-semibold leading-tight tracking-tight", valueColor)}>{value}</div>
+        {note && <div className="mt-0.5 truncate text-[11px] text-fg-subtle">{note}</div>}
+      </div>
+    </div>
+  );
+}
+
+type ButtonVariant = "primary" | "secondary" | "ghost";
+
+const buttonVariants: Record<ButtonVariant, string> = {
+  primary: "bg-brand-strong text-white hover:bg-brand",
+  secondary: "border border-line bg-surface text-fg hover:border-line-strong hover:bg-surface-2",
+  ghost: "text-fg-muted hover:bg-white/[.04] hover:text-fg",
+};
+
+export function Button({
+  variant = "secondary",
+  className,
+  type = "button",
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: ButtonVariant }) {
+  return (
+    <button
+      type={type}
+      className={cx(
+        "inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-lg px-3.5 text-[13px] font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+        buttonVariants[variant],
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+export function SectionTitle({ title, description, action }: { title: string; description?: string; action?: ReactNode }) {
+  return (
+    <div className="flex items-start justify-between gap-3">
+      <div className="min-w-0">
+        <h2 className="text-sm font-semibold text-fg">{title}</h2>
+        {description && <p className="mt-0.5 text-xs leading-5 text-fg-subtle">{description}</p>}
+      </div>
+      {action}
+    </div>
+  );
+}
+
+export function EmptyState({ title, description, className }: { title: string; description?: ReactNode; className?: string }) {
+  return (
+    <div className={cx("flex flex-col items-center justify-center rounded-lg border border-dashed border-line px-4 py-8 text-center", className)}>
+      <p className="text-sm font-medium text-fg-muted">{title}</p>
+      {description && <p className="mt-1 max-w-sm text-xs leading-5 text-fg-subtle">{description}</p>}
+    </div>
+  );
+}
+
+export function PreviewBadge({ label = "Demonstrativo" }: { label?: string }) {
+  return (
+    <Badge tone="amber">
+      <span aria-hidden className="size-1.5 rounded-full bg-warning" />
+      {label}
+    </Badge>
+  );
+}
+
+export function Notice({ children }: { children: ReactNode }) {
+  return (
+    <div role="note" className="flex items-start gap-2.5 rounded-lg border border-warning/25 bg-warning-soft/40 px-3.5 py-2.5 text-xs leading-5 text-[#e9d7a7]">
+      <span aria-hidden className="mt-1.5 size-1.5 shrink-0 rounded-full bg-warning" />
+      <div>{children}</div>
+    </div>
+  );
+}

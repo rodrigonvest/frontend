@@ -1,10 +1,52 @@
-import Link from "next/link";
 import Shell from "../../components/Shell";
-import Topbar from "../../components/Topbar";
-import { Badge, Card } from "../../components/UI";
+import PageHeader from "../../components/PageHeader";
+import { Badge, Button, Card, Notice } from "../../components/UI";
 
 const automations = [
-  { name: "KIM Gold → Funded MT5", source: "Telegram", receivers: 2, risk: "1.00%", status: "Active", updated: "2 min ago" },
-  { name: "Gold Scalper — Demo", source: "Telegram", receivers: 1, risk: "0.50%", status: "Paused", updated: "Yesterday" },
+  { name: "KIM Gold → Funded MT5", source: "Telegram", receivers: 2, risk: "1.00%", active: true, updated: "há 2 min" },
+  { name: "Gold Scalper — Demo", source: "Telegram", receivers: 1, risk: "0.50%", active: false, updated: "Ontem" },
 ];
-export default function AutomationsPage() { return <Shell><Topbar eyebrow="Workspace" title="Automations" description="Build source-to-account workflows with independent risk, symbol mapping and execution policies." /><div className="mb-5 flex justify-end"><button className="rounded-xl bg-white px-4 py-2.5 text-sm font-medium text-black hover:bg-neutral-200">+ New automation</button></div><Card className="overflow-hidden"><div className="grid grid-cols-[1.6fr_1fr_100px_100px_100px_100px] gap-4 border-b border-white/10 px-5 py-3 text-[10px] uppercase tracking-wider text-neutral-600"><span>Automation</span><span>Source</span><span>Receivers</span><span>Risk</span><span>Status</span><span>Updated</span></div>{automations.map(a=><div key={a.name} className="grid grid-cols-[1.6fr_1fr_100px_100px_100px_100px] items-center gap-4 border-b border-white/5 px-5 py-5 last:border-0"><div><div className="text-sm text-neutral-200">{a.name}</div><div className="mt-1 text-xs text-neutral-600">Independent receiver execution</div></div><span className="text-sm text-neutral-400">{a.source}</span><span className="text-sm text-neutral-400">{a.receivers}</span><span className="text-sm text-neutral-300">{a.risk}</span><Badge tone={a.status === "Active" ? "green" : "amber"}>{a.status}</Badge><span className="text-xs text-neutral-600">{a.updated}</span></div>)}</Card><p className="mt-4 text-xs text-neutral-700">Automation creation and persistence will be connected to the API in the next SaaS blocks.</p></Shell>; }
+
+export default function AutomationsPage() {
+  return (
+    <Shell>
+      <PageHeader
+        eyebrow="Workspace"
+        title="Sistemas"
+        description="Fluxos da fonte de sinais até as contas, com risco, mapeamento de símbolos e políticas de execução independentes."
+        actions={<Button variant="primary" disabled title="Disponível em breve">+ Novo sistema</Button>}
+      />
+      <div className="mb-4">
+        <Notice>Lista demonstrativa. A criação e a persistência de sistemas serão conectadas à API em uma próxima etapa.</Notice>
+      </div>
+      <Card className="overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[760px] text-left">
+            <thead>
+              <tr className="border-b border-line bg-surface-2 text-[11px] font-medium text-fg-subtle">
+                {["Sistema", "Fonte", "Receptores", "Risco", "Status", "Atualizado"].map((h) => (
+                  <th key={h} scope="col" className="px-5 py-3 font-medium">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-line">
+              {automations.map((a) => (
+                <tr key={a.name}>
+                  <td className="px-5 py-4">
+                    <div className="text-sm font-medium text-fg">{a.name}</div>
+                    <div className="mt-0.5 text-xs text-fg-subtle">Execução independente por receptor</div>
+                  </td>
+                  <td className="px-5 py-4 text-sm text-fg-muted">{a.source}</td>
+                  <td className="px-5 py-4 text-sm tabular text-fg-muted">{a.receivers}</td>
+                  <td className="px-5 py-4 text-sm tabular text-fg">{a.risk}</td>
+                  <td className="px-5 py-4"><Badge tone={a.active ? "green" : "amber"}>{a.active ? "Ativo" : "Pausado"}</Badge></td>
+                  <td className="px-5 py-4 text-xs text-fg-subtle">{a.updated}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    </Shell>
+  );
+}

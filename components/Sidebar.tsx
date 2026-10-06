@@ -1,12 +1,167 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 import { Icon } from "./Icons";
-const items = [
- ["dashboard","Dashboard","/"],["trades","Operações","/trades"],["telegram","Canais Telegram","/connectors"],["accounts","Contas","/accounts"],["systems","Sistemas","/automations"],["analytics","Desempenho","/analytics"],["backtest","Backtest","/backtester"],["logs","Logs","/logs"],["settings","Configurações","/settings"],
-] as const;
-export default function Sidebar(){const pathname=usePathname();return <aside className="fixed inset-y-0 left-0 z-40 w-[220px] border-r border-[#18324a] bg-[#071522] md:flex md:flex-col">
-<div className="flex h-[70px] items-center border-b border-[#18324a] px-4"><div className="mr-2.5 flex h-9 w-9 items-center justify-center rounded-full bg-[#0b83ec]/15 text-[#159af2]"><svg width="28" height="28" viewBox="0 0 27 27" fill="none"><path d="M22.6 9.2a9.8 9.8 0 1 1-4.1-4.1" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/><path d="m8 13.8 3.2 3.2L22.7 5.5" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/></svg></div><div><div className="text-[21px] font-bold leading-none tracking-[-.035em]">Copytrix</div><div className="mt-1 text-[7px] font-bold uppercase tracking-[.25em] text-[#139af5]">Telegram to Results</div></div></div>
-<nav className="flex-1 px-2 py-[10px]">{items.map(([icon,label,href])=>{const active=href==="/"?pathname==="/":pathname.startsWith(href);return <Link key={href} href={href} className={`relative mb-[2px] flex h-[42px] items-center gap-3 rounded-[9px] px-3 text-[13px] ${active?"bg-[#0a69bd]/60 text-white":"text-[#aab9c9] hover:bg-white/[.035] hover:text-white"}`}>{active&&<span className="absolute left-0 top-1/2 h-7 w-[3px] -translate-y-1/2 rounded-r bg-[#159af2]"/>}<span className={active?"text-[#16a8ff]":"text-[#8fa5ba]"}><Icon name={icon} size={17}/></span><span>{label}</span>{label==="Sistemas"&&<span className="ml-auto rounded-full border border-[#29445c] px-1.5 text-[8px] text-[#71879d]">0</span>}</Link>})}</nav>
-<div className="px-3 pb-3"><Link href="/help" className="flex h-12 items-center gap-3 rounded-lg border border-[#18344d] bg-[#081b2c] px-3 text-[13px] text-[#d0dae4]"><Icon name="help" size={18}/><span>Ajuda &amp; Suporte</span><Icon name="chevron" size={13}/></Link></div>
-<div className="border-t border-[#18324a] px-4 py-3.5 text-[10px] leading-[16px] text-[#70859b]"><div>Copytrix v1.0.0</div><div>Telegram to Results</div><div>© 2026</div></div></aside>}
+import { cx } from "./UI";
+
+type NavItem = { icon: string; label: string; href?: string; soon?: boolean };
+
+const primary: NavItem[] = [
+  { icon: "dashboard", label: "Dashboard", href: "/" },
+  { icon: "trades", label: "Operações", href: "/trades" },
+  { icon: "telegram", label: "Conectores", href: "/connectors" },
+  { icon: "accounts", label: "Contas", href: "/accounts" },
+  { icon: "systems", label: "Sistemas", href: "/automations" },
+  { icon: "analytics", label: "Desempenho", href: "/analytics" },
+  { icon: "backtest", label: "Backtest", href: "/backtester" },
+  { icon: "logs", label: "Logs", soon: true },
+  { icon: "settings", label: "Configurações", href: "/settings" },
+];
+
+const secondary: NavItem[] = [
+  { icon: "chart", label: "Acesso à API", href: "/api-access" },
+  { icon: "dollar", label: "Plano e cobrança", href: "/billing" },
+  { icon: "calendar", label: "Roadmap", href: "/roadmap" },
+  { icon: "help", label: "Ajuda e suporte", href: "/help" },
+];
+
+function Logo({ compact }: { compact: boolean }) {
+  return (
+    <Link href="/" className="flex min-w-0 items-center gap-2.5" aria-label="Copytrix — início">
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand/15 text-brand">
+        <svg width="24" height="24" viewBox="0 0 27 27" fill="none" aria-hidden>
+          <path d="M22.6 9.2a9.8 9.8 0 1 1-4.1-4.1" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+          <path d="m8 13.8 3.2 3.2L22.7 5.5" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </span>
+      {!compact && (
+        <span className="min-w-0">
+          <span className="block text-lg font-bold leading-none tracking-tight text-fg">Copytrix</span>
+          <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[0.22em] text-brand">Telegram to Results</span>
+        </span>
+      )}
+    </Link>
+  );
+}
+
+function NavLink({ item, active, compact, onNavigate }: { item: NavItem; active: boolean; compact: boolean; onNavigate: () => void }) {
+  const base = cx(
+    "group relative flex h-10 items-center gap-3 rounded-lg text-[13.5px] transition-colors",
+    compact ? "justify-center px-0" : "px-3",
+  );
+  const content = (
+    <>
+      {active && <span aria-hidden className="absolute left-0 top-1/2 h-6 w-[3px] -translate-y-1/2 rounded-r bg-brand" />}
+      <span className={cx("shrink-0", active ? "text-brand" : "text-fg-subtle group-hover:text-fg-muted")}>
+        <Icon name={item.icon} size={18} />
+      </span>
+      {!compact && <span className="truncate">{item.label}</span>}
+      {!compact && item.soon && (
+        <span className="ml-auto rounded-full border border-line-strong px-2 text-[10px] leading-5 text-fg-subtle">Em breve</span>
+      )}
+    </>
+  );
+
+  if (!item.href) {
+    return (
+      <span aria-disabled="true" title={compact ? `${item.label} (em breve)` : "Em breve"} className={cx(base, "cursor-not-allowed text-fg-subtle/70")}>
+        {content}
+      </span>
+    );
+  }
+
+  return (
+    <Link
+      href={item.href}
+      onClick={onNavigate}
+      aria-current={active ? "page" : undefined}
+      title={compact ? item.label : undefined}
+      className={cx(base, active ? "bg-brand-soft/70 text-fg" : "text-fg-muted hover:bg-white/[.04] hover:text-fg")}
+    >
+      {content}
+    </Link>
+  );
+}
+
+function NavContent({ compact, onNavigate }: { compact: boolean; onNavigate: () => void }) {
+  const pathname = usePathname();
+  const isActive = (href?: string) => (href ? (href === "/" ? pathname === "/" : pathname.startsWith(href)) : false);
+  return (
+    <>
+      <nav aria-label="Navegação principal" className="flex-1 overflow-y-auto px-3 py-4">
+        <ul className="flex flex-col gap-0.5">
+          {primary.map((item) => (
+            <li key={item.label}>
+              <NavLink item={item} active={isActive(item.href)} compact={compact} onNavigate={onNavigate} />
+            </li>
+          ))}
+        </ul>
+        <div className={cx("mt-6 mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-fg-subtle/80", compact ? "sr-only" : "px-3")}>Conta</div>
+        <ul className={cx("flex flex-col gap-0.5", compact && "mt-6 border-t border-line pt-4")}>
+          {secondary.map((item) => (
+            <li key={item.label}>
+              <NavLink item={item} active={isActive(item.href)} compact={compact} onNavigate={onNavigate} />
+            </li>
+          ))}
+        </ul>
+      </nav>
+      {!compact && (
+        <div className="border-t border-line px-5 py-4 text-[11px] leading-5 text-fg-subtle">
+          Copytrix v1.0.0 · © 2026
+        </div>
+      )}
+    </>
+  );
+}
+
+export default function Sidebar({
+  collapsed,
+  mobileOpen,
+  onCloseMobile,
+}: {
+  collapsed: boolean;
+  mobileOpen: boolean;
+  onCloseMobile: () => void;
+}) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (mobileOpen) closeRef.current?.focus();
+  }, [mobileOpen]);
+
+  return (
+    <>
+      <aside
+        className={cx(
+          "fixed inset-y-0 left-0 z-40 hidden flex-col border-r border-line bg-[#071522] transition-[width] duration-200 lg:flex",
+          collapsed ? "w-[76px]" : "w-[240px]",
+        )}
+      >
+        <div className={cx("flex h-16 shrink-0 items-center border-b border-line", collapsed ? "justify-center" : "px-5")}>
+          <Logo compact={collapsed} />
+        </div>
+        <NavContent compact={collapsed} onNavigate={() => {}} />
+      </aside>
+
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="Menu de navegação">
+          <button aria-label="Fechar menu" tabIndex={-1} onClick={onCloseMobile} className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+          <aside className="relative flex h-full w-[280px] max-w-[85vw] flex-col border-r border-line bg-[#071522] shadow-2xl">
+            <div className="flex h-16 shrink-0 items-center justify-between border-b border-line px-5">
+              <Logo compact={false} />
+              <button
+                ref={closeRef}
+                onClick={onCloseMobile}
+                aria-label="Fechar menu"
+                className="flex size-9 items-center justify-center rounded-lg text-fg-muted hover:bg-white/[.05] hover:text-fg"
+              >
+                <Icon name="x" size={18} />
+              </button>
+            </div>
+            <NavContent compact={false} onNavigate={onCloseMobile} />
+          </aside>
+        </div>
+      )}
+    </>
+  );
+}
