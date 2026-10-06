@@ -3,55 +3,54 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Shell from "../../components/Shell";
 import PageHeader from "../../components/PageHeader";
 import TradeChart from "../../components/trades/TradeChart";
-import { Badge, Button, Card, EmptyState, PreviewBadge, SectionTitle, Stat, cx } from "../../components/UI";
+import ChannelAvatar from "../../components/trades/ChannelAvatar";
+import { LogEntry, SideBadge, TradeDetails, TradeLog, TradeManagement } from "../../components/trades/TradePanels";
+import { Badge, Button, Card, Stat, cx } from "../../components/UI";
 import { Icon } from "../../components/Icons";
 import { getLogs, getTrades, TradeRecord, TradeSummary } from "../../lib/api";
-
-type LogEntry = { trade_id?: string; signal_id?: string; timestamp?: string; message?: string; operation?: string };
+import {
+  EXIT_KEYS,
+  PNL_KEYS,
+  R_KEYS,
+  channelName,
+  dt,
+  fmt,
+  meta,
+  money,
+  nmeta,
+  signColor,
+  signed,
+  statusLabel,
+  statusTone,
+  text,
+  tradesToCsv,
+} from "../../lib/trade-format";
 
 const PAGE_SIZE = 10;
 const emptySummary: TradeSummary = { total: 0, open: 0, partial: 0, closed: 0, pending: 0, buy: 0, sell: 0 };
-const fmt = (v: number | null | undefined, d = 2) => (v == null || Number.isNaN(v) ? "—" : v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d }));
-const signed = (v: number | null, suffix = "", d = 2) => (v == null ? "—" : `${v >= 0 ? "+" : ""}${fmt(v, d)}${suffix}`);
-const money = (v: number | null) => (v == null ? "—" : `${v >= 0 ? "+" : "-"}$${fmt(Math.abs(v))}`);
-const dt = (v?: string | null) => {
-  if (!v) return "—";
-  const d = new Date(v);
-  return Number.isNaN(d.getTime()) ? v : d.toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
-};
-const meta = (t: TradeRecord) => {
-  try {
-    const v = JSON.parse(t.metadata_json || "{}");
-    return v && typeof v === "object" ? (v as Record<string, unknown>) : {};
-  } catch {
-    return {};
-  }
-};
-const nmeta = (t: TradeRecord, keys: string[]) => {
-  const m = meta(t);
-  for (const k of keys) {
-    const n = Number(m[k]);
-    if (Number.isFinite(n)) return n;
-  }
-  return null;
-};
-const text = (...values: unknown[]) => {
-  for (const v of values) if (v != null && String(v).trim() !== "") return String(v);
-  return "—";
-};
-const tone = (s: string): "green" | "blue" | "amber" | "red" | "neutral" => {
-  const x = s.toUpperCase();
-  if (x === "CLOSED") return "green";
-  if (x === "OPEN" || x === "PARTIAL") return "blue";
-  if (x === "PENDING") return "amber";
-  if (x === "ERROR" || x === "CANCELLED") return "red";
-  return "neutral";
-};
-const statusLabel: Record<string, string> = { CLOSED: "Fechada", OPEN: "Aberta", PARTIAL: "Parcial", PENDING: "Pendente", ERROR: "Erro", CANCELLED: "Cancelada" };
-const label = (s: string) => statusLabel[s?.toUpperCase()] ?? s;
-const signColor = (v: number | null) => (v == null ? "text-fg-subtle" : v < 0 ? "text-danger" : "text-success");
 
 const columns = ["#", "Data/Hora", "Canal", "Símbolo", "Tipo", "Entrada", "Saída", "SL", "TP", "Resultado", "R", "Pips", "Lote", "Conta", "Status"];
+
+function ResultPill({ value }: { value: number | null }) {
+  if (value == null) return <span className="text-fg-subtle">—</span>;
+  return (
+    <span className={cx("inline-flex h-6 items-center rounded-md px-2 font-semibold tabular", value < 0 ? "bg-danger-soft text-danger" : "bg-success-soft text-success")}>
+      {money(value)}
+    </span>
+  );
+}
+
+function pageList(page: number, pages: number): Array<number | "gap"> {
+  if (pages <= 7) return Array.from({ length: pages }, (_, i) => i + 1);
+  const set = new Set([1, pages, page - 1, page, page + 1].filter((p) => p >= 1 && p <= pages));
+  const sorted = Array.from(set).sort((a, b) => a - b);
+  const out: Array<number | "gap"> = [];
+  sorted.forEach((p, i) => {
+    if (i > 0 && p - sorted[i - 1] > 1) out.push("gap");
+    out.push(p);
+  });
+  return out;
+}
 
 export default function TradesPage() {
   const [trades, setTrades] = useState<TradeRecord[]>([]);
@@ -66,6 +65,7 @@ export default function TradesPage() {
   const [loading, setLoading] = useState(true);
   const [last, setLast] = useState("—");
   const [page, setPage] = useState(1);
+  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -77,6 +77,9 @@ export default function TradesPage() {
       setLast(new Date().toLocaleTimeString("pt-BR"));
       const l = await getLogs(500).catch(() => ({ items: [] }));
       setLogs((l.items || []) as LogEntry[]);
+      setError(null);
+    } catch {
+      setError("Não foi possível conectar à API do Copytrix. Verifique se o backend está ativo.");
     } finally {
       setLoading(false);
     }
@@ -92,8 +95,8 @@ export default function TradesPage() {
   const symbols = useMemo(() => Array.from(new Set(trades.map((t) => t.symbol).filter(Boolean))).sort(), [trades]);
   const receivers = useMemo(() => Array.from(new Set(trades.map((t) => t.receiver_id || "Pessoal").filter(Boolean))).sort(), [trades]);
 
-  const pnl = trades.map((t) => nmeta(t, ["pnl", "pnl_ccy", "profit"])).filter((x): x is number => x !== null);
-  const rs = trades.map((t) => nmeta(t, ["result_r", "r", "rr"])).filter((x): x is number => x !== null);
+  const pnl = trades.map((t) => nmeta(t, PNL_KEYS)).filter((x): x is number => x !== null);
+  const rs = trades.map((t) => nmeta(t, R_KEYS)).filter((x): x is number => x !== null);
   const winners = pnl.length ? pnl.filter((x) => x > 0).length : rs.filter((x) => x > 0).length;
   const losers = pnl.length ? pnl.filter((x) => x < 0).length : rs.filter((x) => x < 0).length;
   const totalPnl = summary.pnl_total ?? (pnl.length ? pnl.reduce((a, b) => a + b, 0) : null);
@@ -105,38 +108,45 @@ export default function TradesPage() {
 
   const rows = trades.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
   const pages = Math.max(1, Math.ceil(trades.length / PAGE_SIZE));
-  const pageButtons = Array.from({ length: Math.min(5, pages) }, (_, i) => i + 1);
 
-  const selMeta = selected ? meta(selected) : {};
-  const selPnl = selected ? nmeta(selected, ["pnl", "pnl_ccy", "profit"]) : null;
-  const selR = selected ? nmeta(selected, ["result_r", "r", "rr"]) : null;
-  const selPips = selected ? nmeta(selected, ["pips"]) : null;
-  const selExit = selected ? nmeta(selected, ["exit_price", "close_price"]) : null;
   const selNumber = selected ? trades.length - trades.findIndex((t) => t.trade_id === selected.trade_id) : null;
   const selLogs = selected ? logs.filter((x) => x.trade_id === selected.trade_id || x.signal_id === selected.signal_id).slice(0, 8) : [];
-
   const hasFilters = Boolean(search || symbol || side || status || receiver);
+
+  const exportCsv = () => {
+    const blob = new Blob([tradesToCsv(trades)], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `copytrix-operacoes-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const showChart = (t: TradeRecord) => {
+    setSelected(t);
+    document.getElementById("trade-chart")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   return (
     <Shell>
       <PageHeader
-        eyebrow="Execução"
         title="Operações"
-        description="Operações registradas pelo executor do Copytrix, com filtros, detalhes e eventos."
+        description="Todas as operações registradas pelo executor do Copytrix."
         actions={
           <>
-            <span className="text-xs text-fg-subtle" aria-live="polite">
+            <span className="mr-1 hidden text-xs text-fg-subtle sm:inline" aria-live="polite">
               Atualizado às <span className="tabular">{last}</span>
             </span>
             <Button disabled title="Filtro por período em breve">
               <Icon name="calendar" size={15} />
               Período
             </Button>
-            <Button onClick={() => void load()} disabled={loading}>
+            <Button onClick={() => void load()} disabled={loading} aria-label="Atualizar operações">
               <Icon name="refresh" size={15} />
-              {loading ? "Atualizando…" : "Atualizar"}
+              <span className="hidden sm:inline">{loading ? "Atualizando…" : "Atualizar"}</span>
             </Button>
-            <Button variant="primary" disabled title="Exportação em breve">
+            <Button variant="primary" onClick={exportCsv} disabled={trades.length === 0} title="Exportar operações filtradas em CSV">
               <Icon name="download" size={15} />
               Exportar
             </Button>
@@ -144,7 +154,7 @@ export default function TradesPage() {
         }
       />
 
-      <section aria-label="Indicadores" className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-7">
+      <section aria-label="Indicadores" className="grid grid-cols-2 gap-3 md:grid-cols-4 2xl:grid-cols-7">
         <Stat label="Total de operações" value={String(summary.total)} note={`${summary.buy} BUY · ${summary.sell} SELL`} icon={<Icon name="trades" size={18} />} />
         <Stat label="Vencedoras" value={hasResults ? `${winners} (${pct(winners)}%)` : "—"} icon={<Icon name="trophy" size={18} />} accent="green" positive={hasResults ? true : undefined} />
         <Stat label="Perdedoras" value={hasResults ? `${losers} (${pct(losers)}%)` : "—"} icon={<Icon name="x" size={18} />} accent="red" positive={hasResults ? false : undefined} />
@@ -154,11 +164,11 @@ export default function TradesPage() {
         <Stat label="Maior perda" value={minR == null ? "—" : `${fmt(minR)}R`} icon={<Icon name="chart" size={18} />} accent="red" positive={minR == null ? undefined : false} />
       </section>
 
-      <section aria-label="Filtros" className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_repeat(4,minmax(150px,180px))]">
+      <section aria-label="Filtros" className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.4fr)_repeat(4,minmax(150px,1fr))]">
         <label className="control flex items-center gap-2 sm:col-span-2 lg:col-span-1">
           <span className="text-fg-subtle"><Icon name="search" size={16} /></span>
           <span className="sr-only">Buscar operação</span>
-          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar operação..." className="h-full w-full bg-transparent outline-none" />
+          <input type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar operação..." className="h-full w-full bg-transparent outline-none" />
         </label>
         <select aria-label="Símbolo" value={symbol} onChange={(e) => setSymbol(e.target.value)} className="control">
           <option value="">Todos os símbolos</option>
@@ -183,40 +193,54 @@ export default function TradesPage() {
       </section>
 
       <Card className="mt-3 overflow-hidden">
-        <div className="max-h-[440px] overflow-auto">
-          <table className="trade-table w-full min-w-[1240px]">
+        <div className="max-h-[480px] overflow-auto">
+          <table className="trade-table w-full min-w-[1280px]">
             <caption className="sr-only">Lista de operações. Selecione uma linha para ver os detalhes.</caption>
             <thead className="sticky top-0 z-10">
               <tr>
                 {columns.map((h) => (
-                  <th key={h} scope="col" className="h-10 border-b border-line bg-surface-2 px-3">{h}</th>
+                  <th key={h} scope="col" className="h-10 border-b border-line bg-surface-2 px-3 first:pl-5">{h}</th>
                 ))}
+                <th scope="col" className="h-10 border-b border-line bg-surface-2 px-3 pr-5"><span className="sr-only">Ações</span></th>
               </tr>
             </thead>
             <tbody>
               {loading && trades.length === 0 ? (
-                <tr><td colSpan={columns.length} className="h-[320px] text-center text-sm text-fg-subtle">Carregando operações…</td></tr>
+                Array.from({ length: 6 }, (_, i) => (
+                  <tr key={i} className="h-12 !cursor-default">
+                    <td colSpan={columns.length + 1} className="px-5">
+                      <div className="h-3 animate-pulse rounded bg-surface-3" style={{ width: `${88 - i * 7}%` }} />
+                    </td>
+                  </tr>
+                ))
               ) : rows.length === 0 ? (
-                <tr>
-                  <td colSpan={columns.length} className="h-[320px] cursor-default text-center">
-                    <p className="text-sm font-medium text-fg-muted">Nenhuma operação encontrada</p>
+                <tr className="!cursor-default hover:!bg-transparent">
+                  <td colSpan={columns.length + 1} className="h-[320px] text-center">
+                    <span aria-hidden className="mx-auto mb-3 flex size-11 items-center justify-center rounded-full bg-surface-3 text-fg-subtle">
+                      <Icon name="trades" size={20} />
+                    </span>
+                    <p className={cx("text-sm font-medium", error ? "text-danger" : "text-fg-muted")}>{error ? "Falha ao carregar operações" : "Nenhuma operação encontrada"}</p>
                     <p className="mt-1 text-xs text-fg-subtle">
-                      {hasFilters ? "Ajuste os filtros para ampliar a busca." : "As operações aparecerão aqui quando forem registradas pelo executor."}
+                      {error
+                        ? error
+                        : hasFilters ? "Ajuste os filtros para ampliar a busca." : "As operações aparecerão aqui quando forem registradas pelo executor."}
                     </p>
                   </td>
                 </tr>
               ) : (
                 rows.map((t, i) => {
                   const m = meta(t);
-                  const p = nmeta(t, ["pnl", "pnl_ccy", "profit"]);
-                  const r = nmeta(t, ["result_r", "r", "rr"]);
+                  const p = nmeta(t, PNL_KEYS);
+                  const r = nmeta(t, R_KEYS);
                   const pp = nmeta(t, ["pips"]);
                   const isSel = selected?.trade_id === t.trade_id;
+                  const channel = channelName(t);
                   return (
                     <tr
                       key={t.trade_id}
                       onClick={() => setSelected(t)}
                       onKeyDown={(e) => {
+                        if (e.target !== e.currentTarget) return;
                         if (e.key === "Enter" || e.key === " ") {
                           e.preventDefault();
                           setSelected(t);
@@ -224,23 +248,42 @@ export default function TradesPage() {
                       }}
                       tabIndex={0}
                       aria-selected={isSel}
-                      className={cx("h-11 outline-none focus-visible:bg-surface-2 focus-visible:shadow-[inset_3px_0_0_var(--color-brand)]", isSel && "!bg-brand-soft/50 shadow-[inset_3px_0_0_var(--color-brand)]")}
+                      className={cx("h-12 outline-none focus-visible:bg-surface-2 focus-visible:shadow-[inset_3px_0_0_var(--color-brand)]", isSel && "!bg-brand-soft/40 shadow-[inset_3px_0_0_var(--color-brand)]")}
                     >
-                      <td className="px-3 tabular text-fg-subtle">{trades.length - (page - 1) * PAGE_SIZE - i}</td>
+                      <td className="px-3 pl-5 tabular text-fg-subtle">{trades.length - (page - 1) * PAGE_SIZE - i}</td>
                       <td className="px-3 tabular">{dt(t.opened_at || t.created_at)}</td>
-                      <td className="max-w-[200px] truncate px-3">{text(m.channel, m.source, t.receiver_id)}</td>
+                      <td className="px-3">
+                        <span className="flex max-w-[200px] items-center gap-2.5">
+                          <ChannelAvatar name={channel} />
+                          <span className="truncate font-medium uppercase tracking-wide text-[11.5px] text-fg">{channel}</span>
+                        </span>
+                      </td>
                       <td className="px-3 font-medium text-fg">{t.symbol}</td>
-                      <td className="px-3"><Badge tone={t.side === "BUY" ? "green" : "red"}>{t.side}</Badge></td>
+                      <td className="px-3"><SideBadge side={t.side} /></td>
                       <td className="px-3 tabular">{fmt(t.entry_price)}</td>
-                      <td className="px-3 tabular">{fmt(nmeta(t, ["exit_price", "close_price"]))}</td>
+                      <td className="px-3 tabular">{fmt(nmeta(t, EXIT_KEYS))}</td>
                       <td className="px-3 tabular">{fmt(t.stop_loss)}</td>
                       <td className="px-3 tabular">{text(m.tp_label, t.take_profit != null ? fmt(t.take_profit) : null)}</td>
-                      <td className={cx("px-3 tabular font-medium", signColor(p))}>{money(p)}</td>
-                      <td className={cx("px-3 tabular", signColor(r))}>{signed(r, "R")}</td>
+                      <td className="px-3"><ResultPill value={p} /></td>
+                      <td className={cx("px-3 tabular font-medium", signColor(r))}>{signed(r, "R")}</td>
                       <td className={cx("px-3 tabular", signColor(pp))}>{signed(pp, "", 1)}</td>
                       <td className="px-3 tabular">{fmt(t.volume)}</td>
                       <td className="max-w-[140px] truncate px-3">{text(m.account, t.receiver_id)}</td>
-                      <td className="px-3"><Badge tone={tone(t.status)}>{label(t.status)}</Badge></td>
+                      <td className="px-3"><Badge tone={statusTone(t.status)}>{statusLabel(t.status)}</Badge></td>
+                      <td className="px-3 pr-5 text-right">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            showChart(t);
+                          }}
+                          aria-label={`Ver gráfico da operação ${t.symbol}`}
+                          title="Ver gráfico"
+                          className="inline-flex size-8 items-center justify-center rounded-lg text-brand hover:bg-brand-soft/60"
+                        >
+                          <Icon name="analytics" size={15} />
+                        </button>
+                      </td>
                     </tr>
                   );
                 })
@@ -248,105 +291,43 @@ export default function TradesPage() {
             </tbody>
           </table>
         </div>
-        <nav aria-label="Paginação" className="flex flex-col gap-2 border-t border-line px-4 py-2.5 text-xs text-fg-subtle sm:flex-row sm:items-center sm:justify-between">
+        <nav aria-label="Paginação" className="flex flex-col gap-2 border-t border-line px-5 py-3 text-xs text-fg-subtle sm:flex-row sm:items-center sm:justify-between">
           <span className="tabular">
             Mostrando {trades.length ? (page - 1) * PAGE_SIZE + 1 : 0}–{Math.min(page * PAGE_SIZE, trades.length)} de {trades.length}
           </span>
           <div className="flex items-center gap-1">
-            <button onClick={() => setPage(Math.max(1, page - 1))} disabled={page === 1} aria-label="Página anterior" className="flex size-8 items-center justify-center rounded-md hover:bg-white/[.05] disabled:opacity-40">‹</button>
-            {pageButtons.map((p) => (
-              <button key={p} onClick={() => setPage(p)} aria-current={page === p ? "page" : undefined} className={cx("h-8 min-w-8 rounded-md px-2 tabular", page === p ? "bg-brand-strong text-white" : "hover:bg-white/[.05]")}>{p}</button>
-            ))}
-            {pages > 5 && (
-              <>
-                <span aria-hidden className="px-1">…</span>
-                <button onClick={() => setPage(pages)} aria-current={page === pages ? "page" : undefined} className={cx("h-8 min-w-8 rounded-md px-2 tabular", page === pages ? "bg-brand-strong text-white" : "hover:bg-white/[.05]")}>{pages}</button>
-              </>
+            <button onClick={() => setPage(Math.max(1, page - 1))} disabled={page === 1} aria-label="Página anterior" className="flex size-8 items-center justify-center rounded-lg hover:bg-white/[.05] disabled:opacity-40">
+              <span className="rotate-180"><Icon name="chevron" size={14} /></span>
+            </button>
+            {pageList(page, pages).map((p, i) =>
+              p === "gap" ? (
+                <span key={`g${i}`} aria-hidden className="px-1">…</span>
+              ) : (
+                <button
+                  key={p}
+                  onClick={() => setPage(p)}
+                  aria-current={page === p ? "page" : undefined}
+                  className={cx("h-8 min-w-8 rounded-lg border px-2 tabular", page === p ? "border-brand-strong bg-brand-strong font-semibold text-white" : "border-line text-fg-muted hover:border-line-strong hover:text-fg")}
+                >
+                  {p}
+                </button>
+              ),
             )}
-            <button onClick={() => setPage(Math.min(pages, page + 1))} disabled={page === pages} aria-label="Próxima página" className="flex size-8 items-center justify-center rounded-md hover:bg-white/[.05] disabled:opacity-40">›</button>
+            <button onClick={() => setPage(Math.min(pages, page + 1))} disabled={page === pages} aria-label="Próxima página" className="flex size-8 items-center justify-center rounded-lg hover:bg-white/[.05] disabled:opacity-40">
+              <Icon name="chevron" size={14} />
+            </button>
           </div>
         </nav>
       </Card>
 
-      <div className="mt-3 grid gap-3 lg:grid-cols-2 xl:grid-cols-[300px_minmax(0,1fr)_340px]">
-        <Card className="p-5">
-          <SectionTitle
-            title={`Operação ${selNumber ? `#${selNumber}` : "—"}`}
-            action={selected && selPnl != null ? <Badge tone={selPnl >= 0 ? "green" : "red"}>{selPnl >= 0 ? "WIN" : "LOSS"}</Badge> : undefined}
-          />
-          {selected ? (
-            <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2.5 text-[13px]">
-              {[
-                ["Data/Hora", dt(selected.opened_at || selected.created_at)],
-                ["Canal", text(selMeta.channel, selected.receiver_id)],
-                ["Símbolo", selected.symbol],
-              ].map(([k, v]) => (
-                <div key={k} className="contents"><dt className="text-fg-subtle">{k}</dt><dd className="truncate text-right tabular text-fg">{v}</dd></div>
-              ))}
-              <dt className="text-fg-subtle">Tipo</dt>
-              <dd className="text-right"><Badge tone={selected.side === "BUY" ? "green" : "red"}>{selected.side}</Badge></dd>
-              {[
-                ["Entrada", fmt(selected.entry_price)],
-                ["Saída", fmt(selExit)],
-                ["Stop Loss", fmt(selected.stop_loss)],
-                ["Take Profit", fmt(selected.take_profit)],
-              ].map(([k, v]) => (
-                <div key={k} className="contents"><dt className="text-fg-subtle">{k}</dt><dd className="text-right tabular text-fg">{v}</dd></div>
-              ))}
-              <dt className="text-fg-subtle">Resultado</dt><dd className={cx("text-right tabular font-medium", signColor(selPnl))}>{money(selPnl)}</dd>
-              <dt className="text-fg-subtle">R</dt><dd className={cx("text-right tabular", signColor(selR))}>{signed(selR, "R")}</dd>
-              <dt className="text-fg-subtle">Pips</dt><dd className={cx("text-right tabular", signColor(selPips))}>{signed(selPips, "", 1)}</dd>
-              <dt className="text-fg-subtle">Lote</dt><dd className="text-right tabular text-fg">{fmt(selected.volume)}</dd>
-              <dt className="text-fg-subtle">Conta</dt><dd className="truncate text-right text-fg">{text(selMeta.account, selected.receiver_id)}</dd>
-              <dt className="text-fg-subtle">Status</dt><dd className="text-right"><Badge tone={tone(selected.status)}>{label(selected.status)}</Badge></dd>
-            </dl>
-          ) : (
-            <EmptyState className="mt-4 h-[300px]" title="Nenhuma operação selecionada" description="Selecione uma linha da tabela para ver os detalhes." />
-          )}
-        </Card>
-
-        <Card className="overflow-hidden lg:col-span-2 xl:col-span-1 xl:col-start-2 xl:row-start-1">
-          <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-3.5">
-            <div className="min-w-0">
-              <h2 className="text-sm font-semibold">Gráfico da operação</h2>
-              <p className="mt-0.5 text-xs text-fg-subtle">{selected ? `${selected.symbol} · níveis de SL, entrada e TP` : "Aguardando seleção"}</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <PreviewBadge label="Ilustrativo" />
-              <Button disabled title="Disponível em breve" className="hidden h-8 text-xs sm:inline-flex">Abrir no MT5</Button>
-            </div>
-          </div>
-          {selected ? <TradeChart trade={selected} /> : <div className="flex h-[260px] items-center justify-center text-sm text-fg-subtle">Selecione uma operação</div>}
-        </Card>
-
+      <div className="mt-3 grid gap-3 lg:grid-cols-2 xl:grid-cols-[320px_minmax(0,1fr)_340px]">
+        <TradeDetails trade={selected} number={selNumber} />
+        <div className="min-h-[340px] lg:col-span-2 xl:col-span-1 xl:col-start-2 xl:row-start-1">
+          <TradeChart trade={selected} />
+        </div>
         <div className="flex flex-col gap-3">
-          <Card className="p-5">
-            <SectionTitle title="Gerenciamento da operação" action={<PreviewBadge label="Sem dados" />} />
-            <ul className="mt-4 space-y-2.5 text-[13px]">
-              {["Mover SL para break even", "Trailing stop", "Fechamento parcial", "Fechamento final"].map((x) => (
-                <li key={x} className="flex items-center justify-between gap-3">
-                  <span className="text-fg-muted">{x}</span>
-                  <span className="text-xs text-fg-subtle">Não informado</span>
-                </li>
-              ))}
-            </ul>
-          </Card>
-          <Card className="flex-1 p-5">
-            <SectionTitle title="Log da operação" />
-            {selLogs.length ? (
-              <ol className="mt-4 space-y-3 border-l border-line pl-4">
-                {selLogs.map((l, i) => (
-                  <li key={i} className="relative text-xs">
-                    <span aria-hidden className="absolute -left-[21px] top-1 size-2.5 rounded-full border-2 border-success bg-surface" />
-                    <div className="tabular text-fg-subtle">{dt(l.timestamp)}</div>
-                    <div className="mt-0.5 text-fg">{l.message || l.operation || "Evento Copytrix"}</div>
-                  </li>
-                ))}
-              </ol>
-            ) : (
-              <p className="mt-3 text-xs text-fg-subtle">Nenhum evento registrado para esta operação.</p>
-            )}
-          </Card>
+          <TradeManagement />
+          <TradeLog logs={selLogs} />
         </div>
       </div>
     </Shell>

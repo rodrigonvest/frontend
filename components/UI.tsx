@@ -50,11 +50,11 @@ export function Stat({
 }) {
   const valueColor = positive === false ? "text-danger" : positive === true && value !== "—" ? "text-success" : "text-fg";
   return (
-    <div className="flex min-h-[84px] items-center gap-3 rounded-xl border border-line bg-surface p-4">
-      {icon && <div className={cx("flex size-10 shrink-0 items-center justify-center rounded-lg", statAccent[accent])}>{icon}</div>}
+    <div className="flex min-h-[88px] items-center gap-3.5 rounded-xl border border-line bg-gradient-to-b from-surface-2/60 to-surface p-4">
+      {icon && <div className={cx("flex size-11 shrink-0 items-center justify-center rounded-xl", statAccent[accent])}>{icon}</div>}
       <div className="min-w-0">
-        <div className="truncate text-xs text-fg-subtle">{label}</div>
-        <div className={cx("tabular mt-1 truncate text-xl font-semibold leading-tight tracking-tight", valueColor)}>{value}</div>
+        <div className="text-xs leading-4 text-fg-muted">{label}</div>
+        <div className={cx("tabular mt-1 truncate text-[22px] font-semibold leading-tight tracking-tight", valueColor)}>{value}</div>
         {note && <div className="mt-0.5 truncate text-[11px] text-fg-subtle">{note}</div>}
       </div>
     </div>

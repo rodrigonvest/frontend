@@ -1,10 +1,10 @@
 "use client";
 import { Icon } from "./Icons";
 
-function IntegrationChip({ icon, label }: { icon: string; label: string }) {
+function IntegrationChip({ icon, label, iconClass }: { icon: string; label: string; iconClass: string }) {
   return (
     <div className="flex h-10 items-center gap-2.5 rounded-lg border border-line bg-surface px-3" title={`${label}: status não verificado por esta interface`}>
-      <span className="flex size-7 items-center justify-center rounded-md bg-surface-3 text-fg-muted">
+      <span className={`flex size-7 items-center justify-center rounded-md ${iconClass}`}>
         <Icon name={icon} size={15} />
       </span>
       <span className="leading-tight">
@@ -48,8 +48,8 @@ export default function Topbar({
 
       <div className="ml-auto flex items-center gap-2">
         <div className="hidden items-center gap-2 md:flex">
-          <IntegrationChip icon="telegram" label="Telegram" />
-          <IntegrationChip icon="analytics" label="MT5" />
+          <IntegrationChip icon="telegram" label="Telegram" iconClass="bg-[#229ed9] text-white" />
+          <IntegrationChip icon="analytics" label="MT5" iconClass="bg-success/15 text-success" />
         </div>
         <button aria-label="Notificações" className="flex size-10 items-center justify-center rounded-lg text-fg-muted hover:bg-white/[.05] hover:text-fg">
           <Icon name="bell" size={19} />
