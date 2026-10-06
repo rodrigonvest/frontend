@@ -1,0 +1,12 @@
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Icon } from "./Icons";
+const items = [
+ ["dashboard","Dashboard","/"],["trades","Operações","/trades"],["telegram","Canais Telegram","/connectors"],["accounts","Contas","/accounts"],["systems","Sistemas","/automations"],["analytics","Desempenho","/analytics"],["backtest","Backtest","/backtester"],["logs","Logs","/logs"],["settings","Configurações","/settings"],
+] as const;
+export default function Sidebar(){const pathname=usePathname();return <aside className="fixed inset-y-0 left-0 z-40 w-[220px] border-r border-[#18324a] bg-[#071522] md:flex md:flex-col">
+<div className="flex h-[70px] items-center border-b border-[#18324a] px-4"><div className="mr-2.5 flex h-9 w-9 items-center justify-center rounded-full bg-[#0b83ec]/15 text-[#159af2]"><svg width="28" height="28" viewBox="0 0 27 27" fill="none"><path d="M22.6 9.2a9.8 9.8 0 1 1-4.1-4.1" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/><path d="m8 13.8 3.2 3.2L22.7 5.5" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/></svg></div><div><div className="text-[21px] font-bold leading-none tracking-[-.035em]">Copytrix</div><div className="mt-1 text-[7px] font-bold uppercase tracking-[.25em] text-[#139af5]">Telegram to Results</div></div></div>
+<nav className="flex-1 px-2 py-[10px]">{items.map(([icon,label,href])=>{const active=href==="/"?pathname==="/":pathname.startsWith(href);return <Link key={href} href={href} className={`relative mb-[2px] flex h-[42px] items-center gap-3 rounded-[9px] px-3 text-[13px] ${active?"bg-[#0a69bd]/60 text-white":"text-[#aab9c9] hover:bg-white/[.035] hover:text-white"}`}>{active&&<span className="absolute left-0 top-1/2 h-7 w-[3px] -translate-y-1/2 rounded-r bg-[#159af2]"/>}<span className={active?"text-[#16a8ff]":"text-[#8fa5ba]"}><Icon name={icon} size={17}/></span><span>{label}</span>{label==="Sistemas"&&<span className="ml-auto rounded-full border border-[#29445c] px-1.5 text-[8px] text-[#71879d]">0</span>}</Link>})}</nav>
+<div className="px-3 pb-3"><Link href="/help" className="flex h-12 items-center gap-3 rounded-lg border border-[#18344d] bg-[#081b2c] px-3 text-[13px] text-[#d0dae4]"><Icon name="help" size={18}/><span>Ajuda &amp; Suporte</span><Icon name="chevron" size={13}/></Link></div>
+<div className="border-t border-[#18324a] px-4 py-3.5 text-[10px] leading-[16px] text-[#70859b]"><div>Copytrix v1.0.0</div><div>Telegram to Results</div><div>© 2026</div></div></aside>}
