@@ -288,22 +288,10 @@ export default function ChannelsView({ data }: { data: ChannelsResponse }) {
         title="Canais Telegram"
         description="Gerencie os canais e grupos de sinais"
         actions={
-          <>
-            {data.source === "demo" && (
-              <span
-                role="status"
-                title="API do Copytrix indisponível — exibindo dados de demonstração"
-                className="mr-1 inline-flex h-7 items-center gap-1.5 rounded-full border border-warning/40 bg-warning-soft/60 px-2.5 text-[11px] font-medium text-warning"
-              >
-                <span aria-hidden className="size-1.5 rounded-full bg-warning" />
-                Modo demonstração
-              </span>
-            )}
-            <Button variant="primary" className="h-[51px] gap-2.5 rounded-lg px-6 text-[16px] font-semibold">
-              <Icon name="plus" size={22} stroke={2.2} />
-              Adicionar Canal
-            </Button>
-          </>
+          <Button variant="primary" className="h-[51px] gap-2.5 rounded-lg px-6 text-[16px] font-semibold">
+            <Icon name="plus" size={22} stroke={2.2} />
+            Adicionar Canal
+          </Button>
         }
       />
 
