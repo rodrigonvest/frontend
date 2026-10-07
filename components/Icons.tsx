@@ -5,7 +5,7 @@ export function Icon({ name, size = 18, stroke = 1.8 }: { name: string; size?: n
   const paths: Record<string, React.ReactNode> = {
     dashboard: <><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></>,
     trades: <><path d="M4 7h13"/><path d="m13 3 4 4-4 4"/><path d="M20 17H7"/><path d="m11 13-4 4 4 4"/></>,
-    telegram: <><path d="m21 3-3.5 18-5.4-5.3-3.3 3.1.6-5.7L21 3Z"/><path d="m9.4 13.1 8.2-7.2"/></>,
+    telegram: <><path d="M21.5 3.4 3.1 10.5c-.8.3-.8 1.4 0 1.7l4.7 1.8 1.8 5.5c.25.75 1.2.95 1.7.35l2.7-3.3 4.8 3.6c.65.5 1.6.12 1.75-.68l2.5-14.9c.15-.85-.68-1.52-1.55-1.17Z" fill="currentColor" stroke="none"/><path d="m8.2 14 10.3-7.8-7.8 9.1" fill="none" stroke="rgba(255,255,255,.9)"/></>,
     accounts: <><path d="M4 20v-1.5A3.5 3.5 0 0 1 7.5 15h3A3.5 3.5 0 0 1 14 18.5V20"/><circle cx="9" cy="8" r="3"/><path d="M16 5.5a3 3 0 0 1 0 5.8"/><path d="M17 15h.5A3.5 3.5 0 0 1 21 18.5V20"/></>,
     systems: <><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><rect x="3" y="15" width="7" height="5" rx="1"/><rect x="14" y="15" width="7" height="5" rx="1"/></>,
     analytics: <><path d="M4 19V9"/><path d="M10 19V5"/><path d="M16 19v-7"/><path d="M22 19H2"/></>,
@@ -39,6 +39,16 @@ export function Icon({ name, size = 18, stroke = 1.8 }: { name: string; size?: n
     signal: <><path d="M5 20v-5M10 20v-9M15 20v-6M20 20V5"/></>,
     copy: <><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></>,
     eye: <><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></>,
+    plus: <path d="M12 5v14M5 12h14"/>,
+    layers: <><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12.5 9 5 9-5"/><path d="m3 17 9 5 9-5"/></>,
+    target: <><circle cx="12" cy="13" r="8"/><circle cx="12" cy="13" r="4.2"/><circle cx="12" cy="13" r="1" fill="currentColor"/><path d="m13.5 11.5 6-6"/><path d="M16.5 4.5h3v3"/></>,
+    barsFilled: <><rect x="4" y="13" width="4.2" height="8" rx="1" fill="currentColor" stroke="none"/><rect x="9.9" y="8" width="4.2" height="13" rx="1" fill="currentColor" stroke="none"/><rect x="15.8" y="3" width="4.2" height="18" rx="1" fill="currentColor" stroke="none"/></>,
+    send: <><path d="m21 3-9.5 18-2.2-7.8L2 11 21 3Z"/><path d="M21 3 9.3 13.2"/></>,
+    message: <><rect x="3" y="4" width="18" height="14" rx="2"/><path d="m8 21 3-3"/><path d="M7 9h10M7 13h6"/></>,
+    fileText: <><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></>,
+    arrowLeft: <><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></>,
+    arrowRight: <><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></>,
+    info: <><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></>,
     dollar: <><path d="M12 2v20M17 6.5c-1-1-2.7-1.5-4.5-1.5C10 5 8 6.2 8 8.2c0 2.2 2 3 4.4 3.7 2.6.8 4.6 1.8 4.6 4.1 0 2.1-2 3.5-4.8 3.5-2 0-3.9-.7-5.2-1.9"/></>,
   };
   return <svg {...common}>{paths[name] ?? paths.dashboard}</svg>;

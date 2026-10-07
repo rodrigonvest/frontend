@@ -54,8 +54,8 @@ function NavLink({ item, active, compact, onNavigate }: { item: NavItem; active:
   const content = (
     <>
       {active && <span aria-hidden className="absolute left-0 top-1/2 h-6 w-[3px] -translate-y-1/2 rounded-r bg-brand" />}
-      <span className={cx("shrink-0", active ? "text-brand" : "text-fg-subtle group-hover:text-fg-muted")}>
-        <Icon name={item.icon} size={18} />
+      <span className={cx("flex size-6 shrink-0 items-center justify-center", item.icon === "telegram" && "telegram-nav-icon", active ? "text-brand" : "text-fg-subtle group-hover:text-fg-muted")}>
+        <Icon name={item.icon} size={18} stroke={item.icon === "telegram" ? 1.7 : 1.8} />
       </span>
       {!compact && <span className="truncate">{item.label}</span>}
       {!compact && item.soon && (
