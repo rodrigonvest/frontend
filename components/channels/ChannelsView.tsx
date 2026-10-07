@@ -4,8 +4,9 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import Shell from "../Shell";
 import PageHeader from "../PageHeader";
 import { Icon } from "../Icons";
-import { Button, EmptyState, cx } from "../UI";
+import { Button, EmptyState, Notice, cx } from "../UI";
 import ChannelLogo from "./ChannelLogo";
+import { saveChannelFlags } from "../../lib/channel-config-api";
 import type { ChannelStatus, ChannelsOverview, ChannelsResponse, TelegramChannel } from "../../lib/channels";
 
 type SortKey = "most" | "least" | "recent" | "name";
@@ -261,10 +262,20 @@ export default function ChannelsView({ data }: { data: ChannelsResponse }) {
   const [status, setStatus] = useState<"" | ChannelStatus>("");
   const [sort, setSort] = useState<SortKey>("most");
   const [activeOverrides, setActiveOverrides] = useState<Record<string, boolean>>({});
+  const [pendingIds, setPendingIds] = useState<string[]>([]);
+  const [toggleError, setToggleError] = useState<string | null>(null);
 
   const now = useMemo(() => new Date(data.generated_at), [data.generated_at]);
   const isActive = (c: TelegramChannel) => activeOverrides[c.id] ?? c.active;
-  const toggle = (c: TelegramChannel) => setActiveOverrides((prev) => ({ ...prev, [c.id]: !(prev[c.id] ?? c.active) }));
+  const toggle = async (c: TelegramChannel) => {
+    if (pendingIds.includes(c.id)) return;
+    setToggleError(null);
+    setPendingIds((ids) => [...ids, c.id]);
+    const result = await saveChannelFlags(c.id, { active: !isActive(c) });
+    if (result.ok) setActiveOverrides((prev) => ({ ...prev, [c.id]: result.data.active }));
+    else setToggleError(result.error.message);
+    setPendingIds((ids) => ids.filter((id) => id !== c.id));
+  };
 
   const visible = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -327,6 +338,12 @@ export default function ChannelsView({ data }: { data: ChannelsResponse }) {
           ))}
         </SelectField>
       </section>
+
+      {toggleError && (
+        <div role="alert" className="mt-4">
+          <Notice tone="danger">{toggleError}</Notice>
+        </div>
+      )}
 
       {visible.length === 0 ? (
         <EmptyState
