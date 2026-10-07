@@ -1,31 +1,63 @@
 "use client";
 import { Icon } from "./Icons";
 import { DEMO_SESSION } from "../lib/demo-data";
+import { UNAVAILABLE_SYSTEM_STATUS, type SystemStatus, type SystemStatusValue } from "../schemas/system-status";
 
-function IntegrationChip({ icon, label, status, iconClass }: { icon: string; label: string; status: string; iconClass: string }) {
+type CopierPresentation = { label: string; chip: string; dot: string; ping?: boolean; pulse?: boolean };
+
+const COPIER_STATUS: Record<SystemStatusValue, CopierPresentation> = {
+  connected: { label: "Copier Online", chip: "border-success/40 bg-success-soft/60 text-success", dot: "bg-success", ping: true },
+  disconnected: { label: "Copier Offline", chip: "border-danger/40 bg-danger/10 text-danger", dot: "bg-danger" },
+  connecting: { label: "Copier Conectando...", chip: "border-warning/40 bg-warning/10 text-warning", dot: "bg-warning", pulse: true },
+  error: { label: "Copier com Erro", chip: "border-danger/40 bg-danger/10 text-danger", dot: "bg-danger" },
+  unavailable: { label: "Copier Indisponível", chip: "border-line bg-surface text-fg-subtle", dot: "bg-fg-subtle" },
+};
+
+function CopierChip({ status }: { status: SystemStatusValue }) {
+  const cfg = COPIER_STATUS[status];
   return (
-    <div className="flex h-10 items-center gap-2.5 rounded-lg px-2" title={`${label}: ${status} (estado demonstrativo)`}>
+    <span role="status" className={`inline-flex h-8 items-center gap-2 rounded-full border px-3.5 text-xs font-medium ${cfg.chip}`}>
+      <span aria-hidden className="relative flex size-2">
+        {cfg.ping && <span className={`absolute inline-flex size-full animate-ping rounded-full opacity-60 ${cfg.dot}`} />}
+        <span className={`relative inline-flex size-2 rounded-full ${cfg.dot} ${cfg.pulse ? "animate-pulse" : ""}`} />
+      </span>
+      {cfg.label}
+    </span>
+  );
+}
+
+const TELEGRAM_STATUS: Record<SystemStatusValue, { label: string; text: string }> = {
+  connected: { label: "Conectado", text: "text-fg-subtle" },
+  disconnected: { label: "Desconectado", text: "text-danger" },
+  connecting: { label: "Conectando...", text: "text-warning" },
+  error: { label: "Erro", text: "text-danger" },
+  unavailable: { label: "Indisponível", text: "text-fg-subtle" },
+};
+
+function IntegrationChip({ icon, label, status, iconClass }: { icon: string; label: string; status: SystemStatusValue; iconClass: string }) {
+  const cfg = TELEGRAM_STATUS[status];
+  return (
+    <div className="flex h-10 items-center gap-2.5 rounded-lg px-2" title={`${label}: ${cfg.label}`}>
       <span className={`flex size-9 shrink-0 items-center justify-center rounded-[10px] ${iconClass}`}>
         <Icon name={icon} size={icon === "telegram" ? 19 : 16} stroke={icon === "telegram" ? 1.9 : 2} />
       </span>
       <span className="leading-tight">
         <span className="block text-xs font-medium text-fg">{label}</span>
-        <span className="block text-[11px] text-fg-subtle">{status}</span>
+        <span className={`block text-[11px] ${cfg.text}`}>{cfg.label}</span>
       </span>
     </div>
   );
 }
 
-export type TerminalStatus = "connected" | "disconnected" | "connecting" | "unavailable";
-
-const TERMINAL_STATUS: Record<TerminalStatus, { label: string; dot: string; text: string; pulse?: boolean }> = {
+const TERMINAL_STATUS: Record<SystemStatusValue, { label: string; dot: string; text: string; pulse?: boolean }> = {
   connected: { label: "Conectado", dot: "bg-success", text: "text-success" },
   disconnected: { label: "Desconectado", dot: "bg-danger", text: "text-danger" },
   connecting: { label: "Conectando...", dot: "bg-warning", text: "text-warning", pulse: true },
+  error: { label: "Erro", dot: "bg-danger", text: "text-danger" },
   unavailable: { label: "Indisponível", dot: "bg-fg-subtle", text: "text-fg-subtle" },
 };
 
-function TerminalStatusItem({ terminal, status }: { terminal: "MT4" | "MT5"; status: TerminalStatus }) {
+function TerminalStatusItem({ terminal, status }: { terminal: "MT4" | "MT5"; status: SystemStatusValue }) {
   const cfg = TERMINAL_STATUS[status];
   return (
     <span className="inline-flex items-center gap-1.5" title={`${terminal}: ${cfg.label}`}>
@@ -37,7 +69,7 @@ function TerminalStatusItem({ terminal, status }: { terminal: "MT4" | "MT5"; sta
   );
 }
 
-function TerminalStatusIndicator({ mt4Status, mt5Status }: { mt4Status: TerminalStatus; mt5Status: TerminalStatus }) {
+function TerminalStatusIndicator({ mt4Status, mt5Status }: { mt4Status: SystemStatusValue; mt5Status: SystemStatusValue }) {
   return (
     <div
       role="status"
@@ -55,14 +87,12 @@ export default function Topbar({
   collapsed,
   onToggleCollapse,
   onOpenMobile,
-  mt4Status = "unavailable",
-  mt5Status = "unavailable",
+  status = UNAVAILABLE_SYSTEM_STATUS,
 }: {
   collapsed: boolean;
   onToggleCollapse: () => void;
   onOpenMobile: () => void;
-  mt4Status?: TerminalStatus;
-  mt5Status?: TerminalStatus;
+  status?: SystemStatus;
 }) {
   const s = DEMO_SESSION;
   return (
@@ -85,18 +115,9 @@ export default function Topbar({
       <span className="text-base font-bold tracking-tight lg:hidden">Copytrix</span>
 
       <div className="hidden flex-1 items-center justify-center gap-4 md:flex xl:gap-6" aria-label="Status das integrações">
-        <span
-          role="status"
-          className="inline-flex h-8 items-center gap-2 rounded-full border border-success/40 bg-success-soft/60 px-3.5 text-xs font-medium text-success"
-        >
-          <span aria-hidden className="relative flex size-2">
-            <span className="absolute inline-flex size-full animate-ping rounded-full bg-success opacity-60" />
-            <span className="relative inline-flex size-2 rounded-full bg-success" />
-          </span>
-          {s.copierOnline ? "Copier Online" : "Copier Offline"}
-        </span>
-        <IntegrationChip icon="telegram" label="Telegram" status={s.telegram} iconClass="bg-[#229ed9] text-white" />
-        <TerminalStatusIndicator mt4Status={mt4Status} mt5Status={mt5Status} />
+        <CopierChip status={status.copier.status} />
+        <IntegrationChip icon="telegram" label="Telegram" status={status.telegram.status} iconClass="bg-[#229ed9] text-white" />
+        <TerminalStatusIndicator mt4Status={status.mt4.status} mt5Status={status.mt5.status} />
       </div>
 
       <div className="ml-auto flex items-center gap-2 md:ml-0">
