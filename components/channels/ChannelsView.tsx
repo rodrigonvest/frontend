@@ -122,7 +122,7 @@ function StatusLine({ status }: { status: ChannelStatus }) {
 
 function RowStat({ icon, iconClass, label, children }: { icon: string; iconClass: string; label: string; children: ReactNode }) {
   return (
-    <div className="flex min-w-0 items-center gap-3">
+    <div className="relative flex min-w-0 items-center gap-3 @min-[1120px]:before:absolute @min-[1120px]:before:-left-1.5 @min-[1120px]:before:top-1/2 @min-[1120px]:before:h-11 @min-[1120px]:before:w-px @min-[1120px]:before:-translate-y-1/2 @min-[1120px]:before:bg-line">
       <span aria-hidden className={cx("hidden shrink-0 @md:block", iconClass)}>
         <Icon name={icon} size={icon === "telegram" ? 20 : 22} stroke={1.8} />
       </span>
@@ -143,11 +143,11 @@ function Switch({ checked, label, onChange }: { checked: boolean; label: string;
       aria-label={label}
       onClick={onChange}
       className={cx(
-        "relative h-7 w-[50px] shrink-0 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
+        "relative h-[27px] w-[47px] shrink-0 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
         checked ? "bg-success" : "bg-[#3b4a5a]",
       )}
     >
-      <span className={cx("absolute top-[3px] size-[22px] rounded-full bg-white shadow transition-[left]", checked ? "left-[25px]" : "left-[3px]")} />
+      <span className={cx("absolute top-[3px] size-[21px] rounded-full bg-white shadow transition-[left]", checked ? "left-[23px]" : "left-[3px]")} />
     </button>
   );
 }
@@ -209,7 +209,7 @@ function ChannelRow({ channel, now, active, onToggle }: { channel: TelegramChann
   const stateLabel = active ? "Ativo" : channel.status === "paused" ? "Pausado" : "Inativo";
 
   return (
-    <li className="grid grid-cols-1 gap-3 rounded-lg border border-line bg-surface px-4 py-3 transition-colors hover:border-line-strong @min-[672px]:grid-cols-[minmax(0,1fr)_auto] @min-[672px]:items-center @min-[1120px]:grid-cols-[minmax(190px,2fr)_minmax(100px,1fr)_minmax(115px,1fr)_minmax(170px,1.2fr)_minmax(120px,140px)_auto]">
+    <li className="grid grid-cols-1 gap-3 rounded-lg border border-line bg-surface px-4 py-3 transition-colors hover:border-line-strong @min-[672px]:grid-cols-[minmax(0,1fr)_auto] @min-[672px]:items-center @min-[1120px]:grid-cols-[minmax(0,400fr)_minmax(0,147fr)_minmax(0,175fr)_minmax(0,220fr)_auto_auto] @min-[1120px]:py-[5px]">
       <div className="flex min-w-0 items-center gap-4">
         <ChannelLogo name={channel.name} avatarUrl={channel.avatar_url} logoKey={channel.logo_key} />
         <div className="min-w-0">
@@ -346,7 +346,7 @@ export default function ChannelsView({ data }: { data: ChannelsResponse }) {
           description={data.error ?? (data.items.length ? "Ajuste a busca ou os filtros para ampliar o resultado." : "Os canais conectados aparecerão aqui.")}
         />
       ) : (
-        <ul aria-label="Lista de canais" className="@container mt-4 flex flex-col gap-2">
+        <ul aria-label="Lista de canais" className="@container mt-4 flex flex-col gap-[7px]">
           {visible.map((c) => (
             <ChannelRow key={c.id} channel={c} now={now} active={isActive(c)} onToggle={() => toggle(c)} />
           ))}
