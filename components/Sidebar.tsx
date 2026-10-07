@@ -10,7 +10,7 @@ type NavItem = { icon: string; label: string; href?: string; soon?: boolean };
 const primary: NavItem[] = [
   { icon: "dashboard", label: "Dashboard", href: "/" },
   { icon: "trades", label: "Operações", href: "/trades" },
-  { icon: "telegram", label: "Conectores", href: "/connectors" },
+  { icon: "telegram", label: "Canais Telegram", href: "/connectors" },
   { icon: "accounts", label: "Contas", href: "/accounts" },
   { icon: "systems", label: "Sistemas", href: "/automations" },
   { icon: "analytics", label: "Desempenho", href: "/analytics" },
@@ -23,8 +23,9 @@ const secondary: NavItem[] = [
   { icon: "chart", label: "Acesso à API", href: "/api-access" },
   { icon: "dollar", label: "Plano e cobrança", href: "/billing" },
   { icon: "calendar", label: "Roadmap", href: "/roadmap" },
-  { icon: "help", label: "Ajuda e suporte", href: "/help" },
 ];
+
+const helpItem: NavItem = { icon: "help", label: "Ajuda & Suporte", href: "/help" };
 
 function Logo({ compact }: { compact: boolean }) {
   return (
@@ -106,11 +107,29 @@ function NavContent({ compact, onNavigate }: { compact: boolean; onNavigate: () 
           ))}
         </ul>
       </nav>
-      {!compact && (
-        <div className="border-t border-line px-5 py-4 text-[11px] leading-5 text-fg-subtle">
-          Copytrix v1.0.0 · © 2026
-        </div>
-      )}
+      <div className={cx("shrink-0", compact ? "px-3 pb-4" : "px-4 pb-5")}>
+        {compact ? (
+          <NavLink item={helpItem} active={isActive(helpItem.href)} compact onNavigate={onNavigate} />
+        ) : (
+          <Link
+            href="/help"
+            onClick={onNavigate}
+            aria-current={isActive("/help") ? "page" : undefined}
+            className="flex h-12 items-center gap-3 rounded-xl border border-line bg-surface px-3.5 text-[13.5px] text-fg-muted transition-colors hover:border-line-strong hover:text-fg"
+          >
+            <span className="text-fg-subtle"><Icon name="help" size={18} /></span>
+            <span className="flex-1">{helpItem.label}</span>
+            <span className="text-fg-subtle"><Icon name="chevron" size={14} /></span>
+          </Link>
+        )}
+        {!compact && (
+          <div className="mt-6 px-1 text-[11px] leading-[18px] text-fg-subtle">
+            <p>Copytrix v1.0.0</p>
+            <p>Telegram to Results</p>
+            <p>© 2026</p>
+          </div>
+        )}
+      </div>
     </>
   );
 }

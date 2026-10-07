@@ -1,7 +1,7 @@
 import type { TradeRecord } from "./api";
 
 export const fmt = (v: number | null | undefined, d = 2) =>
-  v == null || Number.isNaN(v) ? "—" : v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+  v == null || Number.isNaN(v) ? "—" : v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d, useGrouping: false });
 
 export const signed = (v: number | null, suffix = "", d = 2) => (v == null ? "—" : `${v >= 0 ? "+" : ""}${fmt(v, d)}${suffix}`);
 
@@ -16,7 +16,7 @@ const parseDate = (v?: string | null) => {
 export const dt = (v?: string | null) => {
   const d = parseDate(v);
   if (!d) return v || "—";
-  return d.toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  return d.toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }).replace(", ", " ");
 };
 
 export const time = (v?: string | null) => {
