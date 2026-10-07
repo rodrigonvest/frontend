@@ -5,8 +5,8 @@ import { DEMO_SESSION } from "../lib/demo-data";
 function IntegrationChip({ icon, label, status, iconClass }: { icon: string; label: string; status: string; iconClass: string }) {
   return (
     <div className="flex h-10 items-center gap-2.5 rounded-lg px-2" title={`${label}: ${status} (estado demonstrativo)`}>
-      <span className={`flex size-8 items-center justify-center rounded-lg ${iconClass}`}>
-        <Icon name={icon} size={16} stroke={2} />
+      <span className={`flex size-9 shrink-0 items-center justify-center rounded-[10px] ${iconClass}`}>
+        <Icon name={icon} size={icon === "telegram" ? 19 : 16} stroke={icon === "telegram" ? 1.9 : 2} />
       </span>
       <span className="leading-tight">
         <span className="block text-xs font-medium text-fg">{label}</span>
