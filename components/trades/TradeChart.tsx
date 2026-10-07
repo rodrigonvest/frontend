@@ -73,7 +73,7 @@ function ChartBody({ trade }: { trade: TradeRecord }) {
   const outcome = exit != null && entry != null ? (trade.side === "SELL" ? entry - exit : exit - entry) : null;
   const entryIdx = n ? candles.findIndex((c) => c.t >= (trade.opened_at || trade.created_at)) : -1;
   const exitIdx = n && trade.closed_at ? candles.findIndex((c) => c.t >= (trade.closed_at as string)) : -1;
-  const xLabels = n ? candles.map((c, i) => ({ i, t: c.t })).filter((_, i) => i % 5 === 2) : [];
+  const xLabels = n ? candles.map((c, i) => ({ i, t: c.t })).filter((_, i) => i % 5 === 0) : [];
 
   return (
     <div className="flex h-full min-h-[280px] flex-col">
