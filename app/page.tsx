@@ -1,243 +1,43 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Shell from "../components/Shell";
-import PageHeader from "../components/PageHeader";
 import { Icon } from "../components/Icons";
-import { Badge, Card, EmptyState, SectionTitle, Stat } from "../components/UI";
+import { Badge, Card, cx } from "../components/UI";
 import { DashboardData, getDashboard } from "../lib/api";
 
-function MiniBar({ value }: { value: number }) {
-  return (
-    <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
-      <div className="h-full rounded-full bg-brand" style={{ width: `${Math.max(0, Math.min(100, value))}%` }} />
-    </div>
-  );
-}
+const equity = [9240, 9410, 9520, 9780, 9650, 10010, 10080, 9940, 10120, 10040, 10180, 10020, 9950, 10080, 9870, 10030, 10020, 10230, 10600, 10540, 10700, 10820, 10950, 10820, 11080, 11030, 11200, 11060, 11320, 11400, 11680, 11950, 12100, 11800, 12180, 12240, 12480, 12320, 12540, 12400, 12650];
+const monthly = [{ month: "Jun/26", value: 1225 }, { month: "Jul/26", value: 777 }, { month: "Ago/26", value: 1392 }, { month: "Set/26", value: 792 }];
+const realtime = [
+  ["XAUUSD", "BUY", "+0.75R", "TP3 atingido", "14:32"], ["XAUUSD", "SELL", "+0.50R", "TP2 atingido", "13:28"], ["XAUUSD", "BUY", "SL", "Stop Loss", "12:41"], ["XAUUSD", "BUY", "+1.00R", "TP4 atingido", "11:05"], ["XAUUSD", "SELL", "+0.75R", "TP3 atingido", "10:22"],
+];
+const signals = ["KIM GOLD SECRET", "KIM GOLD SECRET", "KIM GOLD SECRET"];
 
 const fallback: DashboardData = {
-  updated_at: "",
-  total_executed_trades: 0,
-  active_accounts: 0,
-  active_automations: 0,
-  top_symbol: null,
-  top_symbol_share: 0,
-  trades_over_time: [],
-  top_symbols: [],
-  trades_per_automation: [],
-  trades_per_account: [],
-  telegram_channels: [],
-  recent_activity: [],
-  system_status: {
-    core: "—",
-    telegram: "—",
-    execution: "—",
-    event_journal: "—",
-  },
+  updated_at: new Date().toISOString(), total_executed_trades: 167, active_accounts: 5, active_automations: 3,
+  top_symbol: "XAUUSD", top_symbol_share: 92, trades_over_time: equity.map((count, i) => ({ date: `${21 + Math.floor(i / 2)}/Jun`, count: Math.round(count / 120) })),
+  top_symbols: [{ symbol: "XAUUSD", name: "Gold", count: 152, share: 92 }, { symbol: "XAGUSD", name: "Silver", count: 8, share: 5 }, { symbol: "US100", name: "Nasdaq", count: 4, share: 2 }, { symbol: "Outros", name: "", count: 3, share: 1 }],
+  trades_per_automation: [{ name: "KIM GOLD SECRET", count: 152 }, { name: "FRAN SIGNALS", count: 8 }, { name: "LEZZIER FX", count: 7 }], trades_per_account: [],
+  telegram_channels: [{ name: "KIM GOLD SECRET", count: 152 }, { name: "FRAN SIGNALS", count: 8 }, { name: "LEZZIER FX", count: 7 }], recent_activity: [],
+  system_status: { core: "Online", telegram: "Conectado", execution: "Operacional", event_journal: "Ativo" },
 };
 
-const statusNames: Record<string, string> = {
-  core: "Núcleo",
-  telegram: "Telegram",
-  execution: "Execução",
-  event_journal: "Diário de eventos",
-};
-
-function ViewLink({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <Link href={href} className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-brand hover:text-[#5cc2ff]">
-      {children}
-      <Icon name="chevron" size={12} />
-    </Link>
-  );
+function Metric({ label, value, note, icon, tone = "blue" }: { label: string; value: string; note: string; icon: string; tone?: "blue" | "green" | "purple" | "red" }) {
+  return <div className="metric-card"><div><p className="metric-label">{label}</p><strong>{value}</strong><p className={cx("metric-note", tone === "red" ? "text-danger" : "text-success")}>{note}</p></div><span className={cx("metric-icon", `metric-${tone}`)}><Icon name={icon} size={20} /></span></div>;
 }
+function Panel({ title, children, className = "" }: { title: string; children: React.ReactNode; className?: string }) { return <Card className={cx("dashboard-panel", className)}><h2 className="panel-title">{title}</h2>{children}</Card>; }
+function EquityChart() { const min = 9000, max = 13000; const points = equity.map((v, i) => `${(i / (equity.length - 1)) * 100},${100 - ((v - min) / (max - min)) * 100}`).join(" "); return <div className="equity-chart"><div className="chart-y"><span>$13,000</span><span>$12,000</span><span>$11,000</span><span>$10,000</span><span>$9,000</span></div><svg viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label="Evolução da equidade"><defs><linearGradient id="equityFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stopColor="#12d99e" stopOpacity=".38" /><stop offset="1" stopColor="#12d99e" stopOpacity="0" /></linearGradient></defs><path d={`M ${points} L 100 100 L 0 100 Z`} fill="url(#equityFill)" /><polyline points={points} fill="none" stroke="#12d99e" strokeWidth="1.5" vectorEffect="non-scaling-stroke" /></svg><div className="chart-x"><span>21 Jun</span><span>05 Jul</span><span>19 Jul</span><span>02 Ago</span><span>16 Ago</span><span>30 Ago</span><span>04 Set</span></div></div>; }
+function Bars() { const max = 1800; return <div className="bars"><div className="chart-y"><span>$1,800</span><span>$1,200</span><span>$600</span><span>$0</span></div><div className="bar-area">{monthly.map((item) => <div className="bar-col" key={item.month}><strong>${item.value.toLocaleString("en-US")}</strong><div className="bar" style={{ height: `${(item.value / max) * 100}%` }} /><span>{item.month}</span></div>)}</div></div>; }
+function Donut() { return <div className="donut-wrap"><div className="donut"><strong>167</strong><span>Operações</span></div><div className="legend"><span><i className="dot gold" />XAUUSD <b>92%</b></span><span><i className="dot gray" />XAGUSD <b>5%</b></span><span><i className="dot cyan" />US100 <b>2%</b></span><span><i className="dot purple" />Outros <b>1%</b></span></div></div>; }
 
 export default function DashboardPage() {
-  const [data, setData] = useState<DashboardData>(fallback);
-  const [state, setState] = useState<"loading" | "ready" | "error">("loading");
-
-  useEffect(() => {
-    let alive = true;
-    getDashboard()
-      .then((value) => {
-        if (!alive) return;
-        setData(value);
-        setState("ready");
-      })
-      .catch(() => alive && setState("error"));
-    return () => {
-      alive = false;
-    };
-  }, []);
-
-  const lastUpdated = useMemo(() => {
-    const date = new Date(data.updated_at);
-    return Number.isNaN(date.getTime())
-      ? "--:--:--"
-      : date.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-  }, [data.updated_at]);
-
-  const bars = data.trades_over_time;
-  const maxBar = Math.max(1, ...bars.map((x) => x.count));
-
-  const apiBadge =
-    state === "loading" ? <Badge>Conectando à API…</Badge> : state === "error" ? <Badge tone="amber">API indisponível</Badge> : <Badge tone="green">API respondendo</Badge>;
-
-  return (
-    <Shell>
-      <PageHeader
-        eyebrow="Visão geral"
-        title="Dashboard"
-        description="Visão unificada de sistemas, contas, execução e desempenho."
-        actions={
-          <>
-            <span className="text-xs text-fg-subtle">
-              Última atualização <span className="tabular">{lastUpdated}</span>
-            </span>
-            {apiBadge}
-          </>
-        }
-      />
-
-      <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
-        <Stat label="Operações executadas" value={String(data.total_executed_trades)} note="Desde o início" icon={<Icon name="trades" size={18} />} />
-        <Stat label="Contas ativas" value={String(data.active_accounts)} note="Atualmente ativas" icon={<Icon name="accounts" size={18} />} accent="green" />
-        <Stat label="Sistemas ativos" value={String(data.active_automations)} note="Atualmente ativos" icon={<Icon name="systems" size={18} />} accent="amber" />
-        <Stat label="Símbolo principal" value={data.top_symbol ?? "—"} note={data.top_symbol ? `${data.top_symbol_share}% dos sinais` : "Sem sinais"} icon={<Icon name="chart" size={18} />} />
-      </div>
-
-      <div className="mt-4 grid gap-4 xl:grid-cols-[1.55fr_1fr]">
-        <Card className="p-5 sm:p-6">
-          <SectionTitle title="Operações ao longo do tempo" description="Volume diário de operações." action={<Badge>Últimos 30 dias</Badge>} />
-          {bars.length ? (
-            <>
-              <div className="mt-6 flex h-52 items-end gap-1.5 border-b border-line" role="img" aria-label="Gráfico de barras do volume diário de operações">
-                {bars.map((item) => (
-                  <div key={item.date} className="group flex h-full flex-1 items-end" title={`${item.date}: ${item.count}`}>
-                    <div className="w-full rounded-t bg-brand/40 transition-colors group-hover:bg-brand" style={{ height: `${(item.count / maxBar) * 100}%` }} />
-                  </div>
-                ))}
-              </div>
-              <div className="mt-2 flex justify-between text-[11px] text-fg-subtle tabular">
-                <span>{bars[0]?.date}</span>
-                <span>{bars[Math.floor(bars.length / 2)]?.date}</span>
-                <span>{bars[bars.length - 1]?.date}</span>
-              </div>
-            </>
-          ) : (
-            <EmptyState className="mt-6 h-52" title="Ainda não há dados de operações" description="O volume diário aparecerá aqui quando houver operações registradas." />
-          )}
-        </Card>
-
-        <Card className="p-5 sm:p-6">
-          <SectionTitle title="Principais símbolos" description="Por volume de sinais." action={<ViewLink href="/analytics">Ver desempenho</ViewLink>} />
-          <div className="mt-6 space-y-5">
-            {data.top_symbols.length ? (
-              data.top_symbols.map((item) => (
-                <div key={item.symbol}>
-                  <div className="mb-2 flex items-center justify-between text-sm">
-                    <span><span className="font-medium text-fg">{item.symbol}</span><span className="ml-2 text-xs text-fg-subtle">{item.name}</span></span>
-                    <span className="tabular text-xs text-fg-muted">{item.share}%</span>
-                  </div>
-                  <MiniBar value={item.share} />
-                </div>
-              ))
-            ) : (
-              <EmptyState title="Sem dados de símbolos" description="Os instrumentos mais ativos aparecerão aqui." />
-            )}
-          </div>
-        </Card>
-      </div>
-
-      <div className="mt-4 grid gap-4 lg:grid-cols-2">
-        <Card className="p-5 sm:p-6">
-          <SectionTitle
-            title="Operações por sistema"
-            description="Distribuição de sinais por fluxo."
-            action={<span className="tabular text-xs text-fg-subtle">{data.trades_per_automation.reduce((a, x) => a + x.count, 0)} no total</span>}
-          />
-          <div className="mt-6 space-y-5">
-            {data.trades_per_automation.length ? (
-              data.trades_per_automation.map((item) => (
-                <div key={item.name}>
-                  <div className="mb-2 flex justify-between text-xs"><span className="text-fg-muted">{item.name}</span><span className="tabular text-fg-subtle">{item.count}</span></div>
-                  <MiniBar value={data.total_executed_trades ? (item.count / data.total_executed_trades) * 100 : 0} />
-                </div>
-              ))
-            ) : (
-              <EmptyState title="Nenhuma atividade de sistemas" description="Crie um sistema para começar a copiar sinais." />
-            )}
-          </div>
-        </Card>
-
-        <Card className="p-5 sm:p-6">
-          <SectionTitle title="Operações por conta" description="Distribuição por conta." action={<ViewLink href="/accounts">Gerenciar contas</ViewLink>} />
-          <div className="mt-6 space-y-5">
-            {data.trades_per_account.length ? (
-              data.trades_per_account.map((item) => (
-                <div key={item.name}>
-                  <div className="mb-2 flex justify-between text-xs"><span className="text-fg-muted">{item.name}</span><span className="tabular text-fg-subtle">{item.count}</span></div>
-                  <MiniBar value={data.total_executed_trades ? (item.count / data.total_executed_trades) * 100 : 0} />
-                </div>
-              ))
-            ) : (
-              <EmptyState title="Nenhuma atividade de contas" description="Conecte uma conta de trading para começar." />
-            )}
-          </div>
-        </Card>
-      </div>
-
-      <div className="mt-4 grid gap-4 lg:grid-cols-2">
-        <Card className="p-5 sm:p-6">
-          <SectionTitle title="Canais do Telegram" description="Distribuição de sinais por canal." action={<ViewLink href="/connectors">Gerenciar</ViewLink>} />
-          <div className="mt-6">
-            {data.telegram_channels.length ? (
-              <ul className="divide-y divide-line">
-                {data.telegram_channels.map((item) => (
-                  <li key={item.name} className="flex justify-between py-3 text-sm"><span className="text-fg">{item.name}</span><span className="tabular text-fg-subtle">{item.count}</span></li>
-                ))}
-              </ul>
-            ) : (
-              <EmptyState title="Nenhum sinal do Telegram" description="A distribuição por canal aparecerá quando sinais forem recebidos." />
-            )}
-          </div>
-        </Card>
-
-        <Card className="p-5 sm:p-6">
-          <SectionTitle title="Status do sistema" description="Estado informado pela API do Copytrix." action={state === "ready" ? <Badge tone="blue">Informado pela API</Badge> : <Badge>Não verificado</Badge>} />
-          <ul className="mt-4 divide-y divide-line">
-            {Object.entries(data.system_status).map(([key, value]) => (
-              <li key={key} className="flex items-center justify-between py-3">
-                <span className="text-sm text-fg-muted">{statusNames[key] ?? key.replace("_", " ")}</span>
-                <span className={state === "ready" ? "text-xs font-medium text-fg" : "text-xs text-fg-subtle"}>{value}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      </div>
-
-      <Card className="mt-4 overflow-hidden">
-        <div className="border-b border-line p-5">
-          <SectionTitle title="Atividade recente" description="Últimos eventos do workspace." />
-        </div>
-        {data.recent_activity.length ? (
-          <ul className="divide-y divide-line">
-            {data.recent_activity.map((item) => (
-              <li key={`${item.type}-${item.name}-${item.time}`} className="grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1 px-5 py-3.5 sm:grid-cols-[110px_1fr_auto_80px]">
-                <span className="text-xs text-fg-subtle">{item.type}</span>
-                <span className="order-3 col-span-2 text-sm text-fg sm:order-none sm:col-span-1">{item.name}</span>
-                <Badge tone="neutral">{item.status}</Badge>
-                <span className="hidden text-right text-xs tabular text-fg-subtle sm:block">{item.time}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className="p-5">
-            <EmptyState title="Nenhuma atividade recente" description="Os sinais executados aparecerão aqui." />
-          </div>
-        )}
-      </Card>
-    </Shell>
-  );
+  const [data, setData] = useState(fallback); const [state, setState] = useState<"loading" | "ready" | "error">("loading");
+  useEffect(() => { let alive = true; getDashboard().then((value) => alive && (setData(value), setState("ready"))).catch(() => alive && setState("error")); return () => { alive = false; }; }, []);
+  const stats = [{ label: "Total de Operações", value: "167", icon: "trades" }, { label: "Operações Vencedoras", value: "88 (52.7%)", icon: "trophy", positive: true }, { label: "Operações Perdedoras", value: "79 (47.3%)", icon: "x", positive: false }, { label: "Lucro Total", value: "$ 4,187.50", icon: "chart", positive: true }, { label: "Média por Operação", value: "+0.42R", icon: "systems", positive: true }, { label: "Maior Ganho", value: "+1.00R", icon: "trend", positive: true }, { label: "Maior Perda", value: "-1.00R", icon: "x", positive: false }, { label: "Profit Factor", value: "2.39", icon: "scale" }, { label: "Drawdown Máximo", value: "12.1%", icon: "warning", positive: false }];
+  return <Shell><div className="dashboard-heading"><div><h1>Dashboard</h1><p>Visão geral do seu Copytrading em tempo real</p></div><div className="dashboard-filters"><button className="filter"><Icon name="calendar" size={16} />01/08/2026 - 04/09/2026 <Icon name="chevronDown" size={14} /></button><button className="filter">Todos os canais <Icon name="chevronDown" size={14} /></button></div></div>
+    <div className="metrics-grid"><Metric label="Saldo Atual" value="$ 12,425.50" note="+ $1,367.50" icon="dollar" tone="green" /><Metric label="Lucro Total" value="$ 4,187.50" note="+70.17R" icon="trendUp" tone="green" /><Metric label="Total de Operações" value={String(data.total_executed_trades)} note="88 Wins | 79 Loss" icon="analytics" tone="purple" /><Metric label="Assertividade" value="52.7%" note="" icon="signal" tone="purple" /><Metric label="Profit Factor" value="2.39" note="" icon="chart" tone="blue" /><Metric label="Drawdown Máximo" value="12.1%" note="" icon="chart" tone="red" /></div>
+    <div className="dashboard-grid top-grid"><Panel title="Evolução da Equidade" className="equity-panel"><div className="panel-select">Saldo <Icon name="chevronDown" size={14} /></div><EquityChart /></Panel><Panel title="Desempenho Mensal" className="monthly-panel"><div className="chart-legend"><span><i className="dot green" />Lucro</span><span><i className="dot red" />Prejuízo</span></div><Bars /></Panel><Panel title="Operações em Tempo Real" className="live-panel"><div className="live-label"><i className="dot green" />Ao vivo</div><div className="scroll-list">{realtime.map(([symbol, side, result, detail, time]) => <div className="live-row" key={`${time}-${detail}`}><span className="symbol-icon"><Icon name="diamond" size={18} /></span><div><strong>{symbol} <em className={side === "BUY" ? "buy" : "sell"}>{side}</em></strong><small className={result === "SL" ? "text-danger" : "text-success"}>{detail}</small></div><b className={result === "SL" ? "text-danger" : "text-success"}>{result}</b><time>{time}</time></div>)}</div></Panel></div>
+    <div className="dashboard-grid middle-grid"><Panel title="Estatísticas Gerais" className="stats-panel"><div className="stats-list">{stats.map((item) => <div className="stat-row" key={item.label}><span className={cx("stat-icon", item.positive === false ? "bad" : item.positive ? "good" : "neutral")}><Icon name={item.icon} size={15} /></span><span>{item.label}</span><strong className={item.positive === false ? "text-danger" : item.positive ? "text-success" : ""}>{item.value}</strong></div>)}</div></Panel><Panel title="Distribuição de Resultados (R)" className="distribution-panel"><div className="distribution">{[["+1.00R",34,"20.4%"],["+0.75R",41,"24.6%"],["+0.50R",38,"22.8%"],["+0.25R",15,"9.0%"],["-1.00R",39,"23.4%"]].map(([label, value, pct]) => <div className="dist-row" key={String(label)}><span>{label}</span><div><i className={String(label).startsWith("-") ? "loss" : "win"} style={{ width: `${Number(value) * 2.1}%` }} /></div><b>{value} <small>({pct})</small></b></div>)}</div></Panel><Panel title="Símbolos Operados" className="symbols-panel"><Donut /></Panel></div>
+    <div className="dashboard-grid bottom-grid"><Panel title="Resumo Mensal" className="summary-panel"><div className="table-scroll"><table><thead><tr><th>Mês</th><th>Operações</th><th>Lucro/Prejuízo</th><th>Resultado em R</th><th>Média por Trade</th><th>Win Rate</th></tr></thead><tbody>{[["Junho/2026",27,"+$1,225.00","+16.50R","+0.61R","59.3%"],["Julho/2026",45,"+$777.50","+14.80R","+0.33R","51.1%"],["Agosto/2026",73,"+$1,392.50","+27.22R","+0.37R","53.4%"],["Setembro/2026",22,"+$792.50","+11.65R","+0.53R","45.5%"]].map((row) => <tr key={row[0]}>{row.map((cell, i) => <td key={i} className={i > 1 ? "text-success" : ""}>{cell}</td>)}</tr>)}<tr className="total"><td>TOTAL</td><td>167</td><td>+$4,187.50</td><td>+70.17R</td><td>+0.42R</td><td>52.7%</td></tr></tbody></table></div></Panel><Panel title="Canais Telegram" className="channels-panel"><table><thead><tr><th>Canal</th><th>Operações</th><th>Win Rate</th><th>Lucro (R)</th></tr></thead><tbody>{data.telegram_channels.map((item) => <tr key={item.name}><td><span className="channel-crown">♛</span>{item.name}</td><td>{item.count}</td><td>53.3%</td><td className="text-success">+64.21R</td></tr>)}</tbody></table></Panel><Panel title="Últimos Sinais do Telegram" className="signals-panel"><div className="signals-list">{signals.map((name, i) => <div className="signal" key={`${name}-${i}`}><span className="telegram-icon"><Icon name="telegram" size={18} /></span><div><strong>{name}</strong><small className={i === 1 ? "text-danger" : "text-success"}>{i === 1 ? "SELL XAUUSD" : "BUY XAUUSD"}</small><code>Entry: 4142.50<br />SL: 4140.50<br />TP1: 4144.50<br />TP2: 4146.50<br />TP3: 4148.50</code></div><div className="signal-side"><time>14:28</time><Badge tone="green">Copiado</Badge></div></div>)}</div></Panel></div>{state !== "ready" && <div className="sr-only" role="status">{state === "loading" ? "Carregando dados" : "API indisponível; exibindo dados demonstrativos"}</div>}</Shell>;
 }
+
