@@ -123,7 +123,7 @@ function StatusLine({ status }: { status: ChannelStatus }) {
 function RowStat({ icon, iconClass, label, children }: { icon: string; iconClass: string; label: string; children: ReactNode }) {
   return (
     <div className="flex min-w-0 items-center gap-3">
-      <span aria-hidden className={cx("shrink-0", iconClass)}>
+      <span aria-hidden className={cx("hidden shrink-0 @md:block", iconClass)}>
         <Icon name={icon} size={icon === "telegram" ? 20 : 22} stroke={1.8} />
       </span>
       <div className="min-w-0">
@@ -209,7 +209,7 @@ function ChannelRow({ channel, now, active, onToggle }: { channel: TelegramChann
   const stateLabel = active ? "Ativo" : channel.status === "paused" ? "Pausado" : "Inativo";
 
   return (
-    <li className="flex flex-col gap-4 rounded-lg border border-line bg-surface px-4 py-3 transition-colors hover:border-line-strong xl:grid xl:grid-cols-[minmax(330px,2fr)_minmax(110px,1fr)_minmax(130px,1fr)_minmax(190px,1.2fr)_minmax(130px,150px)_auto] xl:items-center xl:gap-3 xl:px-4">
+    <li className="grid grid-cols-1 gap-3 rounded-lg border border-line bg-surface px-4 py-3 transition-colors hover:border-line-strong @min-[672px]:grid-cols-[minmax(0,1fr)_auto] @min-[672px]:items-center @min-[1120px]:grid-cols-[minmax(190px,2fr)_minmax(100px,1fr)_minmax(115px,1fr)_minmax(170px,1.2fr)_minmax(120px,140px)_auto]">
       <div className="flex min-w-0 items-center gap-4">
         <ChannelLogo name={channel.name} avatarUrl={channel.avatar_url} logoKey={channel.logo_key} />
         <div className="min-w-0">
@@ -223,19 +223,19 @@ function ChannelRow({ channel, now, active, onToggle }: { channel: TelegramChann
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-3 xl:contents">
+      <div className="order-3 grid grid-cols-3 gap-3 border-t border-line pt-3 @min-[672px]:col-span-2 @min-[1120px]:order-none @min-[1120px]:contents @min-[1120px]:border-0 @min-[1120px]:pt-0">
         <RowStat icon="telegram" iconClass="text-[#2aa6ee]" label="Sinais hoje">{channel.signals_today}</RowStat>
         <RowStat icon="barsFilled" iconClass="text-[#6d83ff]" label="Total de sinais">{number(channel.signals_total)}</RowStat>
         <RowStat icon="clock" iconClass="text-fg-muted" label="Último sinal">
-          <span className="flex items-baseline gap-x-2 whitespace-nowrap">
+          <span className="flex flex-wrap items-baseline gap-x-2 @min-[1120px]:flex-nowrap @min-[1120px]:whitespace-nowrap">
             <span>{last.primary}</span>
             {last.secondary && <span className="text-xs font-normal text-fg-muted">{last.secondary}</span>}
           </span>
         </RowStat>
       </div>
 
-      <div className="flex items-center justify-between gap-3 xl:contents">
-        <div className="flex items-center gap-3 xl:justify-self-center">
+      <div className="order-2 flex items-center justify-between gap-3 @min-[672px]:justify-end @min-[672px]:gap-4 @min-[1120px]:order-none @min-[1120px]:contents">
+        <div className="flex items-center gap-3 @min-[1120px]:justify-self-center">
           <Switch checked={active} label={`${active ? "Desativar" : "Ativar"} ${channel.name}`} onChange={onToggle} />
           <span className="w-14 text-sm text-fg">{stateLabel}</span>
         </div>
@@ -346,7 +346,7 @@ export default function ChannelsView({ data }: { data: ChannelsResponse }) {
           description={data.error ?? (data.items.length ? "Ajuste a busca ou os filtros para ampliar o resultado." : "Os canais conectados aparecerão aqui.")}
         />
       ) : (
-        <ul aria-label="Lista de canais" className="mt-4 flex flex-col gap-2">
+        <ul aria-label="Lista de canais" className="@container mt-4 flex flex-col gap-2">
           {visible.map((c) => (
             <ChannelRow key={c.id} channel={c} now={now} active={isActive(c)} onToggle={() => toggle(c)} />
           ))}
