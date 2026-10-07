@@ -1,12 +1,21 @@
 import Shell from "../../components/Shell";
-import Topbar from "../../components/Topbar";
-import { Card } from "../../components/UI";
+import PageHeader from "../../components/PageHeader";
+import { FeatureGrid } from "../../components/FeatureCard";
 
 export default function Page() {
-  return <Shell>
-    <Topbar eyebrow="COPYTRIX" title="Connectors" description="Connect COPYTRIX to supported execution and market-data destinations." />
-    <div className="grid gap-5 md:grid-cols-2">
-      <Card className="p-6"><h2 className="text-sm font-semibold">MetaTrader 5</h2><p className="mt-2 text-xs leading-5 text-neutral-600">MT5 terminal connection, server selection and account validation.</p><div className="mt-5 text-xs text-neutral-500">Foundation ready · Integration in a later Stage</div></Card><Card className="p-6"><h2 className="text-sm font-semibold">TradeLocker</h2><p className="mt-2 text-xs leading-5 text-neutral-600">TradeLocker receiver connection and account status.</p><div className="mt-5 text-xs text-neutral-500">Foundation ready · Integration in a later Stage</div></Card><Card className="p-6"><h2 className="text-sm font-semibold">DXTrade</h2><p className="mt-2 text-xs leading-5 text-neutral-600">DXTrade receiver integration.</p><div className="mt-5 text-xs text-neutral-500">Foundation ready · Integration in a later Stage</div></Card><Card className="p-6"><h2 className="text-sm font-semibold">Tradovate</h2><p className="mt-2 text-xs leading-5 text-neutral-600">Futures account connection and verification.</p><div className="mt-5 text-xs text-neutral-500">Foundation ready · Integration in a later Stage</div></Card><Card className="p-6"><h2 className="text-sm font-semibold">MatchTrader</h2><p className="mt-2 text-xs leading-5 text-neutral-600">Broker discovery and MatchTrader account connection.</p><div className="mt-5 text-xs text-neutral-500">Foundation ready · Integration in a later Stage</div></Card><Card className="p-6"><h2 className="text-sm font-semibold">Telegram</h2><p className="mt-2 text-xs leading-5 text-neutral-600">Signal-source connector for Telegram rooms.</p><div className="mt-5 text-xs text-neutral-500">Foundation ready · Integration in a later Stage</div></Card>
-    </div>
-  </Shell>;
+  return (
+    <Shell>
+      <PageHeader eyebrow="Integrações" title="Conectores" description="Conecte o Copytrix a fontes de sinais e plataformas de execução compatíveis." />
+      <FeatureGrid
+        items={[
+          { title: "Telegram", description: "Conector de fonte de sinais para canais e grupos do Telegram." },
+          { title: "MetaTrader 5", description: "Conexão com terminal MT5, seleção de servidor e validação de conta." },
+          { title: "TradeLocker", description: "Conexão de contas receptoras TradeLocker e status da conta." },
+          { title: "DXTrade", description: "Integração de contas receptoras DXTrade." },
+          { title: "Tradovate", description: "Conexão e verificação de contas de futuros." },
+          { title: "MatchTrader", description: "Descoberta de corretoras e conexão de contas MatchTrader." },
+        ]}
+      />
+    </Shell>
+  );
 }

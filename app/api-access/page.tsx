@@ -1,12 +1,19 @@
 import Shell from "../../components/Shell";
-import Topbar from "../../components/Topbar";
-import { Card } from "../../components/UI";
+import PageHeader from "../../components/PageHeader";
+import { FeatureGrid } from "../../components/FeatureCard";
 
 export default function Page() {
-  return <Shell>
-    <Topbar eyebrow="COPYTRIX" title="API Access" description="Developer integrations, webhooks and automation endpoints." />
-    <div className="grid gap-5 md:grid-cols-2">
-      <Card className="p-6"><h2 className="text-sm font-semibold">Webhooks</h2><p className="mt-2 text-xs leading-5 text-neutral-600">Create and manage outbound COPYTRIX webhooks.</p><div className="mt-5 text-xs text-neutral-500">Foundation ready · Integration in a later Stage</div></Card><Card className="p-6"><h2 className="text-sm font-semibold">API credentials</h2><p className="mt-2 text-xs leading-5 text-neutral-600">Secure developer credentials will be managed here.</p><div className="mt-5 text-xs text-neutral-500">Foundation ready · Integration in a later Stage</div></Card><Card className="p-6"><h2 className="text-sm font-semibold">Events</h2><p className="mt-2 text-xs leading-5 text-neutral-600">Subscribe to signal, execution and lifecycle events.</p><div className="mt-5 text-xs text-neutral-500">Foundation ready · Integration in a later Stage</div></Card><Card className="p-6"><h2 className="text-sm font-semibold">Documentation</h2><p className="mt-2 text-xs leading-5 text-neutral-600">API reference and integration examples.</p><div className="mt-5 text-xs text-neutral-500">Foundation ready · Integration in a later Stage</div></Card>
-    </div>
-  </Shell>;
+  return (
+    <Shell>
+      <PageHeader eyebrow="Desenvolvedores" title="Acesso à API" description="Integrações para desenvolvedores, webhooks e endpoints de automação." />
+      <FeatureGrid
+        items={[
+          { title: "Webhooks", description: "Crie e gerencie webhooks de saída do Copytrix." },
+          { title: "Credenciais de API", description: "Credenciais seguras para desenvolvedores serão gerenciadas aqui." },
+          { title: "Eventos", description: "Assine eventos de sinais, execução e ciclo de vida das operações." },
+          { title: "Documentação", description: "Referência da API e exemplos de integração." },
+        ]}
+      />
+    </Shell>
+  );
 }

@@ -3,22 +3,15 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import Shell from "../components/Shell";
-import Topbar from "../components/Topbar";
-import { Badge, Card, Stat } from "../components/UI";
+import PageHeader from "../components/PageHeader";
+import { Icon } from "../components/Icons";
+import { Badge, Card, EmptyState, SectionTitle, Stat } from "../components/UI";
 import { DashboardData, getDashboard } from "../lib/api";
 
 function MiniBar({ value }: { value: number }) {
   return (
-    <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
-      <div className="h-full rounded-full bg-white/35" style={{ width: `${Math.max(0, Math.min(100, value))}%` }} />
-    </div>
-  );
-}
-
-function Empty({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="rounded-xl border border-dashed border-white/10 px-4 py-7 text-center text-xs text-neutral-600">
-      {children}
+    <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
+      <div className="h-full rounded-full bg-brand" style={{ width: `${Math.max(0, Math.min(100, value))}%` }} />
     </div>
   );
 }
@@ -37,23 +30,45 @@ const fallback: DashboardData = {
   telegram_channels: [],
   recent_activity: [],
   system_status: {
-    core: "Online",
-    telegram: "Ready",
-    execution: "Ready",
-    event_journal: "Healthy",
+    core: "—",
+    telegram: "—",
+    execution: "—",
+    event_journal: "—",
   },
 };
 
+const statusNames: Record<string, string> = {
+  core: "Núcleo",
+  telegram: "Telegram",
+  execution: "Execução",
+  event_journal: "Diário de eventos",
+};
+
+function ViewLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <Link href={href} className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-brand hover:text-[#5cc2ff]">
+      {children}
+      <Icon name="chevron" size={12} />
+    </Link>
+  );
+}
+
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardData>(fallback);
-  const [error, setError] = useState(false);
+  const [state, setState] = useState<"loading" | "ready" | "error">("loading");
 
   useEffect(() => {
     let alive = true;
     getDashboard()
-      .then((value) => alive && setData(value))
-      .catch(() => alive && setError(true));
-    return () => { alive = false; };
+      .then((value) => {
+        if (!alive) return;
+        setData(value);
+        setState("ready");
+      })
+      .catch(() => alive && setState("error"));
+    return () => {
+      alive = false;
+    };
   }, []);
 
   const lastUpdated = useMemo(() => {
@@ -66,148 +81,162 @@ export default function DashboardPage() {
   const bars = data.trades_over_time;
   const maxBar = Math.max(1, ...bars.map((x) => x.count));
 
+  const apiBadge =
+    state === "loading" ? <Badge>Conectando à API…</Badge> : state === "error" ? <Badge tone="amber">API indisponível</Badge> : <Badge tone="green">API respondendo</Badge>;
+
   return (
     <Shell>
-      <Topbar
-        eyebrow="Overview"
+      <PageHeader
+        eyebrow="Visão geral"
         title="Dashboard"
-        description="Your unified view of automations, accounts, execution and performance."
+        description="Visão unificada de sistemas, contas, execução e desempenho."
+        actions={
+          <>
+            <span className="text-xs text-fg-subtle">
+              Última atualização <span className="tabular">{lastUpdated}</span>
+            </span>
+            {apiBadge}
+          </>
+        }
       />
 
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.02] px-5 py-4">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-[0.16em] text-neutral-600">Workspace</p>
-          <p className="mt-1 text-sm text-neutral-300">Good evening. Your COPYTRIX workspace is ready.</p>
-          <p className="mt-1 text-[10px] text-neutral-700">Last updated: {lastUpdated}</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Badge>Paper environment</Badge>
-          <Badge tone={error ? "yellow" : "green"}>{error ? "API unavailable" : "● System online"}</Badge>
-        </div>
+      <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+        <Stat label="Operações executadas" value={String(data.total_executed_trades)} note="Desde o início" icon={<Icon name="trades" size={18} />} />
+        <Stat label="Contas ativas" value={String(data.active_accounts)} note="Atualmente ativas" icon={<Icon name="accounts" size={18} />} accent="green" />
+        <Stat label="Sistemas ativos" value={String(data.active_automations)} note="Atualmente ativos" icon={<Icon name="systems" size={18} />} accent="amber" />
+        <Stat label="Símbolo principal" value={data.top_symbol ?? "—"} note={data.top_symbol ? `${data.top_symbol_share}% dos sinais` : "Sem sinais"} icon={<Icon name="chart" size={18} />} />
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Stat label="Total Executed Trades" value={String(data.total_executed_trades)} note="All time" />
-        <Stat label="Active Accounts" value={String(data.active_accounts)} note="Currently active" />
-        <Stat label="Active Automations" value={String(data.active_automations)} note="Currently active" />
-        <Stat label="Top Symbol" value={data.top_symbol ?? "—"} note={`${data.top_symbol ? `${data.top_symbol_share}% share` : "0 signals"}`} />
-      </div>
-
-      <div className="mt-6 grid gap-6 xl:grid-cols-[1.55fr_1fr]">
-        <Card className="p-6">
-          <div className="flex items-start justify-between">
-            <div>
-              <h2 className="text-sm font-semibold">Trades Over Time</h2>
-              <p className="mt-1 text-xs text-neutral-600">Daily trade volume.</p>
-            </div>
-            <Badge>Last 30 days</Badge>
-          </div>
+      <div className="mt-4 grid gap-4 xl:grid-cols-[1.55fr_1fr]">
+        <Card className="p-5 sm:p-6">
+          <SectionTitle title="Operações ao longo do tempo" description="Volume diário de operações." action={<Badge>Últimos 30 dias</Badge>} />
           {bars.length ? (
             <>
-              <div className="mt-8 flex h-52 items-end gap-2 border-b border-white/10 px-1">
+              <div className="mt-6 flex h-52 items-end gap-1.5 border-b border-line" role="img" aria-label="Gráfico de barras do volume diário de operações">
                 {bars.map((item) => (
-                  <div key={item.date} className="group relative flex h-full flex-1 items-end">
-                    <div className="w-full rounded-t bg-white/[0.12] transition group-hover:bg-white/[0.22]" style={{ height: `${(item.count / maxBar) * 100}%` }} />
+                  <div key={item.date} className="group flex h-full flex-1 items-end" title={`${item.date}: ${item.count}`}>
+                    <div className="w-full rounded-t bg-brand/40 transition-colors group-hover:bg-brand" style={{ height: `${(item.count / maxBar) * 100}%` }} />
                   </div>
                 ))}
               </div>
-              <div className="mt-3 flex justify-between text-[10px] text-neutral-700">
-                <span>{bars[0]?.date}</span><span>{bars[Math.floor(bars.length / 2)]?.date}</span><span>{bars[bars.length - 1]?.date}</span>
+              <div className="mt-2 flex justify-between text-[11px] text-fg-subtle tabular">
+                <span>{bars[0]?.date}</span>
+                <span>{bars[Math.floor(bars.length / 2)]?.date}</span>
+                <span>{bars[bars.length - 1]?.date}</span>
               </div>
             </>
           ) : (
-            <div className="mt-7"><Empty>No trade data available yet.</Empty></div>
+            <EmptyState className="mt-6 h-52" title="Ainda não há dados de operações" description="O volume diário aparecerá aqui quando houver operações registradas." />
           )}
         </Card>
 
-        <Card className="p-6">
-          <div className="flex items-start justify-between">
-            <div>
-              <h2 className="text-sm font-semibold">Top Symbols</h2>
-              <p className="mt-1 text-xs text-neutral-600">By signal volume.</p>
-            </div>
-            <Link href="/analytics" className="text-xs text-neutral-600 hover:text-neutral-300">View analytics →</Link>
-          </div>
-          <div className="mt-7 space-y-5">
-            {data.top_symbols.length ? data.top_symbols.map((item) => (
-              <div key={item.symbol}>
-                <div className="mb-2 flex items-center justify-between">
-                  <div><span className="text-sm font-medium text-neutral-200">{item.symbol}</span><span className="ml-2 text-xs text-neutral-600">{item.name}</span></div>
-                  <span className="text-xs text-neutral-400">{item.share}%</span>
+        <Card className="p-5 sm:p-6">
+          <SectionTitle title="Principais símbolos" description="Por volume de sinais." action={<ViewLink href="/analytics">Ver desempenho</ViewLink>} />
+          <div className="mt-6 space-y-5">
+            {data.top_symbols.length ? (
+              data.top_symbols.map((item) => (
+                <div key={item.symbol}>
+                  <div className="mb-2 flex items-center justify-between text-sm">
+                    <span><span className="font-medium text-fg">{item.symbol}</span><span className="ml-2 text-xs text-fg-subtle">{item.name}</span></span>
+                    <span className="tabular text-xs text-fg-muted">{item.share}%</span>
+                  </div>
+                  <MiniBar value={item.share} />
                 </div>
-                <MiniBar value={item.share} />
-              </div>
-            )) : <Empty>No symbol data available<br />Start trading to see your most active instruments.</Empty>}
+              ))
+            ) : (
+              <EmptyState title="Sem dados de símbolos" description="Os instrumentos mais ativos aparecerão aqui." />
+            )}
           </div>
         </Card>
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <Card className="p-6">
-          <div className="flex items-center justify-between">
-            <div><h2 className="text-sm font-semibold">Trades Per Automation</h2><p className="mt-1 text-xs text-neutral-600">Signal distribution by workflow.</p></div>
-            <span className="text-xs text-neutral-600">{data.trades_per_automation.reduce((a, x) => a + x.count, 0)} total</span>
-          </div>
-          <div className="mt-7 space-y-5">
-            {data.trades_per_automation.length ? data.trades_per_automation.map((item) => (
-              <div key={item.name}><div className="mb-2 flex justify-between text-xs"><span className="text-neutral-300">{item.name}</span><span className="text-neutral-500">{item.count}</span></div><MiniBar value={data.total_executed_trades ? item.count / data.total_executed_trades * 100 : 0} /></div>
-            )) : <Empty>No room activity yet.<br />Create an automation and start copying signals.</Empty>}
+      <div className="mt-4 grid gap-4 lg:grid-cols-2">
+        <Card className="p-5 sm:p-6">
+          <SectionTitle
+            title="Operações por sistema"
+            description="Distribuição de sinais por fluxo."
+            action={<span className="tabular text-xs text-fg-subtle">{data.trades_per_automation.reduce((a, x) => a + x.count, 0)} no total</span>}
+          />
+          <div className="mt-6 space-y-5">
+            {data.trades_per_automation.length ? (
+              data.trades_per_automation.map((item) => (
+                <div key={item.name}>
+                  <div className="mb-2 flex justify-between text-xs"><span className="text-fg-muted">{item.name}</span><span className="tabular text-fg-subtle">{item.count}</span></div>
+                  <MiniBar value={data.total_executed_trades ? (item.count / data.total_executed_trades) * 100 : 0} />
+                </div>
+              ))
+            ) : (
+              <EmptyState title="Nenhuma atividade de sistemas" description="Crie um sistema para começar a copiar sinais." />
+            )}
           </div>
         </Card>
 
-        <Card className="p-6">
-          <div className="flex items-center justify-between">
-            <div><h2 className="text-sm font-semibold">Trades Per Account</h2><p className="mt-1 text-xs text-neutral-600">Account distribution.</p></div>
-            <Link href="/accounts" className="text-xs text-neutral-600 hover:text-neutral-300">Manage accounts →</Link>
-          </div>
-          <div className="mt-7 space-y-5">
-            {data.trades_per_account.length ? data.trades_per_account.map((item) => (
-              <div key={item.name}><div className="mb-2 flex justify-between text-xs"><span className="text-neutral-300">{item.name}</span><span className="text-neutral-500">{item.count}</span></div><MiniBar value={data.total_executed_trades ? item.count / data.total_executed_trades * 100 : 0} /></div>
-            )) : <Empty>No account activity yet.<br />Connect a trading account to get started.</Empty>}
+        <Card className="p-5 sm:p-6">
+          <SectionTitle title="Operações por conta" description="Distribuição por conta." action={<ViewLink href="/accounts">Gerenciar contas</ViewLink>} />
+          <div className="mt-6 space-y-5">
+            {data.trades_per_account.length ? (
+              data.trades_per_account.map((item) => (
+                <div key={item.name}>
+                  <div className="mb-2 flex justify-between text-xs"><span className="text-fg-muted">{item.name}</span><span className="tabular text-fg-subtle">{item.count}</span></div>
+                  <MiniBar value={data.total_executed_trades ? (item.count / data.total_executed_trades) * 100 : 0} />
+                </div>
+              ))
+            ) : (
+              <EmptyState title="Nenhuma atividade de contas" description="Conecte uma conta de trading para começar." />
+            )}
           </div>
         </Card>
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <Card className="p-6">
-          <div className="flex items-center justify-between">
-            <div><h2 className="text-sm font-semibold">Telegram Channels</h2><p className="mt-1 text-xs text-neutral-600">Signal distribution by channel.</p></div>
-            <Link href="/connectors" className="text-xs text-neutral-600 hover:text-neutral-300">Manage →</Link>
-          </div>
-          <div className="mt-7">
-            {data.telegram_channels.length ? data.telegram_channels.map((item) => <div key={item.name} className="mb-4 flex justify-between text-sm"><span>{item.name}</span><span className="text-neutral-500">{item.count}</span></div>) : <Empty>No Telegram signals yet.<br />Once signals are received from your Telegram channels, source distribution will appear here.</Empty>}
+      <div className="mt-4 grid gap-4 lg:grid-cols-2">
+        <Card className="p-5 sm:p-6">
+          <SectionTitle title="Canais do Telegram" description="Distribuição de sinais por canal." action={<ViewLink href="/connectors">Gerenciar</ViewLink>} />
+          <div className="mt-6">
+            {data.telegram_channels.length ? (
+              <ul className="divide-y divide-line">
+                {data.telegram_channels.map((item) => (
+                  <li key={item.name} className="flex justify-between py-3 text-sm"><span className="text-fg">{item.name}</span><span className="tabular text-fg-subtle">{item.count}</span></li>
+                ))}
+              </ul>
+            ) : (
+              <EmptyState title="Nenhum sinal do Telegram" description="A distribuição por canal aparecerá quando sinais forem recebidos." />
+            )}
           </div>
         </Card>
 
-        <Card className="p-6">
-          <div className="flex items-center justify-between">
-            <div><h2 className="text-sm font-semibold">System Status</h2><p className="mt-1 text-xs text-neutral-600">COPYTRIX infrastructure health.</p></div>
-            <Badge tone="green">Healthy</Badge>
-          </div>
-          <div className="mt-6 space-y-4">
+        <Card className="p-5 sm:p-6">
+          <SectionTitle title="Status do sistema" description="Estado informado pela API do Copytrix." action={state === "ready" ? <Badge tone="blue">Informado pela API</Badge> : <Badge>Não verificado</Badge>} />
+          <ul className="mt-4 divide-y divide-line">
             {Object.entries(data.system_status).map(([key, value]) => (
-              <div key={key} className="flex items-center justify-between border-b border-white/5 pb-4 last:border-0">
-                <span className="text-sm capitalize text-neutral-400">{key.replace("_", " ")}</span>
-                <span className="text-xs text-emerald-400">{value}</span>
-              </div>
+              <li key={key} className="flex items-center justify-between py-3">
+                <span className="text-sm text-fg-muted">{statusNames[key] ?? key.replace("_", " ")}</span>
+                <span className={state === "ready" ? "text-xs font-medium text-fg" : "text-xs text-fg-subtle"}>{value}</span>
+              </li>
             ))}
-          </div>
+          </ul>
         </Card>
       </div>
 
-      <Card className="mt-6 overflow-hidden">
-        <div className="border-b border-white/10 p-5">
-          <h2 className="text-sm font-semibold">Recent Activity</h2>
-          <p className="mt-1 text-xs text-neutral-600">Latest events across your workspace.</p>
+      <Card className="mt-4 overflow-hidden">
+        <div className="border-b border-line p-5">
+          <SectionTitle title="Atividade recente" description="Últimos eventos do workspace." />
         </div>
-        {data.recent_activity.length ? data.recent_activity.map((item) => (
-          <div key={`${item.type}-${item.name}-${item.time}`} className="grid grid-cols-[90px_1fr_auto_70px] items-center gap-3 border-b border-white/5 px-5 py-4 last:border-0">
-            <span className="text-xs text-neutral-600">{item.type}</span>
-            <span className="text-sm text-neutral-300">{item.name}</span>
-            <Badge tone="green">{item.status}</Badge>
-            <span className="text-right text-xs text-neutral-600">{item.time}</span>
+        {data.recent_activity.length ? (
+          <ul className="divide-y divide-line">
+            {data.recent_activity.map((item) => (
+              <li key={`${item.type}-${item.name}-${item.time}`} className="grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1 px-5 py-3.5 sm:grid-cols-[110px_1fr_auto_80px]">
+                <span className="text-xs text-fg-subtle">{item.type}</span>
+                <span className="order-3 col-span-2 text-sm text-fg sm:order-none sm:col-span-1">{item.name}</span>
+                <Badge tone="neutral">{item.status}</Badge>
+                <span className="hidden text-right text-xs tabular text-fg-subtle sm:block">{item.time}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="p-5">
+            <EmptyState title="Nenhuma atividade recente" description="Os sinais executados aparecerão aqui." />
           </div>
-        )) : <div className="p-8"><Empty>No recent trades<br />Executed signals will appear here.</Empty></div>}
+        )}
       </Card>
     </Shell>
   );
