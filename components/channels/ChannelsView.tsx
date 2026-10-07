@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import Shell from "../Shell";
 import PageHeader from "../PageHeader";
@@ -27,7 +28,7 @@ const number = (n: number) => n.toLocaleString("en-US");
 const percent = (n: number) => `${n > 0 ? "+" : ""}${n}%`;
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 
-function describeLastSignal(iso: string | null, now: Date) {
+export function describeLastSignal(iso: string | null, now: Date) {
   if (!iso) return { primary: "Sem sinais", secondary: null };
   const date = new Date(iso);
   const minutes = Math.max(0, Math.round((now.getTime() - date.getTime()) / 60000));
@@ -240,13 +241,13 @@ function ChannelRow({ channel, now, active, onToggle }: { channel: TelegramChann
           <span className="w-14 text-sm text-fg">{stateLabel}</span>
         </div>
         <div className="flex items-center gap-4">
-          <button
-            type="button"
+          <Link
+            href={`/connectors/${encodeURIComponent(channel.id)}`}
             aria-label={`Editar ${channel.name}`}
-            className="h-[46px] w-[97px] rounded-lg border border-line-strong/60 bg-surface-2/60 text-[15px] font-medium text-fg transition-colors hover:border-line-strong hover:bg-surface-3"
+            className="inline-flex h-[46px] w-[97px] items-center justify-center rounded-lg border border-line-strong/60 bg-surface-2/60 text-[15px] font-medium text-fg transition-colors hover:border-line-strong hover:bg-surface-3"
           >
             Editar
-          </button>
+          </Link>
           <RowMenu channel={channel} active={active} onToggle={onToggle} />
         </div>
       </div>
