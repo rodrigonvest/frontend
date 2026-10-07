@@ -1,14 +1,15 @@
 "use client";
 import Link from "next/link";
-import { useMemo, useState, type KeyboardEvent } from "react";
+import { useMemo, useRef, useState, type KeyboardEvent } from "react";
 import Shell from "../../Shell";
 import PageHeader from "../../PageHeader";
 import { Icon } from "../../Icons";
 import { Button, EmptyState, Notice, cx } from "../../UI";
 import ChannelSummary from "./ChannelSummary";
 import GeneralTab from "./GeneralTab";
+import { saveChannelConfig, saveChannelFlags } from "../../../lib/channel-config-api";
+import { buildConfigUpdate, configSignature, toViewModel, type ChannelConfig } from "../../../lib/channel-config";
 import type { TelegramChannel } from "../../../lib/channels";
-import type { ChannelConfig } from "../../../lib/channel-config";
 
 const tabs = [
   { id: "general", label: "Geral", icon: "settings" },
@@ -20,25 +21,80 @@ const tabs = [
 ] as const;
 
 type TabId = (typeof tabs)[number]["id"];
+type Feedback = { tone: "success" | "danger"; text: string } | null;
 
-export default function ChannelConfigView({ channel, generatedAt, initialConfig }: { channel: TelegramChannel; generatedAt: string; initialConfig: ChannelConfig }) {
+export default function ChannelConfigView({
+  channel: initialChannel,
+  generatedAt,
+  initialConfig,
+  source,
+}: {
+  channel: TelegramChannel;
+  generatedAt: string;
+  initialConfig: ChannelConfig;
+  source: "core" | "demo";
+}) {
+  const [channel, setChannel] = useState(initialChannel);
   const [config, setConfig] = useState(initialConfig);
+  const [savedSignature, setSavedSignature] = useState(() => configSignature(initialConfig));
   const [tab, setTab] = useState<TabId>("general");
-  const [notice, setNotice] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<Feedback>(null);
+  const [saving, setSaving] = useState(false);
+  const [flagPending, setFlagPending] = useState(false);
+  const flagLock = useRef(false);
 
   const now = useMemo(() => new Date(generatedAt), [generatedAt]);
-  const dirty = useMemo(() => JSON.stringify(config) !== JSON.stringify(initialConfig), [config, initialConfig]);
-  const update = (patch: Partial<ChannelConfig>) => {
-    setNotice(null);
-    setConfig((prev) => ({ ...prev, ...patch }));
+  const dirty = configSignature(config) !== savedSignature;
+
+  const applyFlags = async (patch: { active?: boolean; primary?: boolean }) => {
+    if (flagLock.current) return;
+    flagLock.current = true;
+    setFlagPending(true);
+    setFeedback(null);
+    const result = await saveChannelFlags(channel.id, { active: patch.active, is_primary: patch.primary });
+    if (result.ok) {
+      setConfig((prev) => ({ ...prev, active: result.data.active, primary: result.data.is_primary ?? prev.primary }));
+      setChannel((prev) => ({ ...prev, ...result.data }));
+    } else {
+      setFeedback({ tone: "danger", text: result.error.message });
+    }
+    flagLock.current = false;
+    setFlagPending(false);
   };
 
-  const onSave = () =>
-    setNotice(
-      dirty
-        ? "A API de configuração por canal ainda não está conectada: as alterações valem apenas nesta tela e não foram persistidas."
-        : "Nenhuma alteração para salvar.",
-    );
+  const update = (patch: Partial<ChannelConfig>) => {
+    const { active, primary, ...local } = patch;
+    if (active !== undefined || primary !== undefined) void applyFlags({ active, primary });
+    if (Object.keys(local).length === 0) return;
+    setFeedback(null);
+    setConfig((prev) => ({ ...prev, ...local }));
+  };
+
+  const onSave = async () => {
+    if (saving) return;
+    if (!dirty) {
+      setFeedback({ tone: "success", text: "Nenhuma alteração para salvar." });
+      return;
+    }
+    const built = buildConfigUpdate(config);
+    if (!built.ok) {
+      setFeedback({ tone: "danger", text: built.message });
+      return;
+    }
+    setSaving(true);
+    setFeedback(null);
+    const result = await saveChannelConfig(channel.id, built.update);
+    setSaving(false);
+    if (!result.ok) {
+      setFeedback({ tone: "danger", text: result.error.message });
+      return;
+    }
+    const saved = toViewModel(result.data);
+    setConfig(saved);
+    setSavedSignature(configSignature(saved));
+    setChannel((prev) => ({ ...prev, name: saved.name, status: result.data.status }));
+    setFeedback({ tone: "success", text: "Configurações salvas com sucesso." });
+  };
 
   const onTabKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     const index = tabs.findIndex((t) => t.id === tab);
@@ -74,20 +130,23 @@ export default function ChannelConfigView({ channel, generatedAt, initialConfig 
               <Icon name="arrowLeft" size={18} />
               Voltar para Canais
             </Link>
-            <Button variant="primary" onClick={onSave} className="h-11 rounded-lg px-6 text-[15px] font-semibold">
-              Salvar Configurações
+            <Button variant="primary" onClick={onSave} disabled={saving} aria-busy={saving} className="h-11 rounded-lg px-6 text-[15px] font-semibold">
+              {saving ? "Salvando..." : "Salvar Configurações"}
             </Button>
           </>
         }
       />
 
-      {notice && (
-        <div role="status" className="mb-4">
-          <Notice>{notice}</Notice>
-        </div>
-      )}
+      <div className="mb-4 flex flex-col gap-2 empty:hidden">
+        {source === "demo" && <Notice>Dados de demonstração: o Core não está conectado e as alterações não são persistidas entre reinicializações do servidor.</Notice>}
+        {feedback && (
+          <div role={feedback.tone === "danger" ? "alert" : "status"}>
+            <Notice tone={feedback.tone}>{feedback.text}</Notice>
+          </div>
+        )}
+      </div>
 
-      <ChannelSummary channel={channel} name={config.name} primary={config.primary} now={now} active={config.active} onToggle={(active) => update({ active })} />
+      <ChannelSummary channel={channel} name={config.name} primary={config.primary} now={now} active={config.active} pending={flagPending} onToggle={(active) => update({ active })} />
 
       <div role="tablist" aria-label="Seções de configuração" onKeyDown={onTabKeyDown} className="mt-3 flex gap-1 overflow-x-auto pb-1">
         {tabs.map((t) => {

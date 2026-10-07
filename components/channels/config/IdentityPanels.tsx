@@ -2,7 +2,7 @@
 import { useId, useState } from "react";
 import { Icon } from "../../Icons";
 import { Badge, Button, cx } from "../../UI";
-import { LANGUAGES, SYMBOLS, TIMEZONES, type ConfigPanelProps } from "../../../lib/channel-config";
+import { LANGUAGES, SYMBOLS, TIMEZONES, withCurrentOption, type ConfigPanelProps } from "../../../lib/channel-config";
 import { Field, FieldRow, Panel, SelectInput, TextInput, ToggleLabel, controlClass, toOptions } from "./fields";
 
 const statusBadge = {
@@ -57,10 +57,10 @@ export function GeneralSettingsPanel({ config, update }: ConfigPanelProps) {
           <ToggleLabel checked={config.primary} onChange={(primary) => update({ primary })} label="Definir como canal principal" text="Definir como canal principal" tone="blue" />
         </FieldRow>
         <FieldRow label="Fuso Horário" htmlFor={`${uid}-tz`}>
-          <SelectInput id={`${uid}-tz`} value={config.timezone} onChange={(timezone) => update({ timezone })} options={toOptions(TIMEZONES)} />
+          <SelectInput id={`${uid}-tz`} value={config.timezone} onChange={(timezone) => update({ timezone })} options={withCurrentOption(TIMEZONES, config.timezone)} />
         </FieldRow>
         <FieldRow label="Idioma dos Sinais" htmlFor={`${uid}-lang`}>
-          <SelectInput id={`${uid}-lang`} value={config.language} onChange={(language) => update({ language })} options={toOptions(LANGUAGES)} />
+          <SelectInput id={`${uid}-lang`} value={config.language} onChange={(language) => update({ language })} options={withCurrentOption(LANGUAGES, config.language)} />
         </FieldRow>
       </div>
     </Panel>
@@ -84,7 +84,7 @@ export function DefaultSymbolPanel({ config, update }: ConfigPanelProps) {
     <Panel title="Símbolo Padrão">
       <div className="flex flex-col gap-3">
         <FieldRow label="Símbolo Principal" htmlFor={`${uid}-main`}>
-          <SelectInput id={`${uid}-main`} value={config.mainSymbol} onChange={(mainSymbol) => update({ mainSymbol })} options={toOptions(SYMBOLS)} />
+          <SelectInput id={`${uid}-main`} value={config.mainSymbol} onChange={(mainSymbol) => update({ mainSymbol })} options={withCurrentOption(toOptions(SYMBOLS), config.mainSymbol, "Selecione")} />
         </FieldRow>
 
         <div>
@@ -103,7 +103,7 @@ export function DefaultSymbolPanel({ config, update }: ConfigPanelProps) {
                 </span>
                 <div className="flex items-center gap-1.5">
                   <div className="min-w-0 flex-1">
-                    <SelectInput value={m.to} onChange={(to) => setTarget(m.id, to)} options={toOptions(SYMBOLS)} label={`Símbolo de destino para ${m.from}`} />
+                    <SelectInput value={m.to} onChange={(to) => setTarget(m.id, to)} options={withCurrentOption(toOptions(SYMBOLS), m.to)} label={`Símbolo de destino para ${m.from}`} />
                   </div>
                   {m.custom && (
                     <button type="button" aria-label={`Remover mapeamento ${m.from}`} onClick={() => remove(m.id)} className="flex size-7 shrink-0 items-center justify-center rounded-md text-fg-muted hover:bg-white/[.06] hover:text-fg">

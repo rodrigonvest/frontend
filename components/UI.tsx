@@ -118,10 +118,17 @@ export function PreviewBadge({ label = "Demonstrativo" }: { label?: string }) {
   );
 }
 
-export function Notice({ children }: { children: ReactNode }) {
+const noticeTones = {
+  warning: { box: "border-warning/25 bg-warning-soft/40 text-[#e9d7a7]", dot: "bg-warning" },
+  danger: { box: "border-danger/30 bg-danger/10 text-[#f4b8b8]", dot: "bg-danger" },
+  success: { box: "border-success/30 bg-success/10 text-[#b5e8c9]", dot: "bg-success" },
+} as const;
+
+export function Notice({ children, tone = "warning" }: { children: ReactNode; tone?: keyof typeof noticeTones }) {
+  const styles = noticeTones[tone];
   return (
-    <div role="note" className="flex items-start gap-2.5 rounded-lg border border-warning/25 bg-warning-soft/40 px-3.5 py-2.5 text-xs leading-5 text-[#e9d7a7]">
-      <span aria-hidden className="mt-1.5 size-1.5 shrink-0 rounded-full bg-warning" />
+    <div role="note" className={cx("flex items-start gap-2.5 rounded-lg border px-3.5 py-2.5 text-xs leading-5", styles.box)}>
+      <span aria-hidden className={cx("mt-1.5 size-1.5 shrink-0 rounded-full", styles.dot)} />
       <div>{children}</div>
     </div>
   );

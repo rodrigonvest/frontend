@@ -16,14 +16,53 @@ function IntegrationChip({ icon, label, status, iconClass }: { icon: string; lab
   );
 }
 
+export type TerminalStatus = "connected" | "disconnected" | "connecting" | "unavailable";
+
+const TERMINAL_STATUS: Record<TerminalStatus, { label: string; dot: string; text: string; pulse?: boolean }> = {
+  connected: { label: "Conectado", dot: "bg-success", text: "text-success" },
+  disconnected: { label: "Desconectado", dot: "bg-danger", text: "text-danger" },
+  connecting: { label: "Conectando...", dot: "bg-warning", text: "text-warning", pulse: true },
+  unavailable: { label: "Indisponível", dot: "bg-fg-subtle", text: "text-fg-subtle" },
+};
+
+function TerminalStatusItem({ terminal, status }: { terminal: "MT4" | "MT5"; status: TerminalStatus }) {
+  const cfg = TERMINAL_STATUS[status];
+  return (
+    <span className="inline-flex items-center gap-1.5" title={`${terminal}: ${cfg.label}`}>
+      <span aria-hidden className={`size-2 shrink-0 rounded-full ${cfg.dot} ${cfg.pulse ? "animate-pulse" : ""}`} />
+      <span className="text-xs font-semibold text-fg">{terminal}</span>
+      <span className={`hidden text-[11px] font-medium lg:inline ${cfg.text}`}>{cfg.label}</span>
+      <span className="sr-only lg:hidden">{cfg.label}</span>
+    </span>
+  );
+}
+
+function TerminalStatusIndicator({ mt4Status, mt5Status }: { mt4Status: TerminalStatus; mt5Status: TerminalStatus }) {
+  return (
+    <div
+      role="status"
+      aria-label="Status dos terminais MetaTrader"
+      className="inline-flex h-10 items-center gap-3 rounded-lg border border-line bg-surface px-3 lg:gap-4"
+    >
+      <TerminalStatusItem terminal="MT4" status={mt4Status} />
+      <span aria-hidden className="h-4 w-px bg-line" />
+      <TerminalStatusItem terminal="MT5" status={mt5Status} />
+    </div>
+  );
+}
+
 export default function Topbar({
   collapsed,
   onToggleCollapse,
   onOpenMobile,
+  mt4Status = "unavailable",
+  mt5Status = "unavailable",
 }: {
   collapsed: boolean;
   onToggleCollapse: () => void;
   onOpenMobile: () => void;
+  mt4Status?: TerminalStatus;
+  mt5Status?: TerminalStatus;
 }) {
   const s = DEMO_SESSION;
   return (
@@ -57,7 +96,7 @@ export default function Topbar({
           {s.copierOnline ? "Copier Online" : "Copier Offline"}
         </span>
         <IntegrationChip icon="telegram" label="Telegram" status={s.telegram} iconClass="bg-[#229ed9] text-white" />
-        <IntegrationChip icon="signal" label="MT5" status={s.mt5} iconClass="bg-success/15 text-success" />
+        <TerminalStatusIndicator mt4Status={mt4Status} mt5Status={mt5Status} />
       </div>
 
       <div className="ml-auto flex items-center gap-2 md:ml-0">

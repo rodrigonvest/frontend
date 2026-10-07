@@ -2,7 +2,7 @@
 import { useId } from "react";
 import { Icon } from "../../Icons";
 import { Badge } from "../../UI";
-import { LEVERAGES, RISK_MODES, SIGNAL_FORMATS, type ConfigPanelProps, type RiskMode } from "../../../lib/channel-config";
+import { LEVERAGES, RISK_MODES, SIGNAL_FORMATS, withCurrentOption, type ConfigPanelProps, type RiskMode } from "../../../lib/channel-config";
 import { Check, FieldRow, Panel, Radio, SelectInput, UnitInput, toOptions } from "./fields";
 
 export function SignalFormatPanel({ config, update }: ConfigPanelProps) {
@@ -82,7 +82,7 @@ export function RiskPanel({ config, update }: ConfigPanelProps) {
           <UnitInput id={`${uid}-max`} label="Lote máximo" value={config.maxLot} onChange={(maxLot) => update({ maxLot })} unit="lote" />
         </FieldRow>
         <FieldRow label="Alavancagem (opcional)" htmlFor={`${uid}-lev`}>
-          <SelectInput id={`${uid}-lev`} value={config.leverage} onChange={(leverage) => update({ leverage })} options={toOptions(LEVERAGES)} />
+          <SelectInput id={`${uid}-lev`} value={config.leverage} onChange={(leverage) => update({ leverage })} options={withCurrentOption(toOptions(LEVERAGES), config.leverage)} />
         </FieldRow>
       </div>
     </Panel>

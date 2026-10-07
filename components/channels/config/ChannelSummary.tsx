@@ -39,6 +39,7 @@ export default function ChannelSummary({
   primary,
   now,
   active,
+  pending,
   onToggle,
 }: {
   channel: TelegramChannel;
@@ -46,6 +47,7 @@ export default function ChannelSummary({
   primary: boolean;
   now: Date;
   active: boolean;
+  pending?: boolean;
   onToggle: (next: boolean) => void;
 }) {
   const last = describeLastSignal(channel.last_signal_at, now);
@@ -81,7 +83,7 @@ export default function ChannelSummary({
       </div>
 
       <div className="flex items-center gap-3 border-t border-line pt-3 lg:ml-6 lg:h-12 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
-        <Toggle checked={active} onChange={onToggle} label={`${active ? "Desativar" : "Ativar"} ${name}`} />
+        <Toggle checked={active} onChange={onToggle} label={`${active ? "Desativar" : "Ativar"} ${name}`} disabled={pending} />
         <span className="w-12 text-sm text-fg">{active ? "Ativo" : "Inativo"}</span>
       </div>
     </section>
