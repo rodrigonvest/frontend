@@ -5,7 +5,7 @@ export function Icon({ name, size = 18, stroke = 1.8 }: { name: string; size?: n
   const paths: Record<string, React.ReactNode> = {
     dashboard: <><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></>,
     trades: <><path d="M4 7h13"/><path d="m13 3 4 4-4 4"/><path d="M20 17H7"/><path d="m11 13-4 4 4 4"/></>,
-    telegram: <><path d="m21 3-3.5 18-5.4-5.3-3.3 3.1.6-5.7L21 3Z"/><path d="m9.4 13.1 8.2-7.2"/></>,
+    telegram: <><path d="M21.5 3.4 3.1 10.5c-.8.3-.8 1.4 0 1.7l4.7 1.8 1.8 5.5c.25.75 1.2.95 1.7.35l2.7-3.3 4.8 3.6c.65.5 1.6.12 1.75-.68l2.5-14.9c.15-.85-.68-1.52-1.55-1.17Z" fill="currentColor" stroke="none"/><path d="m8.2 14 10.3-7.8-7.8 9.1" fill="none" stroke="rgba(255,255,255,.9)"/></>,
     accounts: <><path d="M4 20v-1.5A3.5 3.5 0 0 1 7.5 15h3A3.5 3.5 0 0 1 14 18.5V20"/><circle cx="9" cy="8" r="3"/><path d="M16 5.5a3 3 0 0 1 0 5.8"/><path d="M17 15h.5A3.5 3.5 0 0 1 21 18.5V20"/></>,
     systems: <><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><rect x="3" y="15" width="7" height="5" rx="1"/><rect x="14" y="15" width="7" height="5" rx="1"/></>,
     analytics: <><path d="M4 19V9"/><path d="M10 19V5"/><path d="M16 19v-7"/><path d="M22 19H2"/></>,
