@@ -31,6 +31,14 @@ export function Icon({ name, size = 18, stroke = 1.8 }: { name: string; size?: n
     chart: <><path d="M4 19V5"/><path d="M4 19h16"/><path d="m7 15 3-4 3 2 5-7"/></>,
     trophy: <><path d="M8 21h8M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M7 6H4v2a4 4 0 0 0 4 4M17 6h3v2a4 4 0 0 1-4 4"/></>,
     x: <><path d="m6 6 12 12M18 6 6 18"/></>,
+    crown: <><path d="M3 8.5 7.5 12 12 5l4.5 7L21 8.5 19 18H5L3 8.5Z"/><path d="M5 21h14"/></>,
+    vmore: <><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></>,
+    chevronDown: <path d="m6 9 6 6 6-6"/>,
+    trendUp: <><path d="m3 17 6-6 4 4 8-8"/><path d="M15 7h6v6"/></>,
+    trendDown: <><path d="m3 7 6 6 4-4 8 8"/><path d="M15 17h6v-6"/></>,
+    signal: <><path d="M5 20v-5M10 20v-9M15 20v-6M20 20V5"/></>,
+    copy: <><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></>,
+    eye: <><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></>,
     dollar: <><path d="M12 2v20M17 6.5c-1-1-2.7-1.5-4.5-1.5C10 5 8 6.2 8 8.2c0 2.2 2 3 4.4 3.7 2.6.8 4.6 1.8 4.6 4.1 0 2.1-2 3.5-4.8 3.5-2 0-3.9-.7-5.2-1.9"/></>,
   };
   return <svg {...common}>{paths[name] ?? paths.dashboard}</svg>;
