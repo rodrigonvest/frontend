@@ -39,6 +39,10 @@ export function Icon({ name, size = 18, stroke = 1.8 }: { name: string; size?: n
     signal: <><path d="M5 20v-5M10 20v-9M15 20v-6M20 20V5"/></>,
     copy: <><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></>,
     eye: <><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></>,
+    plus: <path d="M12 5v14M5 12h14"/>,
+    layers: <><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12.5 9 5 9-5"/><path d="m3 17 9 5 9-5"/></>,
+    target: <><circle cx="12" cy="13" r="8"/><circle cx="12" cy="13" r="4.2"/><circle cx="12" cy="13" r="1" fill="currentColor"/><path d="m13.5 11.5 6-6"/><path d="M16.5 4.5h3v3"/></>,
+    barsFilled: <><rect x="4" y="13" width="4.2" height="8" rx="1" fill="currentColor" stroke="none"/><rect x="9.9" y="8" width="4.2" height="13" rx="1" fill="currentColor" stroke="none"/><rect x="15.8" y="3" width="4.2" height="18" rx="1" fill="currentColor" stroke="none"/></>,
     dollar: <><path d="M12 2v20M17 6.5c-1-1-2.7-1.5-4.5-1.5C10 5 8 6.2 8 8.2c0 2.2 2 3 4.4 3.7 2.6.8 4.6 1.8 4.6 4.1 0 2.1-2 3.5-4.8 3.5-2 0-3.9-.7-5.2-1.9"/></>,
   };
   return <svg {...common}>{paths[name] ?? paths.dashboard}</svg>;
