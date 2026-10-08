@@ -10,15 +10,17 @@ import LogsActivityCard from "./LogsActivityCard";
 export default function LogsView() {
   return (
     <Shell>
-      <LogsHeader />
-      <LogsKpiCards />
-      <LogsFilters />
-      <div className="mt-2.5 grid items-start gap-2.5 xl:grid-cols-[minmax(0,1.68fr)_minmax(0,1fr)]">
-        <LogsTable />
-        <div className="grid gap-2.5">
-          <LogDetailsCard />
-          <LogsByLevelCard />
-          <LogsActivityCard />
+      <div className="lg:-mt-3">
+        <LogsHeader />
+        <LogsKpiCards />
+        <LogsFilters />
+        <div className="mt-4 grid items-stretch gap-[15px] xl:grid-cols-[minmax(0,68fr)_minmax(0,32fr)]">
+          <LogsTable />
+          <div className="grid gap-2 xl:grid-rows-[356px_164px_minmax(0,1fr)]">
+            <LogDetailsCard />
+            <LogsByLevelCard />
+            <LogsActivityCard />
+          </div>
         </div>
       </div>
     </Shell>

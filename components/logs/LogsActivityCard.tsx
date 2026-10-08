@@ -5,20 +5,20 @@ const { max, ticks } = logsActivityDomain;
 
 export default function LogsActivityCard() {
   return (
-    <Panel title="Atividade dos Logs (Últimas 24 horas)">
+    <Panel className="h-full overflow-hidden p-3! pt-1!" title="Atividade dos Logs (Últimas 24 horas)">
       <div
         role="img"
         aria-label="Quantidade de logs por hora nas últimas 24 horas, com maior atividade no período da tarde e da noite"
-        className="relative mt-3 h-[118px]"
+        className="relative mt-4 h-[94px]"
       >
-        <div className="absolute bottom-[32px] left-0 top-0 w-8 text-[11px] text-fg-muted tabular">
+        <div className="absolute bottom-[26px] left-0 top-0 w-8 text-[11px] text-fg-muted tabular">
           {ticks.map((tick) => (
             <span key={tick} className="absolute right-1 -translate-y-1/2 leading-none" style={{ top: `${((max - tick) / max) * 100}%` }}>
               {tick}
             </span>
           ))}
         </div>
-        <div className="absolute bottom-[32px] left-9 right-1 top-0">
+        <div className="absolute bottom-[26px] left-9 right-1 top-0">
           {ticks.map((tick) => (
             <span
               key={tick}

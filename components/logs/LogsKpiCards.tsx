@@ -11,8 +11,8 @@ const iconTones: Record<LogTone, string> = {
 
 function KpiIcon({ name }: { name: (typeof logsKpis)[number]["icon"] }) {
   const common = {
-    width: 24,
-    height: 24,
+    width: 28,
+    height: 28,
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
@@ -52,25 +52,28 @@ function KpiIcon({ name }: { name: (typeof logsKpis)[number]["icon"] }) {
         </svg>
       );
     default:
-      return <Icon name={name} size={24} stroke={2} />;
+      return <Icon name={name} size={28} stroke={2} />;
   }
 }
 
 export default function LogsKpiCards() {
   return (
-    <section aria-label="Resumo dos logs" className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+    <section
+      aria-label="Resumo dos logs"
+      className="grid grid-cols-1 gap-[13px] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[242fr_232fr_240fr_244fr_261fr]"
+    >
       {logsKpis.map((kpi) => (
         <article
           key={kpi.label}
-          className="flex min-w-0 items-center gap-3 rounded-[10px] border border-[#17344b] bg-gradient-to-br from-[#10263a] to-[#091a2a] px-3.5 py-3"
+          className="flex min-h-[92px] min-w-0 items-center gap-4 rounded-[10px] border border-[#17344b] bg-gradient-to-br from-[#10263a] to-[#091a2a] px-3 py-1.5"
         >
-          <span aria-hidden className={`flex size-[46px] shrink-0 items-center justify-center rounded-xl ${iconTones[kpi.tone]}`}>
+          <span aria-hidden className={`flex size-[55px] shrink-0 items-center justify-center rounded-xl ${iconTones[kpi.tone]}`}>
             <KpiIcon name={kpi.icon} />
           </span>
           <div className="min-w-0">
             <p className="truncate text-xs text-fg-muted">{kpi.label}</p>
-            <p className="mt-1 truncate text-[21px] font-bold leading-none tracking-tight text-fg tabular">{kpi.value}</p>
-            <p className={`mt-1.5 truncate text-xs font-medium tabular ${kpi.noteTone === "success" ? "text-success" : "text-fg-muted"}`}>{kpi.note}</p>
+            <p className="mt-1.5 truncate text-[22px] font-bold leading-none tracking-tight text-fg tabular">{kpi.value}</p>
+            <p className={`mt-2 whitespace-nowrap text-[12px] font-medium tabular ${kpi.noteTone === "success" ? "text-success" : "text-fg-muted"}`}>{kpi.note}</p>
           </div>
         </article>
       ))}
