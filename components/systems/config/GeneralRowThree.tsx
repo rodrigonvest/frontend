@@ -3,9 +3,9 @@ import { SYSTEM_STATUS_LABEL, type SystemRoute } from "../../../lib/systems-cata
 import { Icon } from "../../Icons";
 import { cx } from "../../UI";
 import SystemLogo from "../SystemLogo";
-import { ConfigCard, outlineButtonClass } from "./fields";
+import { SYSTEM_STATUS_TONE } from "./GeneralRowOne";
+import { ConfigCard, StatusBadge, StatusDot, outlineButtonClass } from "./fields";
 
-const statusDot = { active: "bg-success", paused: "bg-warning", inactive: "bg-fg-subtle" } as const;
 const statusText = { active: "text-success", paused: "text-warning", inactive: "text-fg-subtle" } as const;
 
 export function SummaryCard({ values, demo, route }: { values: SystemConfigValues; demo: SystemConfigDemo; route: SystemRoute }) {
@@ -41,7 +41,7 @@ export function SummaryCard({ values, demo, route }: { values: SystemConfigValue
       label: "Status",
       value: (
         <span className={cx("flex items-center gap-2", statusText[values.status])}>
-          <span aria-hidden className={cx("size-2.5 rounded-full", statusDot[values.status])} />
+          <StatusDot tone={SYSTEM_STATUS_TONE[values.status]} />
           {SYSTEM_STATUS_LABEL[values.status]}
         </span>
       ),
@@ -83,11 +83,7 @@ export function SignalExampleCard({ symbol }: { symbol: string }) {
   return (
     <ConfigCard
       title="Exemplo de Sinal Detectado"
-      action={
-        <span className="inline-flex h-6 items-center rounded-md border border-success/45 bg-success-soft/70 px-2.5 text-[11.5px] font-medium text-success">
-          Sinal válido
-        </span>
-      }
+      action={<StatusBadge tone="success">Sinal válido</StatusBadge>}
     >
       <pre className="overflow-x-auto rounded-md border border-line bg-[#071522] px-3 py-2.5 font-mono text-[13px] leading-[1.35rem] text-fg-muted">
         <span className="text-fg">
@@ -118,9 +114,7 @@ export function SignalExampleCard({ symbol }: { symbol: string }) {
   );
 }
 
-const logDot = { danger: "bg-danger", success: "bg-success", info: "bg-brand" } as const;
 const logIcon = {
-  danger: "bg-brand-strong/25 text-[#5cc2ff]",
   success: "bg-success/20 text-success",
   info: "bg-brand-strong/25 text-[#5cc2ff]",
 } as const;
@@ -129,7 +123,7 @@ function LogRow({ entry }: { entry: LogEntry }) {
   const iconBox = entry.icon === "check" ? logIcon.success : logIcon.info;
   return (
     <li className="grid grid-cols-[8px_40px_22px_minmax(0,1fr)] items-center gap-x-2.5 text-[12.5px] leading-5">
-      <span aria-hidden className={cx("size-2 rounded-full", logDot[entry.tone])} />
+      <StatusDot tone={entry.tone} className="size-2" />
       <time className="tabular text-fg-muted">{entry.time}</time>
       <span aria-hidden className={cx("grid size-[22px] place-items-center rounded-md", iconBox)}>
         <Icon name={entry.icon} size={13} stroke={2.2} />

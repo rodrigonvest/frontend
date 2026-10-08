@@ -12,11 +12,15 @@ import type { SystemRoute } from "../../../lib/systems-catalog";
 import { Icon } from "../../Icons";
 import { cx } from "../../UI";
 import SystemLogo from "../SystemLogo";
-import { ConfigCard, SelectField, TextAreaField, TextField, Toggle, outlineButtonClass } from "./fields";
+import { ConfigCard, SelectField, StatusBadge, StatusDot, TextAreaField, TextField, Toggle, outlineButtonClass, type StatusTone } from "./fields";
 
 type CardProps = { values: SystemConfigValues; set: SetConfigValue };
 
-const statusDot = { active: "bg-success", paused: "bg-warning", inactive: "bg-fg-subtle" } as const;
+export const SYSTEM_STATUS_TONE: Record<SystemConfigValues["status"], StatusTone> = {
+  active: "success",
+  paused: "warning",
+  inactive: "neutral",
+};
 
 export function SystemInfoCard({ values, set, route }: CardProps & { route: SystemRoute }) {
   return (
@@ -29,7 +33,7 @@ export function SystemInfoCard({ values, set, route }: CardProps & { route: Syst
           value={values.status}
           onChange={(v) => set("status", v)}
           options={STATUS_OPTIONS}
-          leading={<span aria-hidden className={cx("size-2.5 rounded-full", statusDot[values.status])} />}
+          leading={<StatusDot tone={SYSTEM_STATUS_TONE[values.status]} />}
         />
         <SelectField
           inline
@@ -81,16 +85,9 @@ export function ConnectionStatusCard({ panels }: { panels: readonly ConnectionPa
         {panels.map((panel) => (
           <li key={panel.title}>
             <div className="flex items-center gap-2.5">
-              <span aria-hidden className={cx("size-3 shrink-0 rounded-full", panel.connected ? "bg-success" : "bg-danger")} />
+              <StatusDot tone={panel.connected ? "success" : "danger"} className="size-3" />
               <span className="text-[14px] font-semibold text-fg">{panel.title}</span>
-              <span
-                className={cx(
-                  "inline-flex h-[22px] items-center rounded-md border px-2 text-[11.5px] font-medium",
-                  panel.connected ? "border-success/40 bg-success-soft/70 text-success" : "border-danger/40 bg-danger-soft text-danger",
-                )}
-              >
-                {panel.connected ? "Conectado" : "Desconectado"}
-              </span>
+              <StatusBadge tone={panel.connected ? "success" : "danger"}>{panel.connected ? "Conectado" : "Desconectado"}</StatusBadge>
               <button type="button" aria-label={`Testar conexão ${panel.title}`} className={cx(outlineButtonClass, "ml-auto")}>
                 <Icon name="plus" size={13} stroke={2.2} />
                 Testar

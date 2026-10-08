@@ -36,14 +36,50 @@ export function ConfigCard({
   );
 }
 
-function FieldShell({ id, label, inline, children }: { id: string; label: string; inline?: boolean; children: ReactNode }) {
+export function Label({ htmlFor, children, className }: { htmlFor: string; children: ReactNode; className?: string }) {
+  return (
+    <label htmlFor={htmlFor} className={cx("text-[13px] leading-5 text-fg-muted", className)}>
+      {children}
+    </label>
+  );
+}
+
+export function Field({ id, label, inline, children }: { id: string; label: string; inline?: boolean; children: ReactNode }) {
   return (
     <div className={cx(inline ? "grid grid-cols-[minmax(96px,0.85fr)_minmax(0,1.6fr)] items-center gap-3" : "flex flex-col gap-1.5")}>
-      <label htmlFor={id} className="text-[13px] leading-5 text-fg-muted">
-        {label}
-      </label>
+      <Label htmlFor={id}>{label}</Label>
       {children}
     </div>
+  );
+}
+
+export type StatusTone = "success" | "warning" | "danger" | "info" | "neutral";
+
+const dotTone: Record<StatusTone, string> = {
+  success: "bg-success",
+  warning: "bg-warning",
+  danger: "bg-danger",
+  info: "bg-brand",
+  neutral: "bg-fg-subtle",
+};
+
+const badgeTone: Record<StatusTone, string> = {
+  success: "border-success/40 bg-success-soft/70 text-success",
+  warning: "border-warning/40 bg-warning-soft text-warning",
+  danger: "border-danger/40 bg-danger-soft text-danger",
+  info: "border-brand/40 bg-brand-soft/60 text-[#5cc2ff]",
+  neutral: "border-line-strong bg-surface-2 text-fg-muted",
+};
+
+export function StatusDot({ tone, className }: { tone: StatusTone; className?: string }) {
+  return <span aria-hidden className={cx("size-2.5 shrink-0 rounded-full", dotTone[tone], className)} />;
+}
+
+export function StatusBadge({ tone, children, className }: { tone: StatusTone; children: ReactNode; className?: string }) {
+  return (
+    <span className={cx("inline-flex h-[22px] items-center rounded-md border px-2 text-[11.5px] font-medium", badgeTone[tone], className)}>
+      {children}
+    </span>
   );
 }
 
@@ -64,13 +100,13 @@ export function TextField({
 }) {
   const id = useId();
   return (
-    <FieldShell id={id} label={label} inline={inline}>
+    <Field id={id} label={label} inline={inline}>
       {unit ? (
         <UnitInput id={id} value={value} onChange={onChange} unit={unit} inputMode={inputMode} />
       ) : (
         <input id={id} value={value} onChange={(e) => onChange(e.target.value)} inputMode={inputMode} autoComplete="off" className={inputClass} />
       )}
-    </FieldShell>
+    </Field>
   );
 }
 
@@ -129,7 +165,7 @@ export function TextAreaField({
 }) {
   const id = useId();
   return (
-    <FieldShell id={id} label={label}>
+    <Field id={id} label={label}>
       <textarea
         id={id}
         rows={rows}
@@ -137,7 +173,7 @@ export function TextAreaField({
         onChange={(e) => onChange(e.target.value)}
         className={cx(inputClass, "h-auto resize-none py-2 leading-5")}
       />
-    </FieldShell>
+    </Field>
   );
 }
 
@@ -160,7 +196,7 @@ export function SelectField<T extends string>({
 }) {
   const id = useId();
   return (
-    <FieldShell id={id} label={label} inline={inline}>
+    <Field id={id} label={label} inline={inline}>
       <div className="relative min-w-0">
         {leading && <span className="pointer-events-none absolute left-3 top-1/2 flex -translate-y-1/2 items-center">{leading}</span>}
         <select
@@ -180,7 +216,7 @@ export function SelectField<T extends string>({
           <Icon name="chevronDown" size={15} />
         </span>
       </div>
-    </FieldShell>
+    </Field>
   );
 }
 

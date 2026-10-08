@@ -2,7 +2,7 @@
 import { SIGNAL_FORMAT_OPTIONS, WEEKDAYS, type SetConfigValue, type SystemConfigValues } from "../../../lib/system-config-demo";
 import { Icon } from "../../Icons";
 import { cx } from "../../UI";
-import { CheckboxChip, ConfigCard, RadioRow, TimeInput, Toggle, UnitInput, outlineButtonClass } from "./fields";
+import { CheckboxChip, ConfigCard, Label, RadioRow, TimeInput, Toggle, UnitInput, outlineButtonClass } from "./fields";
 
 type CardProps = { values: SystemConfigValues; set: SetConfigValue };
 
@@ -14,13 +14,9 @@ export function ScheduleCard({ values, set }: CardProps) {
         <Toggle checked={values.restrictHours} onChange={(v) => set("restrictHours", v)} label="Restringir horário de execução" />
 
         <div className="grid grid-cols-[auto_minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-3 gap-y-2">
-          <label htmlFor="schedule-start" className="text-[13px] text-fg-muted">
-            Início
-          </label>
+          <Label htmlFor="schedule-start">Início</Label>
           <TimeInput id="schedule-start" value={values.start} onChange={(v) => set("start", v)} disabled={off} />
-          <label htmlFor="schedule-end" className="text-[13px] text-fg-muted">
-            Fim
-          </label>
+          <Label htmlFor="schedule-end">Fim</Label>
           <TimeInput id="schedule-end" value={values.end} onChange={(v) => set("end", v)} disabled={off} />
         </div>
 
