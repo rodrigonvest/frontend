@@ -17,6 +17,7 @@ const rows: Array<{ label: string; value: React.ReactNode }> = [
 export default function LogDetailsCard() {
   return (
     <Panel
+      className="h-full overflow-hidden p-3! pt-2!"
       title="Detalhes do Log Selecionado"
       action={
         <button
@@ -28,16 +29,16 @@ export default function LogDetailsCard() {
         </button>
       }
     >
-      <dl className="mt-3 grid grid-cols-[96px_minmax(0,1fr)] items-center gap-x-3 gap-y-2.5 text-[13px]">
+      <dl className="mt-1.5 grid grid-cols-[104px_minmax(0,1fr)] items-center gap-y-1 text-[12.5px]">
         {rows.map((row) => (
           <div key={row.label} className="contents">
-            <dt className="text-fg-muted">{row.label}</dt>
-            <dd className="min-w-0 text-fg tabular">{row.value}</dd>
+            <dt className="whitespace-nowrap text-fg-muted">{row.label}</dt>
+            <dd className="flex min-h-[21px] min-w-0 items-center whitespace-nowrap text-[12px] text-fg tabular">{row.value}</dd>
           </div>
         ))}
-        <dt className="self-start pt-1 text-fg-muted">Dados Adicionais</dt>
-        <dd className="min-w-0">
-          <pre className="overflow-x-auto rounded-lg border border-[#17344b] bg-[#06121e] px-3 py-2.5 font-mono text-[11px] leading-[15px] text-[#c9d7e4]">
+        <dt className="self-start whitespace-nowrap pt-2.5 text-fg-muted">Dados Adicionais</dt>
+        <dd className="mt-1 min-w-0">
+          <pre className="overflow-x-auto rounded-lg border border-[#17344b] bg-[#06121e] px-3 py-2 font-mono text-[11px] leading-[15px] text-[#c9d7e4]">
             <code>
               {"{\n"}
               {selectedLogJson.map(({ key, value }, index) => (

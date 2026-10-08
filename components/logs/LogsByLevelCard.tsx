@@ -15,9 +15,9 @@ export default function LogsByLevelCard() {
   });
 
   return (
-    <Panel title="Logs por Nível">
-      <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-3 sm:flex-nowrap">
-        <div className="relative size-[120px] shrink-0">
+    <Panel className="h-full overflow-hidden p-3! pt-1!" title="Logs por Nível">
+      <div className="mt-1 flex flex-wrap items-center gap-x-6 gap-y-3 sm:flex-nowrap">
+        <div className="relative ml-1 size-[128px] shrink-0">
           <svg
             viewBox="0 0 130 130"
             className="size-full -rotate-90"
@@ -43,7 +43,7 @@ export default function LogsByLevelCard() {
             <span className="mt-1 text-[10.5px] text-fg-muted">Logs</span>
           </div>
         </div>
-        <ul className="grid min-w-0 flex-1 gap-y-2.5 text-[13px]">
+        <ul className="grid min-w-0 flex-1 gap-y-2 text-[13px]">
           {logsByLevel.map((segment) => (
             <li key={segment.label} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3">
               <span className="flex min-w-0 items-center gap-2 text-fg">
