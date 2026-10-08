@@ -1,47 +1,60 @@
 import Shell from "../../components/Shell";
-import PageHeader from "../../components/PageHeader";
 import { Icon } from "../../components/Icons";
-import { Badge, Button, Card, EmptyState, SectionTitle, Stat } from "../../components/UI";
-
-const fields = [
-  ["Fonte", "Selecionar fonte"],
-  ["Símbolo", "XAUUSD"],
-  ["Período", "Últimos 30 dias"],
-  ["Modo de risco", "Risco %"],
-  ["Valor de risco", "1.00%"],
-];
+import { backtestConfig } from "../../lib/backtest-presentation";
+import { HeaderRunButton } from "../../components/backtest/ConfigCard";
+import ConfigCard from "../../components/backtest/ConfigCard";
+import MonthlyCard from "../../components/backtest/MonthlyCard";
+import { ChevronDown } from "../../components/backtest/Panel";
+import RDistributionCard from "../../components/backtest/RDistributionCard";
+import ResultDonutCard from "../../components/backtest/ResultDonutCard";
+import ResultsCard from "../../components/backtest/ResultsCard";
+import StatsCard from "../../components/backtest/StatsCard";
+import TradesChartCard from "../../components/backtest/TradesChartCard";
+import TradesListCard from "../../components/backtest/TradesListCard";
 
 export default function BacktesterPage() {
   return (
     <Shell>
-      <PageHeader eyebrow="Pesquisa" title="Backtest" description="Reproduza o mesmo pipeline de sinais, validação e risco sobre dados históricos de mercado." />
-      <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
-        <Stat label="Operações" value="0" note="Execute um backtest" icon={<Icon name="trades" size={18} />} />
-        <Stat label="Taxa de acerto" value="—" icon={<Icon name="trophy" size={18} />} accent="green" />
-        <Stat label="Fator de lucro" value="—" icon={<Icon name="analytics" size={18} />} />
-        <Stat label="P&L líquido" value="$0.00" icon={<Icon name="dollar" size={18} />} accent="green" />
+      <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-balance text-2xl font-bold tracking-tight text-fg sm:text-[30px] sm:leading-9">Backtest de Sinais Telegram</h1>
+          <p className="mt-1 text-pretty text-[15px] leading-6 text-fg-muted">Teste e valide a performance dos sinais antes de operar em tempo real</p>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            aria-label={`Período: ${backtestConfig.period}`}
+            className="inline-flex h-10 w-[278px] items-center gap-2.5 rounded-lg border border-[#24435d] bg-surface px-3.5 text-[14px] text-fg transition-colors hover:border-line-strong"
+          >
+            <span className="text-fg-muted">
+              <Icon name="calendar" size={16} />
+            </span>
+            <span className="tabular flex-1 text-left">{backtestConfig.period}</span>
+            <ChevronDown size={14} className="text-fg-muted" />
+          </button>
+          <HeaderRunButton />
+        </div>
       </div>
-      <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
-        <Card className="p-5 sm:p-6">
-          <SectionTitle title="Novo backtest" description="Configuração ainda não conectada ao motor de backtest." />
-          <dl className="mt-5 space-y-4">
-            {fields.map(([l, v]) => (
-              <div key={l}>
-                <dt className="text-xs text-fg-subtle">{l}</dt>
-                <dd className="control mt-1.5 flex items-center text-fg-muted">{v}</dd>
-              </div>
-            ))}
-          </dl>
-          <Button variant="primary" disabled className="mt-5 w-full" title="Disponível em breve">Executar backtest</Button>
-        </Card>
-        <Card className="flex flex-col p-5 sm:p-6">
-          <SectionTitle title="Resultados" action={<Badge>Aguardando</Badge>} />
-          <EmptyState
-            className="mt-5 min-h-64 flex-1"
-            title="Nenhum backtest executado"
-            description="Os resultados usarão o mesmo pipeline do núcleo da execução real, mantendo backtest e copiador alinhados."
-          />
-        </Card>
+
+      <div className="grid gap-x-3.5 gap-y-3 xl:grid-cols-[minmax(0,343fr)_minmax(0,672fr)] 2xl:grid-cols-[minmax(0,343fr)_minmax(0,672fr)_minmax(0,228fr)]">
+        <ConfigCard />
+        <ResultsCard />
+        <div className="xl:col-span-2 2xl:col-span-1 2xl:flex 2xl:flex-col 2xl:justify-end">
+          <ResultDonutCard />
+        </div>
+      </div>
+
+      <div className="mt-3 grid gap-x-3.5 gap-y-3 lg:grid-cols-2 2xl:grid-cols-[minmax(0,510fr)_minmax(0,412fr)_minmax(0,324fr)] 2xl:items-start">
+        <MonthlyCard />
+        <RDistributionCard />
+        <div className="lg:col-span-2 2xl:col-span-1">
+          <StatsCard />
+        </div>
+      </div>
+
+      <div className="mt-3 grid gap-x-3.5 gap-y-3 2xl:grid-cols-[minmax(0,817fr)_minmax(0,443fr)]">
+        <TradesListCard />
+        <TradesChartCard />
       </div>
     </Shell>
   );
