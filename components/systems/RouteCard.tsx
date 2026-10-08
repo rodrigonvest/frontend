@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SYSTEM_STATUS_LABEL, type SystemRoute } from "../../lib/systems-catalog";
 import { cx } from "../UI";
 import SystemLogo from "./SystemLogo";
@@ -53,13 +54,13 @@ export default function RouteCard({ route }: { route: SystemRoute }) {
           <span aria-hidden className={cx("size-[7px] rounded-full", statusDot[route.status])} />
           {SYSTEM_STATUS_LABEL[route.status]}
         </div>
-        <button
-          type="button"
+        <Link
+          href={`/sistemas/${route.routeId}/configuracao`}
           aria-label={`Configurar rota ${route.name}`}
           className="inline-flex h-6 w-full items-center justify-center rounded-md bg-brand-strong text-[11.5px] font-semibold text-white transition-colors hover:bg-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand min-[1800px]:h-8 min-[1800px]:text-xs"
         >
           Configurar
-        </button>
+        </Link>
       </div>
     </article>
   );
