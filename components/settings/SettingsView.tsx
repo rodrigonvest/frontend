@@ -4,39 +4,47 @@ import Shell from "../Shell";
 import PageHeader from "../PageHeader";
 import { Button, EmptyState } from "../UI";
 import { Icon } from "../Icons";
+import ApiTab from "./ApiTab";
 import GeneralTab from "./GeneralTab";
 import SecurityTab from "./SecurityTab";
 import SettingsIcon from "./SettingsIcons";
 import SettingsTabs, { settingsTabs, type SettingsTabId } from "./SettingsTabs";
 
+const subpageHeaders: Partial<Record<SettingsTabId, { title: string; description: string }>> = {
+  security: {
+    title: "Segurança da Conta",
+    description: "Proteja sua conta com autenticação de dois fatores e configurações avançadas de segurança.",
+  },
+  api: {
+    title: "API e Webhooks",
+    description: "Integre o Copytrix com outras plataformas e automatize seus processos através da nossa API e Webhooks.",
+  },
+};
+
 export default function SettingsView() {
   const [tab, setTab] = useState<SettingsTabId>("general");
   const activeLabel = settingsTabs.find((t) => t.id === tab)?.label ?? "";
-  const isSecurity = tab === "security";
+  const subpage = subpageHeaders[tab];
 
   return (
     <Shell>
-      <div className={isSecurity ? "lg:-mx-2" : undefined} data-settings-layout={tab}>
+      <div className={subpage ? "lg:-mx-2" : undefined} data-settings-layout={tab}>
       <PageHeader
         breadcrumb={
-          isSecurity ? (
+          subpage ? (
             <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[13px] text-fg-muted">
               <button type="button" onClick={() => setTab("general")} className="transition-colors hover:text-fg focus-visible:outline-2 focus-visible:outline-brand">
                 Configurações
               </button>
               <Icon name="chevron" size={12} stroke={2.2} />
               <span aria-current="page" className="text-fg">
-                Segurança
+                {activeLabel}
               </span>
             </nav>
           ) : undefined
         }
-        title={isSecurity ? "Segurança da Conta" : "Configurações Gerais"}
-        description={
-          isSecurity
-            ? "Proteja sua conta com autenticação de dois fatores e configurações avançadas de segurança."
-            : "Gerencie as configurações do seu perfil, preferências, segurança, notificações e integrações."
-        }
+        title={subpage?.title ?? "Configurações Gerais"}
+        description={subpage?.description ?? "Gerencie as configurações do seu perfil, preferências, segurança, notificações e integrações."}
       />
 
       <SettingsTabs active={tab} onChange={setTab} />
@@ -44,8 +52,10 @@ export default function SettingsView() {
       <div role="tabpanel" id={`settings-panel-${tab}`} aria-labelledby={`settings-tab-${tab}`} className="mt-3">
         {tab === "general" ? (
           <GeneralTab />
-        ) : isSecurity ? (
+        ) : tab === "security" ? (
           <SecurityTab />
+        ) : tab === "api" ? (
+          <ApiTab />
         ) : (
           <EmptyState className="min-h-[240px] bg-surface/70" title={activeLabel} description="Esta seção de configurações ainda não está disponível." />
         )}

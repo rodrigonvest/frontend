@@ -99,6 +99,28 @@ const extraPaths: Record<string, ReactNode> = {
       <path d="M11 18.500h2" />
     </>
   ),
+  edit: (
+    <>
+      <path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17v3Z" />
+      <path d="m14.5 7.5 3 3" />
+    </>
+  ),
+  pause: <path d="M9 5.5v13M15 5.5v13" />,
+  warning: (
+    <>
+      <path d="M12 7v6.5" />
+      <path d="M12 17.2h.01" />
+    </>
+  ),
+  webhook: (
+    <>
+      <circle cx="12" cy="5.5" r="2.5" />
+      <circle cx="5.5" cy="17.5" r="2.5" />
+      <circle cx="18.5" cy="17.5" r="2.5" />
+      <path d="m10.8 7.7-3.8 7.6M13.2 7.7l3.8 7.6M8 17.5h8" />
+    </>
+  ),
+  bolt: <path d="M13 3 5 13.5h6L10 21l9-11.5h-6L13 3Z" />,
   qr: (
     <>
       <rect x="3" y="3" width="7" height="7" rx="1" />
