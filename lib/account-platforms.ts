@@ -32,6 +32,30 @@ export const tradingPlatforms: readonly TradingPlatform[] = [
 
 export const defaultPlatformId: PlatformLogoKey = "mt5";
 
+export type ServerExample = { broker: string; server: string };
+
+export const serverExamples: readonly ServerExample[] = [
+  { broker: "FundedNext", server: "FundedNext-Server" },
+  { broker: "Hantec", server: "HantecMarkets-Server" },
+  { broker: "Pepperstone", server: "Pepperstone-Edge" },
+  { broker: "Exness", server: "Exness-MT5Real" },
+  { broker: "XM", server: "XMGlobal-Real" },
+  { broker: "IC Markets", server: "ICMarketsSC-MT5" },
+  { broker: "Zero Markets", server: "ZeroMarkets-Server" },
+  { broker: "Vantage", server: "VantageInternational-Live" },
+];
+
+export type AccountKindId = "real" | "demo";
+
+export const accountKinds: readonly { id: AccountKindId; title: string; description: string }[] = [
+  { id: "real", title: "Conta Real", description: "Conta de trading real com dinheiro real" },
+  { id: "demo", title: "Conta Demo", description: "Conta de demonstração para testes" },
+];
+
+export function connectionTypeFor(id: PlatformLogoKey) {
+  return id === "mt4" || id === "mt5" ? "API Oficial (MetaQuotes)" : "API Oficial";
+}
+
 export type AddAccountStep = { id: number; title: string; description: string };
 
 export const addAccountSteps: readonly AddAccountStep[] = [

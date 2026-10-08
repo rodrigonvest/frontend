@@ -6,6 +6,7 @@ import { addAccountSteps, defaultPlatformId, tradingPlatforms, type PlatformLogo
 import { Icon } from "../../Icons";
 import { Button } from "../../UI";
 import AddAccountStepper from "./AddAccountStepper";
+import CredentialsStep from "./CredentialsStep";
 import PlatformCard from "./PlatformCard";
 
 const outlineLink =
@@ -13,6 +14,8 @@ const outlineLink =
 
 export default function AddAccountView() {
   const [platform, setPlatform] = useState<PlatformLogoKey>(defaultPlatformId);
+  const [step, setStep] = useState<1 | 2>(1);
+  const selectedPlatform = tradingPlatforms.find((item) => item.id === platform) ?? tradingPlatforms[0];
 
   return (
     <div className="flex flex-col gap-4">
@@ -36,10 +39,16 @@ export default function AddAccountView() {
         </Link>
       </header>
 
-      <AddAccountStepper current={1} />
+      <AddAccountStepper current={step} descriptions={step > 1 ? { 1: selectedPlatform.name } : undefined} />
 
+      {step === 2 && <CredentialsStep platform={selectedPlatform} onBack={() => setStep(1)} />}
+
+      {step === 1 && (
       <form
-        onSubmit={(e) => e.preventDefault()}
+        onSubmit={(e) => {
+          e.preventDefault();
+          setStep(2);
+        }}
         aria-labelledby="platform-step-title"
         className="rounded-xl border border-line bg-surface/70 p-4 sm:p-5"
       >
@@ -90,6 +99,7 @@ export default function AddAccountView() {
           </Button>
         </div>
       </form>
+      )}
     </div>
   );
 }
