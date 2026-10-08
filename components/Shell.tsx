@@ -5,7 +5,7 @@ import Topbar from "./Topbar";
 import { cx } from "./UI";
 import { useSystemStatus } from "../lib/use-system-status";
 
-export default function Shell({ children }: { children: React.ReactNode }) {
+export default function Shell({ children, wide = false }: { children: React.ReactNode; wide?: boolean }) {
   const { status: systemStatus } = useSystemStatus();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -35,7 +35,13 @@ export default function Shell({ children }: { children: React.ReactNode }) {
           onOpenMobile={() => setMobileOpen(true)}
           status={systemStatus}
         />
-        <main id="conteudo" className="mx-auto w-full min-w-0 max-w-[1720px] flex-1 px-4 py-6 sm:px-6 lg:px-8">
+        <main
+          id="conteudo"
+          className={cx(
+            "w-full min-w-0 flex-1 px-4 py-6 sm:px-6",
+            wide ? "lg:px-6" : "mx-auto max-w-[1720px] lg:px-8",
+          )}
+        >
           {children}
         </main>
       </div>

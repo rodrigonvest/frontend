@@ -15,7 +15,7 @@ export default function SettingsView() {
   const isSecurity = tab === "security";
 
   return (
-    <Shell>
+    <Shell wide={isSecurity}>
       <PageHeader
         breadcrumb={
           isSecurity ? (
