@@ -63,6 +63,16 @@ export function CurrentPlanCard() {
         <SettingsIcon name="settings" size={18} stroke={2} />
         Gerenciar Assinatura
       </button>
+      <button
+        type="button"
+        className={cx(
+          "mt-2.5 inline-flex h-[38px] w-full items-center justify-center gap-2 rounded-lg border border-brand/50 bg-brand-soft/15 text-[13px] font-medium text-fg transition-colors hover:bg-brand-soft/40",
+          focusRing,
+        )}
+      >
+        <ReceiptIcon size={16} />
+        Ver Histórico de Cobrança
+      </button>
     </SummaryCard>
   );
 }

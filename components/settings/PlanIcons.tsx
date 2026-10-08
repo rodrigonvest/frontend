@@ -138,6 +138,50 @@ export function CheckBullet({ size = 18, className }: IconProps) {
   );
 }
 
+export function CheckMark({ size = 16, stroke = 2.6, className }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={stroke}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      className={className}
+    >
+      <path d="m5 12.500 4.500 4.500L19 7" />
+    </svg>
+  );
+}
+
+export function ArrowRightIcon({ size = 15, stroke = 2 }: IconProps) {
+  return (
+    <Svg size={size} stroke={stroke}>
+      <path d="M4.500 12h15M13.500 6l6 6-6 6" />
+    </Svg>
+  );
+}
+
+export function TableIcon({ size = 30, stroke = 1.7 }: IconProps) {
+  return (
+    <Svg size={size} stroke={stroke}>
+      <rect x="3" y="4" width="18" height="16" rx="2.500" />
+      <path d="M3 9.500h18M3 14.500h18M9.500 9.500V20" />
+    </Svg>
+  );
+}
+
+export function ListChecksIcon({ size = 15, stroke = 1.9 }: IconProps) {
+  return (
+    <Svg size={size} stroke={stroke}>
+      <path d="m3.500 6.500 1.800 1.800L8.500 5M3.500 12.500l1.800 1.800 3.200-3.300M3.500 18.500l1.800 1.800 3.200-3.300M12.500 7h8M12.500 13h8M12.500 19h8" />
+    </Svg>
+  );
+}
+
 export function MastercardMark() {
   return (
     <svg width="26" height="16" viewBox="0 0 26 16" aria-hidden>
