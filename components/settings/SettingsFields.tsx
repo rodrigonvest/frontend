@@ -11,6 +11,7 @@ export function SettingsCard({
   title,
   description,
   tone = "default",
+  action,
   children,
   className,
 }: {
@@ -18,6 +19,7 @@ export function SettingsCard({
   title: string;
   description: string;
   tone?: "default" | "danger";
+  action?: ReactNode;
   children: ReactNode;
   className?: string;
 }) {
@@ -42,6 +44,7 @@ export function SettingsCard({
           </h2>
           <p className="mt-0.5 text-[13px] leading-5 text-fg-muted">{description}</p>
         </div>
+        {action && <div className="ml-auto shrink-0">{action}</div>}
       </header>
       {children}
     </section>

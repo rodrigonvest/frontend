@@ -64,6 +64,49 @@ const extraPaths: Record<string, ReactNode> = {
       <path d="M12 9v4l2.5 1.5M9.5 2.5h5" />
     </>
   ),
+  logout: (
+    <>
+      <path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3" />
+      <path d="M16 8l4 4-4 4M20 12H9" />
+    </>
+  ),
+  lock: (
+    <>
+      <rect x="5" y="11" width="14" height="9.5" rx="2" />
+      <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+      <path d="M12 15v2" />
+    </>
+  ),
+  eyeOff: (
+    <>
+      <path d="m3 3 18 18" />
+      <path d="M10.6 6.1A9.6 9.6 0 0 1 12 6c5 0 8.5 4 9.5 6a14 14 0 0 1-3 3.8M6.5 7.6A14.500 14.500 0 0 0 2.5 12c1 2 4.5 6 9.5 6 1.500 0 2.800-.3 4-.9" />
+      <path d="M9.9 9.9a3 3 0 0 0 4.200 4.200" />
+    </>
+  ),
+  wrench: (
+    <path d="M14.700 6.300a1 1 0 0 0 0 1.400l1.600 1.600a1 1 0 0 0 1.400 0l3.770-3.770a6 6 0 0 1-7.940 7.940l-6.910 6.910a2.120 2.120 0 0 1-3-3l6.910-6.910a6 6 0 0 1 7.940-7.940l-3.760 3.760Z" />
+  ),
+  monitor: (
+    <>
+      <rect x="3" y="4" width="18" height="12" rx="2" />
+      <path d="M8 20h8M12 16v4" />
+    </>
+  ),
+  phone: (
+    <>
+      <rect x="7" y="2.500" width="10" height="19" rx="2" />
+      <path d="M11 18.500h2" />
+    </>
+  ),
+  qr: (
+    <>
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+      <path d="M14 14h3v3h-3zM20 14v1M14 20h3M20 18v3M17 17h3" />
+    </>
+  ),
 };
 
 export type SettingsIconName = string;
