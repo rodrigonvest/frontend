@@ -6,6 +6,8 @@ import { Panel, SelectField } from "./BacktestFields";
 
 const columns = ["#", "Data/Hora", "Símbolo", "Tipo", "Entrada", "Saída", "SL", "TP", "Resultado (R)", "Pips", "Status"];
 
+const cell = "whitespace-nowrap px-2! py-[2px]! first:pl-3.5! last:pr-3.5!";
+
 function SideBadge({ side }: { side: "BUY" | "SELL" }) {
   return (
     <span
@@ -91,29 +93,29 @@ export default function TradesList() {
           <thead>
             <tr>
               {columns.map((c) => (
-                <th key={c} scope="col" className="whitespace-nowrap px-2 pb-2 pt-1 text-left text-[11px] font-normal text-fg-muted first:pl-3.5 last:pr-3.5">{c}</th>
+                <th key={c} scope="col" className="whitespace-nowrap px-2! pb-1.5! pt-0.5! text-left text-[10.5px]! font-normal! text-fg-muted first:pl-3.5! last:pr-3.5!">{c}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {rows.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className="border-t border-[#17344b] py-10 text-center text-xs text-fg-subtle">Nenhuma operação encontrada</td>
+                <td colSpan={columns.length} className="border-t border-[#17344b] py-10! text-center text-xs text-fg-subtle">Nenhuma operação encontrada</td>
               </tr>
             ) : (
               rows.map((t) => (
                 <tr key={t.id} className="border-t border-[#17344b] text-[#e0e8f0] hover:bg-white/[.025]">
-                  <td className="px-2 py-[3px] first:pl-3.5">{t.id}</td>
-                  <td className="whitespace-nowrap px-2 py-[3px]">{t.dateTime}</td>
-                  <td className="px-2 py-[3px]">{t.symbol}</td>
-                  <td className="px-2 py-[3px]"><SideBadge side={t.side} /></td>
-                  <td className="px-2 py-[3px]">{t.entry}</td>
-                  <td className="px-2 py-[3px]">{t.exit}</td>
-                  <td className="px-2 py-[3px]">{t.sl}</td>
-                  <td className="px-2 py-[3px]">{t.tp}</td>
-                  <td className={`px-2 py-[3px] font-medium ${t.win ? "text-success" : "text-danger"}`}>{t.result}</td>
-                  <td className={`px-2 py-[3px] ${t.win ? "text-success" : "text-danger"}`}>{t.pips}</td>
-                  <td className="px-2 py-[3px] last:pr-3.5"><StatusBadge win={t.win} /></td>
+                  <td className={cell}>{t.id}</td>
+                  <td className={cell}>{t.dateTime}</td>
+                  <td className={cell}>{t.symbol}</td>
+                  <td className={cell}><SideBadge side={t.side} /></td>
+                  <td className={cell}>{t.entry}</td>
+                  <td className={cell}>{t.exit}</td>
+                  <td className={cell}>{t.sl}</td>
+                  <td className={cell}>{t.tp}</td>
+                  <td className={`${cell} font-medium ${t.win ? "text-success" : "text-danger"}`}>{t.result}</td>
+                  <td className={`${cell} ${t.win ? "text-success" : "text-danger"}`}>{t.pips}</td>
+                  <td className={cell}><StatusBadge win={t.win} /></td>
                 </tr>
               ))
             )}

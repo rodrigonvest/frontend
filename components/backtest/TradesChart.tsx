@@ -2,8 +2,8 @@ import { buyMarkers, candleDomain, candles, chartHours, chartPriceTicks, sellMar
 import { Panel } from "./BacktestFields";
 
 const W = 440;
-const H = 262;
-const plot = { left: 6, right: 384, top: 10, bottom: 232 };
+const H = 226;
+const plot = { left: 6, right: 384, top: 12, bottom: 198 };
 const green = "#12d99e";
 const red = "#ff4d5d";
 
