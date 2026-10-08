@@ -42,7 +42,7 @@ export default function AccountsView() {
       <AccountsSummary />
 
       <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-        <div role="group" aria-label="Filtrar por plataforma" className="-mx-1 flex min-w-0 gap-1.5 overflow-x-auto px-1 pb-1 xl:pb-0">
+        <div role="group" aria-label="Filtrar por plataforma" className="-mx-1 flex min-w-0 gap-1 overflow-x-auto px-1 pb-1 xl:pb-0 2xl:gap-1.5">
           {platformFilters.map((f) => {
             const active = filter === f.key;
             return (
@@ -52,7 +52,7 @@ export default function AccountsView() {
                 aria-pressed={active}
                 onClick={() => setFilter(f.key)}
                 className={cx(
-                  "inline-flex h-11 shrink-0 items-center gap-1.5 rounded-md border px-2.5 text-[12.5px] font-medium transition-colors 2xl:px-3",
+                  "inline-flex h-11 shrink-0 items-center gap-1.5 rounded-md border px-2 text-[12px] font-medium whitespace-nowrap transition-colors 2xl:px-3 2xl:text-[12.5px]",
                   active
                     ? "border-brand bg-brand-strong text-white"
                     : "border-line bg-surface text-fg-muted hover:border-line-strong hover:bg-surface-2 hover:text-fg",
