@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import { cx } from "./UI";
+import { useSystemStatus } from "../lib/use-system-status";
 
 export default function Shell({ children }: { children: React.ReactNode }) {
+  const { status: systemStatus } = useSystemStatus();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -31,6 +33,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
           collapsed={collapsed}
           onToggleCollapse={() => setCollapsed((v) => !v)}
           onOpenMobile={() => setMobileOpen(true)}
+          status={systemStatus}
         />
         <main id="conteudo" className="mx-auto w-full min-w-0 max-w-[1720px] flex-1 px-4 py-6 sm:px-6 lg:px-8">
           {children}

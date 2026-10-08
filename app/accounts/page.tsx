@@ -1,43 +1,24 @@
 import Shell from "../../components/Shell";
-import PageHeader from "../../components/PageHeader";
 import { Icon } from "../../components/Icons";
-import { Badge, Button, Card, Notice, Stat } from "../../components/UI";
-
-const accounts = [
-  { name: "Funded MT5 — Principal", broker: "MT5", equity: "$0.00", risk: "1.00%" },
-  { name: "Receptor demo", broker: "MT5", equity: "$0.00", risk: "0.50%" },
-];
+import { Button } from "../../components/UI";
+import AccountsView from "../../components/accounts/AccountsView";
 
 export default function AccountsPage() {
   return (
     <Shell>
-      <PageHeader eyebrow="Workspace" title="Contas" description="Gerencie as contas de destino e o perfil de execução atribuído a cada receptor." />
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <Stat label="Contas" value="0" note="Nenhuma conexão ativa" icon={<Icon name="accounts" size={18} />} />
-        <Stat label="Conectadas" value="0" note="MT4 / MT5 / outros destinos" icon={<Icon name="telegram" size={18} />} accent="green" />
-        <Stat label="Capacidade de risco" value="0.00%" note="Entre contas conectadas" icon={<Icon name="analytics" size={18} />} accent="amber" />
+      <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-balance text-2xl font-bold tracking-tight text-fg sm:text-[30px] sm:leading-9">Contas de Trading</h1>
+          <p className="mt-1 text-pretty text-[15px] leading-6 text-fg-muted">
+            Gerencie suas contas e defina as configurações de risco para cada uma delas
+          </p>
+        </div>
+        <Button variant="primary" className="h-12 shrink-0 gap-2.5 rounded-md px-6 text-[15px] font-semibold">
+          <Icon name="plus" size={18} stroke={2.2} />
+          Adicionar Conta
+        </Button>
       </div>
-      <div className="mt-4">
-        <Notice>Os cartões abaixo são exemplos de configuração. A conexão de contas ainda não está disponível nesta interface.</Notice>
-      </div>
-      <div className="mt-4 grid gap-3 lg:grid-cols-2">
-        {accounts.map((a) => (
-          <Card key={a.name} className="p-5 sm:p-6">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <h2 className="truncate text-sm font-semibold">{a.name}</h2>
-                <p className="mt-0.5 text-xs text-fg-subtle">{a.broker} · Perfil receptor</p>
-              </div>
-              <Badge tone="amber">Não conectada</Badge>
-            </div>
-            <dl className="mt-5 grid grid-cols-2 gap-4">
-              <div><dt className="text-xs text-fg-subtle">Patrimônio</dt><dd className="mt-1 text-lg font-semibold tabular">{a.equity}</dd></div>
-              <div><dt className="text-xs text-fg-subtle">Risco por operação</dt><dd className="mt-1 text-lg font-semibold tabular">{a.risk}</dd></div>
-            </dl>
-            <Button disabled className="mt-5 w-full" title="Disponível em breve">Conectar conta</Button>
-          </Card>
-        ))}
-      </div>
+      <AccountsView />
     </Shell>
   );
 }
