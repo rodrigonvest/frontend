@@ -27,15 +27,15 @@ export default function SystemsFooter({
   return (
     <section
       aria-label="Resumo das rotas de automação"
-      className="flex flex-col gap-3 rounded-xl border border-line bg-surface/80 p-3 xl:flex-row xl:items-center"
+      className="mt-1.5 flex flex-col gap-3 rounded-lg border border-line bg-surface/80 p-2.5 xl:flex-row xl:items-center"
     >
-      <div className="flex items-center gap-3.5 px-1.5 xl:w-[360px] xl:shrink-0">
+      <div className="flex items-center gap-3.5 px-1.5 xl:w-[400px] xl:shrink-0 min-[1800px]:w-[560px]">
         <span className="text-fg-muted">
           <StackIcon />
         </span>
         <div className="min-w-0">
           <p className="text-[17px] font-semibold leading-6 text-fg">Total de {SYSTEM_ROUTES.length} rotas de automação</p>
-          <p className="text-xs leading-5 text-fg-muted">
+          <p className="text-xs leading-5 text-fg-muted min-[1800px]:whitespace-nowrap">
             {SYSTEM_SOURCES.length} fontes × {SYSTEM_DESTINATIONS.length} destinos | Conecte suas plataformas e opere em tempo real
           </p>
         </div>
