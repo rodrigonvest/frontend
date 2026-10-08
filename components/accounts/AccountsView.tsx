@@ -19,7 +19,7 @@ type BottomTabKey = (typeof bottomTabs)[number]["key"];
 
 function FilterGlyph({ filter }: { filter: PlatformFilterKey }) {
   if (filter === "all") return <Icon name="layers" size={14} />;
-  return <span aria-hidden className="size-2.5 rounded-full border-2" style={{ borderColor: platformMeta[filter].color }} />;
+  return <span aria-hidden className="hidden size-2.5 rounded-full border-2 2xl:block" style={{ borderColor: platformMeta[filter].color }} />;
 }
 
 export default function AccountsView() {
@@ -65,7 +65,7 @@ export default function AccountsView() {
           })}
         </div>
 
-        <div className="relative w-full xl:w-[200px] xl:shrink-0 2xl:w-[240px]">
+        <div className="relative w-full xl:w-[190px] xl:shrink-0 2xl:w-[240px]">
           <label htmlFor={searchId} className="sr-only">
             Buscar conta
           </label>
