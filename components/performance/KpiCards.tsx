@@ -22,14 +22,14 @@ export default function KpiCards() {
       {performanceKpis.map((kpi) => (
         <article
           key={kpi.label}
-          className="flex min-w-0 items-center gap-3 rounded-[10px] border border-[#17344b] bg-gradient-to-br from-[#10263a] to-[#091a2a] px-4 py-3.5"
+          className="flex min-w-0 items-center gap-2.5 rounded-[10px] border border-[#17344b] bg-gradient-to-br from-[#10263a] to-[#091a2a] px-3 py-3"
         >
-          <span aria-hidden className={`flex size-[52px] shrink-0 items-center justify-center rounded-xl ${iconTones[kpi.iconTone]}`}>
-            <Icon name={kpi.icon} size={26} stroke={2} />
+          <span aria-hidden className={`flex size-[46px] shrink-0 items-center justify-center rounded-xl ${iconTones[kpi.iconTone]}`}>
+            <Icon name={kpi.icon} size={24} stroke={2} />
           </span>
           <div className="min-w-0">
             <p className="truncate text-xs text-fg-muted">{kpi.label}</p>
-            <p className={`mt-1 truncate text-[24px] font-bold leading-none tracking-tight tabular ${textTones[kpi.valueTone]}`}>{kpi.value}</p>
+            <p className={`mt-1 truncate text-[21px] font-bold leading-none tracking-tight tabular ${textTones[kpi.valueTone]}`}>{kpi.value}</p>
             <p className={`mt-1.5 truncate text-xs font-medium tabular ${textTones[kpi.noteTone]}`}>{kpi.note}</p>
           </div>
         </article>

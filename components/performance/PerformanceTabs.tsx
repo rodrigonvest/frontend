@@ -19,7 +19,7 @@ export default function PerformanceTabs() {
             aria-selected={selected}
             onClick={() => setActive(index)}
             className={cx(
-              "flex h-10 shrink-0 items-center gap-2 rounded-lg border px-4 text-[13px] transition-colors",
+              "flex h-9 shrink-0 items-center gap-1.5 rounded-lg border px-3 text-[12.5px] transition-colors",
               selected
                 ? "border-brand-strong bg-brand-strong font-medium text-white"
                 : "border-[#17344b] bg-[#0a1b2b] text-fg-muted hover:border-line-strong hover:text-fg",

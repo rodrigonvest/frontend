@@ -12,7 +12,7 @@ export default function HourlyPerformanceCard() {
         </div>
       }
     >
-      <div role="img" aria-label="Operações com lucro e prejuízo por hora do dia, de 00 a 23" className="relative mt-3 h-[170px]">
+      <div role="img" aria-label="Operações com lucro e prejuízo por hora do dia, de 00 a 23" className="relative mt-2 h-[112px]">
         <span aria-hidden className="absolute left-0 top-1/2 -translate-x-[30%] -translate-y-1/2 -rotate-90 text-[10.5px] text-fg-muted">Operações</span>
         <div className="absolute bottom-6 left-6 top-1 flex w-6 flex-col justify-between text-[11px] text-fg-muted tabular">
           {hourlyTicks.map((t) => <span key={t} className="text-right leading-none">{t}</span>)}

@@ -17,7 +17,7 @@ export default function EquityCurveCard() {
         </SelectField>
       }
     >
-      <div role="img" aria-label="Curva de equidade crescendo de $700 para cerca de $1,500 entre 21 de junho e 4 de setembro" className="relative mt-3 h-[190px]">
+      <div role="img" aria-label="Curva de equidade crescendo de $700 para cerca de $1,500 entre 21 de junho e 4 de setembro" className="relative mt-2 h-[152px]">
         <div className="absolute bottom-6 left-0 top-1 flex w-12 flex-col justify-between text-[11px] text-fg-muted tabular">
           {equityTicks.map((t) => <span key={t} className="leading-none">{t}</span>)}
         </div>

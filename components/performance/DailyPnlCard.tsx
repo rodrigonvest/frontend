@@ -16,7 +16,7 @@ export default function DailyPnlCard() {
         </SelectField>
       }
     >
-      <div role="img" aria-label="Barras de lucro e prejuízo diário entre 21 de junho e 4 de setembro" className="relative mt-3 h-[190px]">
+      <div role="img" aria-label="Barras de lucro e prejuízo diário entre 21 de junho e 4 de setembro" className="relative mt-2 h-[152px]">
         <div className="absolute bottom-6 left-0 top-1 flex w-12 flex-col justify-between text-[11px] text-fg-muted tabular">
           {dailyTicks.map((t) => <span key={t} className="leading-none">{t}</span>)}
         </div>

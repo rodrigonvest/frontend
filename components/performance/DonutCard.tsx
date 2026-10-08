@@ -16,8 +16,8 @@ export default function DonutCard({ title, segments, total, label }: { title: st
 
   return (
     <Panel title={title}>
-      <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-4 sm:flex-nowrap">
-        <div className="relative size-[150px] shrink-0">
+      <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-3 sm:flex-nowrap">
+        <div className="relative size-[132px] shrink-0">
           <svg viewBox="0 0 130 130" className="size-full -rotate-90" role="img" aria-label={`${label}: ${segments.map((s) => `${s.label} ${s.count}`).join(", ")}`}>
             {arcs.map((arc) => (
               <circle
@@ -38,7 +38,7 @@ export default function DonutCard({ title, segments, total, label }: { title: st
             <span className="mt-1 text-[10.5px] text-fg-muted">{label}</span>
           </div>
         </div>
-        <ul className="grid min-w-0 flex-1 gap-y-2.5 text-xs">
+        <ul className="grid min-w-0 flex-1 gap-y-2 text-xs">
           {segments.map((segment) => (
             <li key={segment.label} className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-x-3">
               <span className="flex min-w-0 items-center gap-2 text-fg">

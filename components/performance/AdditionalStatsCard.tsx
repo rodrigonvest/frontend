@@ -11,11 +11,11 @@ const valueTones: Record<TextTone, string> = {
 export default function AdditionalStatsCard() {
   return (
     <Panel title="Estatísticas Adicionais">
-      <dl className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4 2xl:grid-cols-8">
+      <dl className="mt-2 grid grid-cols-2 gap-1.5 sm:grid-cols-4 2xl:grid-cols-8">
         {additionalStats.map((stat) => (
-          <div key={stat.label} className="flex min-w-0 flex-col justify-between gap-2 rounded-lg border border-[#17344b] bg-[#081726]/80 p-2">
-            <dt className="text-center text-[10.5px] leading-[14px] text-fg-muted">{stat.label}</dt>
-            <dd className={`rounded-md py-2 text-center text-lg font-semibold leading-none tabular ${valueTones[stat.tone]}`}>{stat.value}</dd>
+          <div key={stat.label} className="flex min-w-0 flex-col justify-between gap-1.5 rounded-lg border border-[#17344b] bg-[#081726]/80 p-1.5">
+            <dt className="text-center text-[10px] leading-[13px] text-fg-muted">{stat.label}</dt>
+            <dd className={`rounded-md py-1.5 text-center text-base font-semibold leading-none tabular ${valueTones[stat.tone]}`}>{stat.value}</dd>
           </div>
         ))}
       </dl>

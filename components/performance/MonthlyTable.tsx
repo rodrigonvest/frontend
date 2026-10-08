@@ -1,15 +1,15 @@
 import { Panel } from "../backtest/BacktestFields";
 import { monthlyRows, monthlyTotalRow } from "../../lib/performance-demo";
 
-const head = "px-2 pb-2 text-right text-[11px] font-normal text-fg-muted first:pl-1 first:text-left last:pr-1";
-const cell = "px-2 py-[7px] text-right text-xs tabular first:pl-1 first:text-left last:pr-1";
+const head = "whitespace-nowrap px-[3px] pb-1.5 text-right text-[10.5px] font-normal text-fg-muted first:pl-1 first:text-left last:pr-1";
+const cell = "whitespace-nowrap px-[3px] py-[5px] text-right text-[11px] tabular first:pl-1 first:text-left last:pr-1";
 const underline = "underline decoration-1 underline-offset-4";
 
 export default function MonthlyTable() {
   return (
     <Panel title="Desempenho por Mês">
-      <div className="mt-3 overflow-x-auto">
-        <table className="w-full min-w-[520px] border-collapse">
+      <div className="mt-2 overflow-x-auto">
+        <table className="w-full min-w-0 border-collapse">
           <caption className="sr-only">Desempenho por mês</caption>
           <thead>
             <tr>

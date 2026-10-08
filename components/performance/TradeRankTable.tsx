@@ -2,8 +2,8 @@ import { Panel } from "../backtest/BacktestFields";
 
 type RankRow = { id: number; date: string; r: string; usd: string };
 
-const head = "px-1.5 pb-2 text-right text-[11px] font-normal text-fg-muted first:pl-1 first:text-left [&:nth-child(2)]:text-left last:pr-1";
-const cell = "px-1.5 py-[7px] text-right text-xs tabular first:pl-1 first:text-left [&:nth-child(2)]:text-left last:pr-1";
+const head = "whitespace-nowrap px-[3px] pb-1.5 text-right text-[10.5px] font-normal text-fg-muted first:pl-1 first:text-left [&:nth-child(2)]:text-left last:pr-1";
+const cell = "whitespace-nowrap px-1 py-[5px] text-right text-[11px] tabular first:pl-1 first:text-left [&:nth-child(2)]:text-left last:pr-1";
 
 export default function TradeRankTable({
   title,
@@ -19,8 +19,8 @@ export default function TradeRankTable({
   const toneClass = tone === "success" ? "text-success" : "text-danger";
   return (
     <Panel title={title}>
-      <div className="mt-3 overflow-x-auto">
-        <table className="w-full min-w-[300px] border-collapse">
+      <div className="mt-2 overflow-x-auto">
+        <table className="w-full min-w-0 border-collapse">
           <caption className="sr-only">{title}</caption>
           <thead>
             <tr>
