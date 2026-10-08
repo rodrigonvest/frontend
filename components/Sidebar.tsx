@@ -99,7 +99,7 @@ function NavContent({ compact, onNavigate }: { compact: boolean; onNavigate: () 
             </li>
           ))}
         </ul>
-        <div className={cx("mt-6 mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-fg-subtle/80", compact ? "sr-only" : "px-3")}>Conta</div>
+        <div className={cx("mt-6 mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-fg-subtle/80", compact ? "sr-only" : "px-3")}>Minha conta</div>
         <ul className={cx("flex flex-col gap-0.5", compact && "mt-6 border-t border-line pt-4")}>
           {secondary.map((item) => (
             <li key={item.label}>
