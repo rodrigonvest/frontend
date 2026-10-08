@@ -124,11 +124,13 @@ export default function PreviewCard({
   accent,
   sidebarLayout,
   identity,
+  description = "Veja como ficará a interface com as opções selecionadas.",
 }: {
   theme: ThemeId;
   accent: string;
   sidebarLayout: SidebarLayoutId;
   identity: LogoIdentity;
+  description?: string;
 }) {
   const palette = theme === "light" ? lightPalette : darkPalette;
   const style = { ...palette, "--pv-accent": isHexColor(accent) ? accent : "#007BFF" } as unknown as CSSProperties;
@@ -137,7 +139,7 @@ export default function PreviewCard({
     <NotificationCard
       icon={<EyeIcon />}
       title="Pré-visualização"
-      description="Veja como ficará a interface com as opções selecionadas."
+      description={description}
       className="flex-1"
     >
       <div

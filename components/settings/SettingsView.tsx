@@ -8,6 +8,7 @@ import ApiTab from "./ApiTab";
 import AppearanceTab from "./AppearanceTab";
 import GeneralTab from "./GeneralTab";
 import NotificationsTab from "./NotificationsTab";
+import PreferencesTab from "./PreferencesTab";
 import SecurityTab from "./SecurityTab";
 import SettingsIcon from "./SettingsIcons";
 import SettingsTabs, { settingsTabs, type SettingsTabId } from "./SettingsTabs";
@@ -28,6 +29,10 @@ const subpageHeaders: Partial<Record<SettingsTabId, { title: string; description
   appearance: {
     title: "Aparência",
     description: "Personalize o visual da sua plataforma de acordo com suas preferências.",
+  },
+  preferences: {
+    title: "Preferências",
+    description: "Ajuste as preferências gerais da plataforma de acordo com suas necessidades.",
   },
 };
 
@@ -70,6 +75,8 @@ export default function SettingsView() {
           <NotificationsTab />
         ) : tab === "appearance" ? (
           <AppearanceTab />
+        ) : tab === "preferences" ? (
+          <PreferencesTab />
         ) : (
           <EmptyState className="min-h-[240px] bg-surface/70" title={activeLabel} description="Esta seção de configurações ainda não está disponível." />
         )}
