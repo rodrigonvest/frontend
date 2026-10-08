@@ -5,6 +5,7 @@ import PageHeader from "../PageHeader";
 import { Button, EmptyState } from "../UI";
 import { Icon } from "../Icons";
 import ApiTab from "./ApiTab";
+import AppearanceTab from "./AppearanceTab";
 import GeneralTab from "./GeneralTab";
 import NotificationsTab from "./NotificationsTab";
 import SecurityTab from "./SecurityTab";
@@ -23,6 +24,10 @@ const subpageHeaders: Partial<Record<SettingsTabId, { title: string; description
   notifications: {
     title: "Notificações",
     description: "Receba alertas em tempo real sobre suas operações, sistemas e eventos importantes.",
+  },
+  appearance: {
+    title: "Aparência",
+    description: "Personalize o visual da sua plataforma de acordo com suas preferências.",
   },
 };
 
@@ -63,6 +68,8 @@ export default function SettingsView() {
           <ApiTab />
         ) : tab === "notifications" ? (
           <NotificationsTab />
+        ) : tab === "appearance" ? (
+          <AppearanceTab />
         ) : (
           <EmptyState className="min-h-[240px] bg-surface/70" title={activeLabel} description="Esta seção de configurações ainda não está disponível." />
         )}
