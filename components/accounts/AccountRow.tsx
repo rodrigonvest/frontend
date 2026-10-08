@@ -47,11 +47,11 @@ export default function AccountRow({ account }: { account: PresentationAccount }
     <article
       className={cx(
         "rounded-lg border border-line bg-gradient-to-b from-surface-2/50 to-surface p-4",
-        "2xl:grid 2xl:items-center 2xl:gap-4 2xl:px-3.5 2xl:py-2.5",
+        "2xl:grid 2xl:items-center 2xl:gap-4 2xl:px-3.5 2xl:py-2",
         accountRowColumns,
       )}
     >
-      <div className="flex min-w-0 items-center gap-3">
+      <div className="flex min-w-0 items-center gap-3.5">
         <AccountLogo logo={account.logo} />
         <div className="min-w-0">
           <h3 className="flex items-center gap-1.5 truncate text-[15px] font-semibold text-fg">
