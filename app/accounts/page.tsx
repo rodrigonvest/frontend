@@ -1,6 +1,6 @@
+import Link from "next/link";
 import Shell from "../../components/Shell";
 import { Icon } from "../../components/Icons";
-import { Button } from "../../components/UI";
 import AccountsView from "../../components/accounts/AccountsView";
 
 export default function AccountsPage() {
@@ -13,10 +13,13 @@ export default function AccountsPage() {
             Gerencie suas contas e defina as configurações de risco para cada uma delas
           </p>
         </div>
-        <Button variant="primary" className="h-12 shrink-0 gap-2.5 rounded-md px-6 text-[15px] font-semibold">
+        <Link
+          href="/accounts/new"
+          className="inline-flex h-12 shrink-0 items-center justify-center gap-2.5 rounded-md bg-brand-strong px-6 text-[15px] font-semibold text-white transition-colors hover:bg-brand"
+        >
           <Icon name="plus" size={18} stroke={2.2} />
           Adicionar Conta
-        </Button>
+        </Link>
       </div>
       <AccountsView />
     </Shell>
