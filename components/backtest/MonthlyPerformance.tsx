@@ -1,8 +1,8 @@
 import { monthlyPerformance, monthlyTotal } from "../../lib/backtest-demo";
 import { Panel } from "./BacktestFields";
 
-const head = "px-2 pb-2 text-right text-[11px] font-normal text-fg-muted first:pl-3.5 first:text-left last:pr-3.5";
-const cell = "px-2 py-[6px] text-right align-middle tabular first:pl-3.5 first:text-left last:pr-3.5";
+const head = "px-2! pb-2! pt-0! text-right text-[11px]! font-normal! text-fg-muted first:pl-3.5! first:text-left last:pr-3.5!";
+const cell = "px-2! py-[6.5px]! text-right text-xs align-middle tabular first:pl-3.5! first:text-left last:pr-3.5!";
 const underline = "underline decoration-1 underline-offset-4";
 
 export default function MonthlyPerformance() {

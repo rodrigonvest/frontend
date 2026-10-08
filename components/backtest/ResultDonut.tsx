@@ -11,8 +11,8 @@ export default function ResultDonut() {
 
   return (
     <Panel title="Distribuição por Resultado">
-      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-4 xl:flex-nowrap xl:justify-start">
-        <div className="relative size-[104px] shrink-0">
+      <div className="mt-3.5 flex flex-wrap items-center justify-center gap-x-1.5 gap-y-4 xl:flex-nowrap xl:justify-start">
+        <div className="relative -ml-1 size-[116px] shrink-0">
           <svg viewBox="0 0 130 130" className="size-full -rotate-90" role="img" aria-label="167 operações: 88 vencedoras e 79 perdedoras">
             <circle cx="65" cy="65" r={radius} fill="none" stroke="#ff4d5d" strokeWidth="18" strokeDasharray={`${lossLength} ${circumference}`} strokeDashoffset={-(winShare + gap / 2) * circumference} />
             <circle cx="65" cy="65" r={radius} fill="none" stroke="#12d99e" strokeWidth="18" strokeDasharray={`${winLength} ${circumference}`} strokeDashoffset={-(gap / 2) * circumference} />

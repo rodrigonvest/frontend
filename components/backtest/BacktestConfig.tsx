@@ -2,13 +2,13 @@ import { Icon } from "../Icons";
 import { backtestPeriod } from "../../lib/backtest-demo";
 import { Panel, SelectField } from "./BacktestFields";
 
-const label = "mb-1 block text-xs text-fg-muted";
+const label = "mb-[3px] block text-xs leading-[14px] text-fg-muted";
 const control = "flex h-[34px] w-full items-center rounded-md border border-[#24435d] bg-[#091a2a] px-3 text-[13px] text-[#e3edf5]";
 
 export default function BacktestConfig() {
   return (
-    <Panel title="Configurações do Backtest" className="flex flex-col">
-      <div className="mt-2 flex flex-1 flex-col gap-2">
+    <Panel title="Configurações do Backtest" className="flex flex-col pb-1">
+      <div className="mt-1.5 flex flex-1 flex-col gap-2">
         <div>
           <label htmlFor="bt-channel" className={label}>Canal Telegram</label>
           <SelectField id="bt-channel" defaultValue="KIM GOLD SECRET" className="h-[34px]">
@@ -36,7 +36,7 @@ export default function BacktestConfig() {
           <label htmlFor="bt-deposit" className={label}>Depósito Inicial (USD)</label>
           <input id="bt-deposit" defaultValue="1,000" inputMode="decimal" className={`${control} tabular outline-none focus-visible:border-brand`} />
         </div>
-        <div className="mt-auto flex items-center justify-between gap-3 pt-1">
+        <div className="mt-auto flex items-center justify-between gap-3">
           <button type="button" className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap text-[11.5px] text-fg-muted hover:text-fg">
             <Icon name="settings" size={14} />
             Parâmetros Avançados

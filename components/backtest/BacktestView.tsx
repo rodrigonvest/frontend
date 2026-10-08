@@ -14,12 +14,13 @@ import TradesList from "./TradesList";
 export default function BacktestView() {
   return (
     <>
+      <div className="-mt-3.5 -mb-2">
       <PageHeader
         title="Backtest de Sinais Telegram"
         description="Teste e valide a performance dos sinais antes de operar em tempo real"
         actions={
           <>
-            <div className="flex h-10 min-w-[280px] items-center justify-between gap-3 rounded-lg border border-[#24435d] bg-[#0a1b2b] px-3.5 text-[13px] text-[#e3edf5] tabular">
+            <div className="flex h-[38px] min-w-[280px] items-center justify-between gap-3 rounded-lg border border-[#24435d] bg-[#0a1b2b] px-3.5 text-[13px] text-[#e3edf5] tabular">
               <span className="flex items-center gap-2.5">
                 <span aria-hidden className="text-fg-muted"><Icon name="calendar" size={16} /></span>
                 <span className="sr-only">Período:</span>
@@ -29,7 +30,7 @@ export default function BacktestView() {
             </div>
             <button
               type="button"
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-brand-strong px-5 text-sm font-semibold text-white transition-colors hover:bg-brand"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-brand-strong px-6 text-sm font-semibold text-white transition-colors hover:bg-brand"
             >
               <PlayIcon size={15} />
               Executar Backtest
@@ -37,8 +38,9 @@ export default function BacktestView() {
           </>
         }
       />
+      </div>
 
-      <div className="grid gap-2.5 md:grid-cols-2 xl:grid-cols-[343fr_673fr_229fr]">
+      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[343fr_673fr_229fr]">
         <BacktestConfig />
         <div className="md:col-span-2 md:order-last xl:order-none xl:col-span-1">
           <BacktestResults />
@@ -46,7 +48,7 @@ export default function BacktestView() {
         <ResultDonut />
       </div>
 
-      <div className="mt-2.5 grid gap-2.5 lg:grid-cols-2 xl:grid-cols-[510fr_414fr_325fr]">
+      <div className="mt-3 grid gap-3 lg:grid-cols-2 xl:grid-cols-[510fr_414fr_325fr]">
         <MonthlyPerformance />
         <RDistribution />
         <div className="lg:col-span-2 xl:col-span-1">
@@ -54,7 +56,7 @@ export default function BacktestView() {
         </div>
       </div>
 
-      <div className="mt-2.5 grid gap-2.5 xl:grid-cols-[817fr_444fr]">
+      <div className="mt-3 grid gap-3 xl:grid-cols-[817fr_444fr]">
         <TradesList />
         <TradesChart />
       </div>
