@@ -1,7 +1,14 @@
 "use client";
 
 import { useId, useState, type ReactNode } from "react";
-import { accountKinds, serverExamples, type AccountKindId, type TradingPlatform } from "../../../lib/account-platforms";
+import {
+  accountKinds,
+  defaultCredentials,
+  serverExamples,
+  type AccountKindId,
+  type CredentialsValues,
+  type TradingPlatform,
+} from "../../../lib/account-platforms";
 import { Icon } from "../../Icons";
 import { Button, cx } from "../../UI";
 import FieldIcon, { type FieldIconName } from "./FieldIcons";
@@ -35,20 +42,37 @@ function Leading({ name }: { name: FieldIconName }) {
   );
 }
 
-export default function CredentialsStep({ platform, onBack }: { platform: TradingPlatform; onBack: () => void }) {
+export default function CredentialsStep({
+  platform,
+  initial = defaultCredentials,
+  onBack,
+  onNext,
+}: {
+  platform: TradingPlatform;
+  initial?: CredentialsValues;
+  onBack: () => void;
+  onNext: (values: CredentialsValues) => void;
+}) {
   const uid = useId();
   const loginId = `${uid}-login`;
   const passwordId = `${uid}-password`;
   const serverId = `${uid}-server`;
 
-  const [login, setLogin] = useState("12345678");
+  const [login, setLogin] = useState(initial.login);
   const [password, setPassword] = useState("senha-exemplo");
   const [showPassword, setShowPassword] = useState(false);
-  const [server, setServer] = useState(serverExamples[0].server);
-  const [kind, setKind] = useState<AccountKindId>("real");
+  const [server, setServer] = useState(initial.server);
+  const [kind, setKind] = useState<AccountKindId>(initial.kind);
 
   return (
-    <form onSubmit={(e) => e.preventDefault()} aria-labelledby="credentials-step-title" className="flex flex-col gap-4">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onNext({ login, server, kind });
+      }}
+      aria-labelledby="credentials-step-title"
+      className="flex flex-col gap-4"
+    >
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.54fr)_minmax(0,1fr)]">
         <section className="min-w-0 rounded-xl border border-line bg-surface/70 p-4">
           <div className="flex items-center gap-4 border-b border-line pb-4">

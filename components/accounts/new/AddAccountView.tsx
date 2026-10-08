@@ -2,19 +2,31 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { addAccountSteps, defaultPlatformId, tradingPlatforms, type PlatformLogoKey } from "../../../lib/account-platforms";
+import {
+  addAccountSteps,
+  defaultAccountSettings,
+  defaultCredentials,
+  defaultPlatformId,
+  tradingPlatforms,
+  type AccountSettings,
+  type CredentialsValues,
+  type PlatformLogoKey,
+} from "../../../lib/account-platforms";
 import { Icon } from "../../Icons";
 import { Button } from "../../UI";
 import AddAccountStepper from "./AddAccountStepper";
 import CredentialsStep from "./CredentialsStep";
 import PlatformCard from "./PlatformCard";
+import SettingsStep from "./SettingsStep";
 
 const outlineLink =
   "inline-flex h-11 shrink-0 items-center justify-center gap-2.5 rounded-lg border border-line bg-surface px-5 text-[14px] font-medium text-fg transition-colors hover:border-line-strong hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
 
 export default function AddAccountView() {
   const [platform, setPlatform] = useState<PlatformLogoKey>(defaultPlatformId);
-  const [step, setStep] = useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+  const [credentials, setCredentials] = useState<CredentialsValues>(defaultCredentials);
+  const [settings, setSettings] = useState<AccountSettings>(defaultAccountSettings);
   const selectedPlatform = tradingPlatforms.find((item) => item.id === platform) ?? tradingPlatforms[0];
 
   return (
@@ -41,7 +53,30 @@ export default function AddAccountView() {
 
       <AddAccountStepper current={step} descriptions={step > 1 ? { 1: selectedPlatform.name } : undefined} />
 
-      {step === 2 && <CredentialsStep platform={selectedPlatform} onBack={() => setStep(1)} />}
+      {step === 2 && (
+        <CredentialsStep
+          platform={selectedPlatform}
+          initial={credentials}
+          onBack={() => setStep(1)}
+          onNext={(values) => {
+            setCredentials(values);
+            setSettings((current) => ({ ...current, environment: values.kind }));
+            setStep(3);
+          }}
+        />
+      )}
+
+      {step === 3 && (
+        <SettingsStep
+          platform={selectedPlatform}
+          credentials={credentials}
+          settings={settings}
+          onChange={setSettings}
+          onEditCredentials={() => setStep(2)}
+          onBack={() => setStep(2)}
+          onNext={() => setStep(4)}
+        />
+      )}
 
       {step === 1 && (
       <form

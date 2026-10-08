@@ -65,3 +65,58 @@ export const addAccountSteps: readonly AddAccountStep[] = [
   { id: 4, title: "Risco", description: "Gestão de risco" },
   { id: 5, title: "Teste de Conexão", description: "Verificar conexão" },
 ];
+
+export type CredentialsValues = { login: string; server: string; kind: AccountKindId };
+
+export const defaultCredentials: CredentialsValues = { login: "12345678", server: serverExamples[0].server, kind: "real" };
+
+export const accountEnvironments: readonly { id: AccountKindId; label: string }[] = [
+  { id: "real", label: "Real (Live)" },
+  { id: "demo", label: "Demo" },
+];
+
+export const accountCurrencies: readonly { code: string; label: string }[] = [
+  { code: "USD", label: "USD - Dólar Americano" },
+  { code: "EUR", label: "EUR - Euro" },
+  { code: "GBP", label: "GBP - Libra Esterlina" },
+  { code: "BRL", label: "BRL - Real Brasileiro" },
+];
+
+export const accountLeverages: readonly string[] = ["1:30", "1:50", "1:100", "1:200", "1:500", "1:1000"];
+
+export const executionTypes: readonly string[] = ["Market Execution", "Instant Execution", "Request Execution", "Exchange Execution"];
+
+export const accountTimezones: readonly string[] = ["GMT+3 (Padrão MT5)", "GMT+2", "GMT+0 (UTC)", "GMT-3 (Brasília)"];
+
+export const operatingHours: readonly string[] = [
+  "Sempre ativo (24 horas)",
+  "Sessão de Londres (08:00 - 17:00)",
+  "Sessão de Nova York (13:00 - 22:00)",
+  "Sessão da Ásia (00:00 - 09:00)",
+];
+
+export type AccountSettings = {
+  name: string;
+  environment: AccountKindId;
+  currency: string;
+  leverage: string;
+  executionType: string;
+  slippage: string;
+  magicNumber: string;
+  comment: string;
+  timezone: string;
+  hours: string;
+};
+
+export const defaultAccountSettings: AccountSettings = {
+  name: "FundedNext 100K",
+  environment: "real",
+  currency: "USD",
+  leverage: "1:100",
+  executionType: "Market Execution",
+  slippage: "5",
+  magicNumber: "26021001",
+  comment: "Copytrix",
+  timezone: "GMT+3 (Padrão MT5)",
+  hours: "Sempre ativo (24 horas)",
+};

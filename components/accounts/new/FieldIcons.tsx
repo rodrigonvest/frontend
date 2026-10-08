@@ -40,6 +40,33 @@ const paths = {
       <path d="M12 17v4" />
     </>
   ),
+  card: (
+    <>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="M3 10h18M7 15h4" />
+    </>
+  ),
+  bolt: <path d="M13 2 4.5 13.5H11L10 22l8.5-11.5h-6L13 2Z" />,
+  globe: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18" />
+      <path d="M12 3c2.6 2.7 4 5.7 4 9s-1.4 6.3-4 9c-2.6-2.7-4-5.7-4-9s1.4-6.3 4-9Z" />
+    </>
+  ),
+  hash: <path d="M5 9h14M5 15h14M10 4 8 20M16 4l-2 16" />,
+  gauge: (
+    <>
+      <path d="M4 17a8 8 0 1 1 16 0" />
+      <path d="m12 17 4-5" />
+    </>
+  ),
+  pencil: (
+    <>
+      <path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3Z" />
+      <path d="m14 7 3 3" />
+    </>
+  ),
 } as const;
 
 export type FieldIconName = keyof typeof paths;
