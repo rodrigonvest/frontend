@@ -14,7 +14,7 @@ export default function LogsView() {
         <LogsHeader />
         <LogsKpiCards />
         <LogsFilters />
-        <div className="mt-4 grid items-stretch gap-[15px] xl:grid-cols-[minmax(0,2.135fr)_minmax(0,1fr)]">
+        <div className="mt-4 grid items-stretch gap-[15px] xl:grid-cols-[minmax(0,68fr)_minmax(0,32fr)]">
           <LogsTable />
           <div className="grid gap-2 xl:grid-rows-[356px_164px_minmax(0,1fr)]">
             <LogDetailsCard />
