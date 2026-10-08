@@ -38,7 +38,7 @@ export default function AccountsView() {
   }, [filter, query]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3.5">
       <AccountsSummary />
 
       <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
@@ -52,9 +52,9 @@ export default function AccountsView() {
                 aria-pressed={active}
                 onClick={() => setFilter(f.key)}
                 className={cx(
-                  "inline-flex h-10 shrink-0 items-center gap-1.5 rounded-lg border px-3 text-xs font-medium transition-colors",
+                  "inline-flex h-11 shrink-0 items-center gap-1.5 rounded-md border px-2.5 text-[12.5px] font-medium transition-colors 2xl:px-3",
                   active
-                    ? "border-brand bg-brand-strong text-white shadow-[0_0_18px_rgba(8,127,240,.35)]"
+                    ? "border-brand bg-brand-strong text-white"
                     : "border-line bg-surface text-fg-muted hover:border-line-strong hover:bg-surface-2 hover:text-fg",
                 )}
               >
@@ -65,7 +65,7 @@ export default function AccountsView() {
           })}
         </div>
 
-        <div className="relative w-full xl:w-[240px] xl:shrink-0 2xl:w-[290px]">
+        <div className="relative w-full xl:w-[200px] xl:shrink-0 2xl:w-[240px]">
           <label htmlFor={searchId} className="sr-only">
             Buscar conta
           </label>
@@ -78,7 +78,7 @@ export default function AccountsView() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Buscar conta..."
-            className="h-10 w-full rounded-lg border border-line bg-surface pl-10 pr-3 text-[13px] text-fg placeholder:text-fg-subtle focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30"
+            className="h-11 w-full rounded-md border border-line bg-surface pl-10 pr-3 text-[14px] text-fg placeholder:text-fg-subtle focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30"
           />
         </div>
       </div>
@@ -91,8 +91,8 @@ export default function AccountsView() {
         )}
       </section>
 
-      <div className="pt-1">
-        <div role="tablist" aria-label="Detalhes das contas" className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
+      <div className="rounded-lg border border-line bg-surface/40 p-1">
+        <div role="tablist" aria-label="Detalhes das contas" className="flex gap-1.5 overflow-x-auto pb-1">
           {bottomTabs.map((t) => {
             const active = tab === t.key;
             return (
@@ -105,7 +105,7 @@ export default function AccountsView() {
                 aria-controls="accounts-tabpanel"
                 onClick={() => setTab(t.key)}
                 className={cx(
-                  "inline-flex h-10 shrink-0 items-center gap-2 rounded-lg border px-4 text-xs font-medium transition-colors",
+                  "inline-flex h-10 shrink-0 items-center gap-2 rounded-md border px-4 text-[13px] font-medium transition-colors",
                   active ? "border-brand bg-brand-strong text-white" : "border-line bg-surface text-fg-muted hover:border-line-strong hover:text-fg",
                 )}
               >
@@ -116,7 +116,7 @@ export default function AccountsView() {
           })}
         </div>
 
-        <div id="accounts-tabpanel" role="tabpanel" aria-labelledby={`accounts-tab-${tab}`} className="mt-3">
+        <div id="accounts-tabpanel" role="tabpanel" aria-labelledby={`accounts-tab-${tab}`} className="mt-1">
           {tab === "summary" ? (
             <AccountsPanels />
           ) : (

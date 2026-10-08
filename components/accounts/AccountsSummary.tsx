@@ -19,12 +19,12 @@ function SummaryCard({
   iconClassName: string;
 }) {
   return (
-    <div className="flex min-h-[104px] items-center gap-4 rounded-xl border border-line bg-gradient-to-b from-surface-2/60 to-surface p-4 sm:px-5">
-      <div className={cx("flex size-[60px] shrink-0 items-center justify-center rounded-xl", iconClassName)}>{icon}</div>
+    <div className="flex min-h-[106px] items-center gap-4 rounded-lg border border-line bg-gradient-to-b from-surface-2/60 to-surface px-4 py-3.5">
+      <div className={cx("flex size-16 shrink-0 items-center justify-center rounded-lg", iconClassName)}>{icon}</div>
       <div className="min-w-0">
-        <div className="text-xs leading-4 text-fg-muted">{label}</div>
-        <div className="tabular mt-1 truncate text-[26px] font-bold leading-tight tracking-tight text-fg">{value}</div>
-        <div className={cx("mt-0.5 truncate text-xs", noteClassName ?? "text-fg-subtle")}>{note}</div>
+        <div className="text-[13px] leading-4 text-fg-muted">{label}</div>
+        <div className="tabular mt-1 truncate text-[28px] font-bold leading-8 tracking-tight text-fg">{value}</div>
+        <div className={cx("mt-1 truncate text-[13px]", noteClassName ?? "text-fg-subtle")}>{note}</div>
       </div>
     </div>
   );
@@ -41,7 +41,7 @@ function PieIcon() {
 
 export default function AccountsSummary() {
   return (
-    <section aria-label="Resumo das contas" className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+    <section aria-label="Resumo das contas" className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
       <SummaryCard
         label="Total de Contas"
         value={summaryCards.total.value}

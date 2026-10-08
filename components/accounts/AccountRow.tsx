@@ -46,8 +46,8 @@ export default function AccountRow({ account }: { account: PresentationAccount }
   return (
     <article
       className={cx(
-        "rounded-xl border border-line bg-gradient-to-b from-surface-2/50 to-surface p-4",
-        "2xl:grid 2xl:items-center 2xl:gap-4 2xl:px-4 2xl:py-3",
+        "rounded-lg border border-line bg-gradient-to-b from-surface-2/50 to-surface p-4",
+        "2xl:grid 2xl:items-center 2xl:gap-4 2xl:px-3.5 2xl:py-2.5",
         accountRowColumns,
       )}
     >
@@ -83,8 +83,8 @@ export default function AccountRow({ account }: { account: PresentationAccount }
       <div className="mt-4 flex items-center justify-between gap-3 border-t border-line pt-3 2xl:contents">
         <StatusIndicator account={account} />
         <div className="flex items-center gap-2">
-          <Button className="h-10 px-5">Configurar</Button>
-          <Button variant="secondary" className="size-10 px-0" aria-label={`Mais ações para ${account.name}`}>
+          <Button variant="secondary" className="h-11 rounded-md px-5 text-[13px] font-medium">Configurar</Button>
+          <Button variant="secondary" className="h-11 w-11 rounded-md px-0" aria-label={`Mais ações para ${account.name}`}>
             <Icon name="vmore" size={18} />
           </Button>
         </div>
