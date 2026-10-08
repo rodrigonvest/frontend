@@ -120,3 +120,65 @@ export const defaultAccountSettings: AccountSettings = {
   timezone: "GMT+3 (Padrão MT5)",
   hours: "Sempre ativo (24 horas)",
 };
+
+export type LotMethodId = "balance" | "equity" | "fixed";
+
+export const lotMethods: readonly { id: LotMethodId; title: string; description: string }[] = [
+  { id: "balance", title: "Risco em % do Saldo", description: "Calcula o lote com base em um percentual do saldo atual da conta." },
+  { id: "equity", title: "Risco em % da Equidade", description: "Calcula o lote com base em um percentual da equidade atual da conta." },
+  { id: "fixed", title: "Lote Fixo", description: "Utiliza um lote fixo em todas as operações." },
+];
+
+export type SltpModeId = "signal" | "fixedSl" | "fixed";
+
+export const sltpModes: readonly { id: SltpModeId; title: string; description: string }[] = [
+  { id: "signal", title: "Usar SL/TP do Signal", description: "Copia exatamente os níveis enviados no sinal." },
+  { id: "fixedSl", title: "SL Fixo + TP do Signal", description: "Utiliza um SL fixo e o TP do sinal." },
+  { id: "fixed", title: "SL/TP Fixos", description: "Utiliza SL e TP fixos definidos aqui." },
+];
+
+export const riskPresets: readonly number[] = [0.25, 0.5, 1, 2, 3];
+
+export type RiskSettings = {
+  method: LotMethodId;
+  riskPercent: string;
+  defaultSl: string;
+  minLot: string;
+  maxLot: string;
+  maxTrades: string;
+  maxAssetExposure: string;
+  maxTotalExposure: string;
+  sltpMode: SltpModeId;
+};
+
+export const defaultRiskSettings: RiskSettings = {
+  method: "balance",
+  riskPercent: "1.00",
+  defaultSl: "5",
+  minLot: "0.01",
+  maxLot: "1.00",
+  maxTrades: "5",
+  maxAssetExposure: "3.00",
+  maxTotalExposure: "5.00",
+  sltpMode: "signal",
+};
+
+export const demoAccountBalance = 102450;
+export const dailyDrawdownPercent = 3;
+export const totalDrawdownPercent = 6;
+
+export function toNumber(value: string): number {
+  const parsed = parseFloat(value);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+export function formatMoney(value: number): string {
+  return `$ ${value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+export function estimateLot({ riskPercent, balance, stopLoss, minLot, maxLot }: { riskPercent: number; balance: number; stopLoss: number; minLot: number; maxLot: number }): number {
+  const safeStop = stopLoss > 0 ? stopLoss : 5;
+  const raw = riskPercent * 0.1 * (balance / demoAccountBalance) * (5 / safeStop);
+  const upper = maxLot > 0 ? maxLot : raw;
+  return Math.round(Math.min(Math.max(raw, minLot), upper) * 100) / 100;
+}

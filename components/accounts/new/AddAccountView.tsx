@@ -7,10 +7,12 @@ import {
   defaultAccountSettings,
   defaultCredentials,
   defaultPlatformId,
+  defaultRiskSettings,
   tradingPlatforms,
   type AccountSettings,
   type CredentialsValues,
   type PlatformLogoKey,
+  type RiskSettings,
 } from "../../../lib/account-platforms";
 import { Icon } from "../../Icons";
 import { Button } from "../../UI";
@@ -18,6 +20,7 @@ import AddAccountStepper from "./AddAccountStepper";
 import CredentialsStep from "./CredentialsStep";
 import PlatformCard from "./PlatformCard";
 import SettingsStep from "./SettingsStep";
+import RiskStep from "./RiskStep";
 
 const outlineLink =
   "inline-flex h-11 shrink-0 items-center justify-center gap-2.5 rounded-lg border border-line bg-surface px-5 text-[14px] font-medium text-fg transition-colors hover:border-line-strong hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
@@ -27,6 +30,7 @@ export default function AddAccountView() {
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
   const [credentials, setCredentials] = useState<CredentialsValues>(defaultCredentials);
   const [settings, setSettings] = useState<AccountSettings>(defaultAccountSettings);
+  const [risk, setRisk] = useState<RiskSettings>(defaultRiskSettings);
   const selectedPlatform = tradingPlatforms.find((item) => item.id === platform) ?? tradingPlatforms[0];
 
   return (
@@ -75,6 +79,18 @@ export default function AddAccountView() {
           onEditCredentials={() => setStep(2)}
           onBack={() => setStep(2)}
           onNext={() => setStep(4)}
+        />
+      )}
+
+      {step === 4 && (
+        <RiskStep
+          platform={selectedPlatform}
+          credentials={credentials}
+          settings={settings}
+          risk={risk}
+          onChange={setRisk}
+          onBack={() => setStep(3)}
+          onNext={() => undefined}
         />
       )}
 

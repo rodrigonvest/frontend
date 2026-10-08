@@ -67,6 +67,33 @@ const paths = {
       <path d="m14 7 3 3" />
     </>
   ),
+  calculator: (
+    <>
+      <rect x="5" y="3" width="14" height="18" rx="2.5" />
+      <path d="M8.5 7.5h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01" />
+    </>
+  ),
+  sliders: (
+    <>
+      <path d="M4 7h9M17 7h3M4 17h3M11 17h9" />
+      <circle cx="15" cy="7" r="2" />
+      <circle cx="9" cy="17" r="2" />
+    </>
+  ),
+  wallet: (
+    <>
+      <path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18v3" />
+      <path d="M4 7.5V17a2 2 0 0 0 2 2h12a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 18 8H6.5A2.5 2.5 0 0 1 4 7.5Z" />
+      <circle cx="15.5" cy="13.5" r="1" />
+    </>
+  ),
+  percent: (
+    <>
+      <path d="m18 6-12 12" />
+      <circle cx="7.5" cy="7.5" r="2" />
+      <circle cx="16.5" cy="16.5" r="2" />
+    </>
+  ),
 } as const;
 
 export type FieldIconName = keyof typeof paths;
