@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   addAccountSteps,
@@ -17,6 +18,7 @@ import {
 import { Icon } from "../../Icons";
 import { Button } from "../../UI";
 import AddAccountStepper from "./AddAccountStepper";
+import ConnectionTestStep from "./ConnectionTestStep";
 import CredentialsStep from "./CredentialsStep";
 import PlatformCard from "./PlatformCard";
 import SettingsStep from "./SettingsStep";
@@ -27,7 +29,8 @@ const outlineLink =
 
 export default function AddAccountView() {
   const [platform, setPlatform] = useState<PlatformLogoKey>(defaultPlatformId);
-  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+  const router = useRouter();
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1);
   const [credentials, setCredentials] = useState<CredentialsValues>(defaultCredentials);
   const [settings, setSettings] = useState<AccountSettings>(defaultAccountSettings);
   const [risk, setRisk] = useState<RiskSettings>(defaultRiskSettings);
@@ -90,7 +93,17 @@ export default function AddAccountView() {
           risk={risk}
           onChange={setRisk}
           onBack={() => setStep(3)}
-          onNext={() => undefined}
+          onNext={() => setStep(5)}
+        />
+      )}
+
+      {step === 5 && (
+        <ConnectionTestStep
+          platform={selectedPlatform}
+          credentials={credentials}
+          settings={settings}
+          onBack={() => setStep(4)}
+          onComplete={() => router.push("/accounts")}
         />
       )}
 
