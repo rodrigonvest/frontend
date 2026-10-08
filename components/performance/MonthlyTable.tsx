@@ -5,9 +5,9 @@ const head = "whitespace-nowrap px-[3px] pb-1.5 text-right text-[10.5px] font-no
 const cell = "whitespace-nowrap px-[3px] py-[5px] text-right text-[11px] tabular first:pl-1 first:text-left last:pr-1";
 const underline = "underline decoration-1 underline-offset-4";
 
-export default function MonthlyTable() {
+export default function MonthlyTable({ title = "Desempenho por Mês" }: { title?: string }) {
   return (
-    <Panel title="Desempenho por Mês">
+    <Panel title={title}>
       <div className="mt-2 overflow-x-auto">
         <table className="w-full min-w-0 border-collapse">
           <caption className="sr-only">Desempenho por mês</caption>
