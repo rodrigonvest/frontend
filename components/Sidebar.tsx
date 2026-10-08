@@ -13,7 +13,7 @@ const primary: NavItem[] = [
   { icon: "telegram", label: "Canais Telegram", href: "/connectors" },
   { icon: "accounts", label: "Contas", href: "/accounts" },
   { icon: "systems", label: "Sistemas", href: "/sistemas" },
-  { icon: "analytics", label: "Desempenho", href: "/analytics" },
+  { icon: "analytics", label: "Desempenho", href: "/desempenho" },
   { icon: "backtest", label: "Backtest", href: "/backtester" },
   { icon: "logs", label: "Logs", soon: true },
   { icon: "settings", label: "Configurações", href: "/settings" },
