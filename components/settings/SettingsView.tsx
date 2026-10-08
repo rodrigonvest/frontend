@@ -5,7 +5,11 @@ import PageHeader from "../PageHeader";
 import { Button, EmptyState } from "../UI";
 import { Icon } from "../Icons";
 import ApiTab from "./ApiTab";
+import AppearanceTab from "./AppearanceTab";
 import GeneralTab from "./GeneralTab";
+import NotificationsTab from "./NotificationsTab";
+import PlanTab from "./PlanTab";
+import PreferencesTab from "./PreferencesTab";
 import SecurityTab from "./SecurityTab";
 import SettingsIcon from "./SettingsIcons";
 import SettingsTabs, { settingsTabs, type SettingsTabId } from "./SettingsTabs";
@@ -18,6 +22,22 @@ const subpageHeaders: Partial<Record<SettingsTabId, { title: string; description
   api: {
     title: "API e Webhooks",
     description: "Integre o Copytrix com outras plataformas e automatize seus processos através da nossa API e Webhooks.",
+  },
+  notifications: {
+    title: "Notificações",
+    description: "Receba alertas em tempo real sobre suas operações, sistemas e eventos importantes.",
+  },
+  appearance: {
+    title: "Aparência",
+    description: "Personalize o visual da sua plataforma de acordo com suas preferências.",
+  },
+  preferences: {
+    title: "Preferências",
+    description: "Ajuste as preferências gerais da plataforma de acordo com suas necessidades.",
+  },
+  plan: {
+    title: "Plano e Assinatura",
+    description: "Gerencie seu plano, veja detalhes da sua assinatura e altere de plano quando quiser.",
   },
 };
 
@@ -56,6 +76,14 @@ export default function SettingsView() {
           <SecurityTab />
         ) : tab === "api" ? (
           <ApiTab />
+        ) : tab === "notifications" ? (
+          <NotificationsTab />
+        ) : tab === "appearance" ? (
+          <AppearanceTab />
+        ) : tab === "preferences" ? (
+          <PreferencesTab />
+        ) : tab === "plan" ? (
+          <PlanTab />
         ) : (
           <EmptyState className="min-h-[240px] bg-surface/70" title={activeLabel} description="Esta seção de configurações ainda não está disponível." />
         )}

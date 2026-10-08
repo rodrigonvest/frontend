@@ -17,6 +17,7 @@ const primary: NavItem[] = [
   { icon: "pulse", label: "Análise de Desempenho", href: "/analise-desempenho" },
   { icon: "backtest", label: "Backtest", href: "/backtester" },
   { icon: "logs", label: "Logs", href: "/logs" },
+  { icon: "fileText", label: "Relatórios", href: "/relatorios" },
   { icon: "settings", label: "Configurações", href: "/settings" },
 ];
 

@@ -97,14 +97,16 @@ export function SelectField({
   options,
   leading,
   compact,
-}: {
+  dense,
+  }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   options: SelectOption[];
   leading?: ReactNode;
   compact?: boolean;
-}) {
+  dense?: boolean;
+  }) {
   const id = useId();
   return (
     <FieldBlock label={label} htmlFor={id} compact={compact}>
@@ -118,7 +120,14 @@ export function SelectField({
           id={id}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={cx(controlClass, fieldHeight, "appearance-none pr-9", leading ? "pl-10" : compact ? "px-3" : "px-3")}
+          className={cx(
+  controlClass,
+  fieldHeight,
+  "appearance-none pr-9",
+  leading ? "pl-10" : compact ? "px-3" : "px-3",
+  dense && "!pr-7 !text-[12.5px]",
+  dense && (leading ? "!pl-9" : "!pl-2.5"),
+  )}
         >
           {options.map((option) => (
             <option key={option.value} value={option.value}>
