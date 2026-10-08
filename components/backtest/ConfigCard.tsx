@@ -65,7 +65,7 @@ export default function ConfigCard() {
         </button>
         <button
           type="button"
-          className="inline-flex h-[33px] w-[128px] shrink-0 items-center justify-center whitespace-nowrap rounded-md bg-brand-strong text-[12.5px] min-[1800px]:w-[150px] min-[1800px]:text-[13px] font-semibold text-white transition-colors hover:bg-brand"
+          className="inline-flex h-[33px] w-[159px] shrink-0 items-center justify-center whitespace-nowrap rounded-md bg-brand-strong text-[13.5px] font-semibold text-white transition-colors hover:bg-brand"
         >
           Executar Backtest
         </button>
@@ -78,7 +78,7 @@ export function HeaderRunButton() {
   return (
     <button
       type="button"
-      className="inline-flex h-11 shrink-0 items-center justify-center gap-2.5 rounded-md bg-brand-strong px-6 text-[15px] font-semibold text-white transition-colors hover:bg-brand"
+      className="inline-flex h-11 shrink-0 items-center justify-center gap-2.5 rounded-md bg-brand-strong px-5 text-[14px] font-semibold text-white transition-colors hover:bg-brand"
     >
       <PlayGlyph size={16} />
       Executar Backtest

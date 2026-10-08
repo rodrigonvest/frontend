@@ -15,12 +15,12 @@ import TradesListCard from "../../components/backtest/TradesListCard";
 export default function BacktesterPage() {
   return (
     <Shell>
-      <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-[19px] flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <h1 className="text-balance text-2xl font-bold tracking-tight text-fg sm:text-[30px] sm:leading-9">Backtest de Sinais Telegram</h1>
-          <p className="mt-1 text-pretty text-[15px] leading-6 text-fg-muted">Teste e valide a performance dos sinais antes de operar em tempo real</p>
+          <h1 className="text-balance text-2xl font-bold tracking-tight text-fg sm:text-[26.5px] sm:leading-8">Backtest de Sinais Telegram</h1>
+          <p className="mt-0.5 text-pretty text-[15px] leading-6 text-fg-muted">Teste e valide a performance dos sinais antes de operar em tempo real</p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-4 sm:mt-[13px]">
           <button
             type="button"
             aria-label={`Período: ${backtestConfig.period}`}
@@ -52,7 +52,7 @@ export default function BacktesterPage() {
         </div>
       </div>
 
-      <div className="mt-3 grid gap-x-3.5 gap-y-3 2xl:grid-cols-[minmax(0,817fr)_minmax(0,443fr)]">
+      <div className="mt-1.5 grid gap-x-3.5 gap-y-3 2xl:grid-cols-[minmax(0,817fr)_minmax(0,443fr)]">
         <TradesListCard />
         <TradesChartCard />
       </div>

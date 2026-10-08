@@ -74,7 +74,7 @@ export default function TradesListCard() {
       className="2xl:h-[287px]"
       action={
         <div className="flex flex-1 flex-wrap items-center gap-2 2xl:flex-nowrap 2xl:pl-3">
-          <div className="relative h-[26px] w-[150px] shrink-0 min-[1800px]:w-[188px]">
+          <div className="relative h-[26px] w-[188px] shrink-0">
             <label htmlFor="bt-trade-search" className="sr-only">
               Buscar operação
             </label>
@@ -92,14 +92,14 @@ export default function TradesListCard() {
             id="bt-trade-result"
             ariaLabel="Filtrar por resultado"
             options={["Todos os resultados", "Win", "Loss"]}
-            className="h-[26px] w-[132px] shrink-0 min-[1800px]:w-[136px]"
+            className="h-[26px] w-[139px] shrink-0"
             selectClassName="pl-2.5 pr-6 text-[10.5px]"
           />
           <SelectBox
             id="bt-trade-type"
             ariaLabel="Filtrar por tipo"
             options={["Todos os tipos", "BUY", "SELL"]}
-            className="h-[26px] w-[116px] shrink-0 min-[1800px]:w-[155px]"
+            className="h-[26px] w-[144px] shrink-0"
             selectClassName="pl-2.5 pr-6 text-[10.5px]"
           />
           <button

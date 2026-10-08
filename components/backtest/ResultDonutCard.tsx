@@ -10,7 +10,7 @@ function Donut() {
   const winnersLength = (winners.percent / 100) * CIRCUMFERENCE;
   const losersLength = (losers.percent / 100) * CIRCUMFERENCE;
   return (
-    <div className="relative size-[112px] shrink-0 min-[1800px]:size-[120px]" role="img" aria-label={`${total} operações: ${winners.count} vencedoras e ${losers.count} perdedoras`}>
+    <div className="relative size-[122px] shrink-0" role="img" aria-label={`${total} operações: ${winners.count} vencedoras e ${losers.count} perdedoras`}>
       <svg viewBox="0 0 120 120" className="size-full -rotate-90" aria-hidden>
         <circle
           cx="60"
@@ -34,8 +34,8 @@ function Donut() {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="tabular text-[22px] font-bold leading-6 text-fg">{total}</span>
-        <span className="text-[11px] leading-4 text-fg-muted">Operações</span>
+        <span className="tabular text-[24px] font-bold leading-7 text-fg">{total}</span>
+        <span className="text-[12px] leading-4 text-fg-muted">Operações</span>
       </div>
     </div>
   );
@@ -58,8 +58,8 @@ function LegendItem({ color, label, count, percent }: { color: string; label: st
 export default function ResultDonutCard() {
   const { winners, losers } = resultSegments;
   return (
-    <Panel title="Distribuição por Resultado" className="2xl:h-[278px] 2xl:self-end" padding="px-2.5 pb-3 pt-2.5">
-      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-1.5 gap-y-4 2xl:flex-nowrap">
+    <Panel title="Distribuição por Resultado" className="2xl:h-[278px] 2xl:self-end" padding="pb-3 pl-1.5 pr-3.5 pt-2.5">
+      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-1.5 gap-y-4 2xl:flex-nowrap 2xl:justify-between">
         <Donut />
         <ul className="space-y-3.5">
           <LegendItem color="#12d99e" label={winners.label} count={winners.count} percent={winners.percent} />

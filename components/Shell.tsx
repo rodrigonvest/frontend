@@ -28,14 +28,14 @@ export default function Shell({ children }: { children: React.ReactNode }) {
         Pular para o conteúdo
       </a>
       <Sidebar collapsed={collapsed} mobileOpen={mobileOpen} onCloseMobile={() => setMobileOpen(false)} />
-      <div className={cx("flex min-h-screen min-w-0 flex-col transition-[margin] duration-200", collapsed ? "lg:ml-[76px]" : "lg:ml-[240px]")}>
+      <div className={cx("flex min-h-screen min-w-0 flex-col transition-[margin] duration-200", collapsed ? "lg:ml-[76px]" : "lg:ml-[220px]")}>
         <Topbar
           collapsed={collapsed}
           onToggleCollapse={() => setCollapsed((v) => !v)}
           onOpenMobile={() => setMobileOpen(true)}
           status={systemStatus}
         />
-        <main id="conteudo" className="mx-auto w-full min-w-0 max-w-[1720px] flex-1 px-4 py-6 sm:px-6 lg:px-8">
+        <main id="conteudo" className="mx-auto w-full min-w-0 max-w-[1720px] flex-1 px-4 py-6 sm:px-6 lg:pb-5 lg:pl-[23px] lg:pr-5 lg:pt-2">
           {children}
         </main>
       </div>

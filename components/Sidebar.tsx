@@ -30,32 +30,45 @@ const helpItem: NavItem = { icon: "help", label: "Ajuda & Suporte", href: "/help
 function Logo({ compact }: { compact: boolean }) {
   return (
     <Link href="/" className="flex min-w-0 items-center gap-2.5" aria-label="Copytrix — início">
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand/15 text-brand">
-        <svg width="24" height="24" viewBox="0 0 27 27" fill="none" aria-hidden>
+      <span className="flex size-[40px] shrink-0 items-center justify-center overflow-visible text-brand">
+        <svg width="44" height="44" viewBox="0 0 27 27" fill="none" aria-hidden>
           <path d="M22.6 9.2a9.8 9.8 0 1 1-4.1-4.1" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
           <path d="m8 13.8 3.2 3.2L22.7 5.5" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </span>
       {!compact && (
         <span className="min-w-0">
-          <span className="block text-lg font-bold leading-none tracking-tight text-fg">Copytrix</span>
-          <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[0.22em] text-brand">Telegram to Results</span>
+          <span className="block text-[32px] font-bold leading-none tracking-tight text-fg">Copytrix</span>
+          <span className="mt-1.5 block whitespace-nowrap text-[8.5px] font-semibold uppercase tracking-[0.2em] text-brand">Telegram to Results</span>
         </span>
       )}
     </Link>
   );
 }
 
-function NavLink({ item, active, compact, onNavigate }: { item: NavItem; active: boolean; compact: boolean; onNavigate: () => void }) {
+function NavLink({
+  item,
+  active,
+  compact,
+  dense,
+  onNavigate,
+}: {
+  item: NavItem;
+  active: boolean;
+  compact: boolean;
+  dense?: boolean;
+  onNavigate: () => void;
+}) {
   const base = cx(
-    "group relative flex h-10 items-center gap-3 rounded-lg text-[13.5px] transition-colors",
-    compact ? "justify-center px-0" : "px-3",
+    "group relative flex items-center whitespace-nowrap text-[13.5px] transition-colors",
+    dense ? "h-11" : "h-12",
+    compact ? "justify-center rounded-lg px-0" : "gap-4 rounded-r-xl pl-[26px] pr-3",
   );
   const content = (
     <>
-      {active && <span aria-hidden className="absolute left-0 top-1/2 h-6 w-[3px] -translate-y-1/2 rounded-r bg-brand" />}
-      <span className={cx("flex size-6 shrink-0 items-center justify-center", item.icon === "telegram" && "telegram-nav-icon", active ? "text-brand" : "text-fg-subtle group-hover:text-fg-muted")}>
-        <Icon name={item.icon} size={18} stroke={item.icon === "telegram" ? 1.7 : 1.8} />
+      {active && <span aria-hidden className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-r bg-brand" />}
+      <span className={cx("flex size-6 shrink-0 items-center justify-center", item.icon === "telegram" && "telegram-nav-icon", active ? "text-brand" : "text-fg-muted group-hover:text-fg")}>
+        <Icon name={item.icon} size={22} stroke={item.icon === "telegram" ? 1.7 : 1.8} />
       </span>
       {!compact && <span className="truncate">{item.label}</span>}
       {!compact && item.soon && (
@@ -78,7 +91,7 @@ function NavLink({ item, active, compact, onNavigate }: { item: NavItem; active:
       onClick={onNavigate}
       aria-current={active ? "page" : undefined}
       title={compact ? item.label : undefined}
-      className={cx(base, active ? "bg-brand-soft/70 text-fg" : "text-fg-muted hover:bg-white/[.04] hover:text-fg")}
+      className={cx(base, active ? "bg-brand-strong/35 font-medium text-fg" : "text-fg/90 hover:bg-white/[.04] hover:text-fg")}
     >
       {content}
     </Link>
@@ -89,25 +102,25 @@ function NavContent({ compact, onNavigate }: { compact: boolean; onNavigate: () 
   const pathname = usePathname();
   const isActive = (href?: string) => (href ? (href === "/" ? pathname === "/" : pathname.startsWith(href)) : false);
   return (
-    <>
-      <nav aria-label="Navegação principal" className="flex-1 overflow-y-auto px-3 py-4">
-        <ul className="flex flex-col gap-0.5">
+    <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+      <nav aria-label="Navegação principal" className={cx("shrink-0 pt-4", compact ? "px-3" : "pr-3")}>
+        <ul className="flex flex-col gap-[3.75px]">
           {primary.map((item) => (
             <li key={item.label}>
               <NavLink item={item} active={isActive(item.href)} compact={compact} onNavigate={onNavigate} />
             </li>
           ))}
         </ul>
-        <div className={cx("mt-6 mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-fg-subtle/80", compact ? "sr-only" : "px-3")}>Conta</div>
-        <ul className={cx("flex flex-col gap-0.5", compact && "mt-6 border-t border-line pt-4")}>
+        <div className={cx("mb-1.5 mt-5 text-[10px] font-semibold uppercase tracking-[0.16em] text-fg-subtle/80", compact ? "sr-only" : "pl-[26px]")}>Conta</div>
+        <ul className={cx("flex flex-col gap-[3.75px]", compact && "mt-6 border-t border-line pt-4")}>
           {secondary.map((item) => (
             <li key={item.label}>
-              <NavLink item={item} active={isActive(item.href)} compact={compact} onNavigate={onNavigate} />
+              <NavLink item={item} active={isActive(item.href)} compact={compact} dense onNavigate={onNavigate} />
             </li>
           ))}
         </ul>
       </nav>
-      <div className={cx("shrink-0", compact ? "px-3 pb-4" : "px-4 pb-5")}>
+      <div className={cx("shrink-0 px-3", compact ? "mt-auto pb-4 pt-4" : "pt-[18px]")}>
         {compact ? (
           <NavLink item={helpItem} active={isActive(helpItem.href)} compact onNavigate={onNavigate} />
         ) : (
@@ -115,22 +128,22 @@ function NavContent({ compact, onNavigate }: { compact: boolean; onNavigate: () 
             href="/help"
             onClick={onNavigate}
             aria-current={isActive("/help") ? "page" : undefined}
-            className="flex h-12 items-center gap-3 rounded-xl border border-line bg-surface px-3.5 text-[13.5px] text-fg-muted transition-colors hover:border-line-strong hover:text-fg"
+            className="flex h-[53px] items-center gap-3 whitespace-nowrap rounded-xl border border-line bg-surface px-3.5 text-[13.5px] text-fg/90 transition-colors hover:border-line-strong hover:text-fg"
           >
-            <span className="text-fg-subtle"><Icon name="help" size={18} /></span>
+            <span className="text-fg-muted"><Icon name="help" size={22} /></span>
             <span className="flex-1">{helpItem.label}</span>
-            <span className="text-fg-subtle"><Icon name="chevron" size={14} /></span>
+            <span className="text-fg-muted"><Icon name="chevron" size={15} /></span>
           </Link>
         )}
-        {!compact && (
-          <div className="mt-6 px-1 text-[11px] leading-[18px] text-fg-subtle">
-            <p>Copytrix v1.0.0</p>
-            <p>Telegram to Results</p>
-            <p>© 2026</p>
-          </div>
-        )}
       </div>
-    </>
+      {!compact && (
+        <div className="mt-auto shrink-0 px-[26px] pb-6 pt-6 text-[13px] leading-[19.5px] text-fg-subtle">
+          <p>Copytrix v1.0.0</p>
+          <p>Telegram to Results</p>
+          <p>© 2026</p>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -153,10 +166,10 @@ export default function Sidebar({
       <aside
         className={cx(
           "fixed inset-y-0 left-0 z-40 hidden flex-col border-r border-line bg-[#071522] transition-[width] duration-200 lg:flex",
-          collapsed ? "w-[76px]" : "w-[240px]",
+          collapsed ? "w-[76px]" : "w-[220px]",
         )}
       >
-        <div className={cx("flex h-16 shrink-0 items-center border-b border-line", collapsed ? "justify-center" : "px-5")}>
+        <div className={cx("flex h-[70px] shrink-0 items-center border-b border-line", collapsed ? "justify-center" : "pl-[22px] pr-3")}>
           <Logo compact={collapsed} />
         </div>
         <NavContent compact={collapsed} onNavigate={() => {}} />
@@ -166,7 +179,7 @@ export default function Sidebar({
         <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="Menu de navegação">
           <button aria-label="Fechar menu" tabIndex={-1} onClick={onCloseMobile} className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
           <aside className="relative flex h-full w-[280px] max-w-[85vw] flex-col border-r border-line bg-[#071522] shadow-2xl">
-            <div className="flex h-16 shrink-0 items-center justify-between border-b border-line px-5">
+            <div className="flex h-[70px] shrink-0 items-center justify-between border-b border-line px-5">
               <Logo compact={false} />
               <button
                 ref={closeRef}
