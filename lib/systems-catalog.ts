@@ -160,6 +160,10 @@ export function routesBySource(sourceId: SystemSourceId) {
   return SYSTEM_ROUTES.filter((r) => r.source === sourceId);
 }
 
+export function getRouteById(routeId: string) {
+  return SYSTEM_ROUTES.find((r) => r.routeId === routeId);
+}
+
 export const SYSTEM_STATUS_LABEL: Record<SystemRouteStatus, string> = {
   active: "Ativo",
   paused: "Pausado",
