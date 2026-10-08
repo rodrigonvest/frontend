@@ -9,7 +9,7 @@ const columns = ["#", "Data/Hora", "Símbolo", "Tipo", "Entrada", "Saída", "SL"
 function SideBadge({ side }: { side: "BUY" | "SELL" }) {
   return (
     <span
-      className={`inline-flex h-[18px] min-w-[38px] items-center justify-center rounded px-1.5 text-[10px] font-semibold ${
+      className={`inline-flex h-4 min-w-[36px] items-center justify-center rounded px-1.5 text-[10px] font-semibold ${
         side === "BUY" ? "bg-[#0a3d36] text-success" : "bg-[#4a1a28] text-danger"
       }`}
     >
@@ -20,14 +20,14 @@ function SideBadge({ side }: { side: "BUY" | "SELL" }) {
 
 function StatusBadge({ win }: { win: boolean }) {
   return win ? (
-    <span className="inline-flex h-[18px] items-center gap-1 rounded-full bg-[#0a3d36] pl-1 pr-2 text-[10px] font-semibold text-success">
+    <span className="inline-flex h-4 items-center gap-1 rounded-full bg-[#0a3d36] pl-1 pr-2 text-[10px] font-semibold text-success">
       <span aria-hidden className="flex size-3 items-center justify-center rounded-full bg-success text-[#06251f]">
         <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 5 5 9-10" /></svg>
       </span>
       Win
     </span>
   ) : (
-    <span className="inline-flex h-[18px] items-center gap-1 rounded-full bg-[#e5303f] pl-1 pr-2 text-[10px] font-semibold text-white">
+    <span className="inline-flex h-4 items-center gap-1 rounded-full bg-[#e5303f] pl-1 pr-2 text-[10px] font-semibold text-white">
       <span aria-hidden className="flex size-3 items-center justify-center rounded-full bg-white/90 text-[#e5303f]">
         <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"><path d="m7 7 10 10M17 7 7 17" /></svg>
       </span>
@@ -66,12 +66,12 @@ export default function TradesList() {
             className="h-8 w-full rounded-md border border-[#24435d] bg-[#091a2a] pl-8 pr-3 text-xs text-fg outline-none placeholder:text-fg-subtle focus-visible:border-brand"
           />
         </label>
-        <SelectField aria-label="Filtrar por resultado" value={outcome} onChange={(e) => setOutcome(e.target.value)} className="h-8 w-[150px]" selectClassName="text-[11px]">
+        <SelectField aria-label="Filtrar por resultado" value={outcome} onChange={(e) => setOutcome(e.target.value)} className="h-8 w-[172px]" selectClassName="text-[11px]">
           <option value="all">Todos os resultados</option>
           <option value="win">Vencedoras</option>
           <option value="loss">Perdedoras</option>
         </SelectField>
-        <SelectField aria-label="Filtrar por tipo" value={side} onChange={(e) => setSide(e.target.value)} className="h-8 w-[130px]" selectClassName="text-[11px]">
+        <SelectField aria-label="Filtrar por tipo" value={side} onChange={(e) => setSide(e.target.value)} className="h-8 w-[142px]" selectClassName="text-[11px]">
           <option value="all">Todos os tipos</option>
           <option value="BUY">BUY</option>
           <option value="SELL">SELL</option>
@@ -86,7 +86,7 @@ export default function TradesList() {
       </div>
 
       <div className="-mx-3.5 mt-3 overflow-x-auto">
-        <table className="w-full min-w-[760px] border-collapse text-[11px] tabular">
+        <table className="w-full min-w-[760px] border-collapse text-[11px] leading-[14px] tabular">
           <caption className="sr-only">Lista de operações do backtest</caption>
           <thead>
             <tr>
@@ -103,17 +103,17 @@ export default function TradesList() {
             ) : (
               rows.map((t) => (
                 <tr key={t.id} className="border-t border-[#17344b] text-[#e0e8f0] hover:bg-white/[.025]">
-                  <td className="px-2 py-[5px] first:pl-3.5">{t.id}</td>
-                  <td className="whitespace-nowrap px-2 py-[5px]">{t.dateTime}</td>
-                  <td className="px-2 py-[5px]">{t.symbol}</td>
-                  <td className="px-2 py-[5px]"><SideBadge side={t.side} /></td>
-                  <td className="px-2 py-[5px]">{t.entry}</td>
-                  <td className="px-2 py-[5px]">{t.exit}</td>
-                  <td className="px-2 py-[5px]">{t.sl}</td>
-                  <td className="px-2 py-[5px]">{t.tp}</td>
-                  <td className={`px-2 py-[5px] font-medium ${t.win ? "text-success" : "text-danger"}`}>{t.result}</td>
-                  <td className={`px-2 py-[5px] ${t.win ? "text-success" : "text-danger"}`}>{t.pips}</td>
-                  <td className="px-2 py-[5px] last:pr-3.5"><StatusBadge win={t.win} /></td>
+                  <td className="px-2 py-[3px] first:pl-3.5">{t.id}</td>
+                  <td className="whitespace-nowrap px-2 py-[3px]">{t.dateTime}</td>
+                  <td className="px-2 py-[3px]">{t.symbol}</td>
+                  <td className="px-2 py-[3px]"><SideBadge side={t.side} /></td>
+                  <td className="px-2 py-[3px]">{t.entry}</td>
+                  <td className="px-2 py-[3px]">{t.exit}</td>
+                  <td className="px-2 py-[3px]">{t.sl}</td>
+                  <td className="px-2 py-[3px]">{t.tp}</td>
+                  <td className={`px-2 py-[3px] font-medium ${t.win ? "text-success" : "text-danger"}`}>{t.result}</td>
+                  <td className={`px-2 py-[3px] ${t.win ? "text-success" : "text-danger"}`}>{t.pips}</td>
+                  <td className="px-2 py-[3px] last:pr-3.5"><StatusBadge win={t.win} /></td>
                 </tr>
               ))
             )}

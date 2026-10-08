@@ -11,25 +11,25 @@ export default function ResultDonut() {
 
   return (
     <Panel title="Distribuição por Resultado">
-      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-4 xl:flex-nowrap xl:justify-between">
-        <div className="relative size-[108px] shrink-0">
+      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-4 xl:flex-nowrap xl:justify-start">
+        <div className="relative size-[104px] shrink-0">
           <svg viewBox="0 0 130 130" className="size-full -rotate-90" role="img" aria-label="167 operações: 88 vencedoras e 79 perdedoras">
             <circle cx="65" cy="65" r={radius} fill="none" stroke="#ff4d5d" strokeWidth="18" strokeDasharray={`${lossLength} ${circumference}`} strokeDashoffset={-(winShare + gap / 2) * circumference} />
             <circle cx="65" cy="65" r={radius} fill="none" stroke="#12d99e" strokeWidth="18" strokeDasharray={`${winLength} ${circumference}`} strokeDashoffset={-(gap / 2) * circumference} />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <strong className="text-[22px] font-semibold leading-none tracking-tight text-fg tabular">167</strong>
-            <span className="mt-1 text-[11px] text-fg-muted">Operações</span>
+            <strong className="text-xl font-semibold leading-none tracking-tight text-fg tabular">167</strong>
+            <span className="mt-1 text-[9.5px] text-fg-muted">Operações</span>
           </div>
         </div>
-        <ul className="flex flex-col gap-3.5 whitespace-nowrap text-xs">
+        <ul className="flex min-w-0 flex-col gap-3 whitespace-nowrap text-[11px]">
           <li>
             <span className="flex items-center gap-1.5 text-fg-muted"><span aria-hidden className="size-2.5 rounded-[3px] bg-success" />Vencedoras</span>
-            <span className="mt-1 block pl-4 text-[13px] font-semibold text-fg tabular">88 (52.7%)</span>
+            <span className="mt-0.5 block pl-4 text-[12.5px] font-semibold text-fg tabular">88 (52.7%)</span>
           </li>
           <li>
             <span className="flex items-center gap-1.5 text-fg-muted"><span aria-hidden className="size-2.5 rounded-[3px] bg-danger" />Perdedoras</span>
-            <span className="mt-1 block pl-4 text-[13px] font-semibold text-fg tabular">79 (47.3%)</span>
+            <span className="mt-0.5 block pl-4 text-[12.5px] font-semibold text-fg tabular">79 (47.3%)</span>
           </li>
         </ul>
       </div>

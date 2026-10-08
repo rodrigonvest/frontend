@@ -7,7 +7,7 @@ const ticks = [70, 60, 50, 40, 30, 20, 10, 0];
 export default function RDistribution() {
   return (
     <Panel title="Distribuição de Resultados (R)">
-      <div role="img" aria-label="Histograma de resultados em R: 16, 63, 28, 31, 22 e 7 operações" className="relative mt-3 h-[172px]">
+      <div role="img" aria-label="Histograma de resultados em R: 16, 63, 28, 31, 22 e 7 operações" className="relative mt-3 h-[165px]">
         <div className="absolute bottom-6 left-0 top-3 flex w-7 flex-col justify-between text-[11px] text-fg-muted tabular">
           {ticks.map((t) => <span key={t} className="-my-1.5 leading-none">{t}</span>)}
         </div>

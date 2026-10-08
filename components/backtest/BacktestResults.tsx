@@ -3,9 +3,9 @@ import { Panel, SelectField } from "./BacktestFields";
 
 function MetricBox({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="min-w-0 rounded-lg border border-[#17344b] bg-[#081726]/80 px-3 py-2.5">
-      <p className="truncate text-[11px] text-fg-muted">{label}</p>
-      <div className="mt-1.5 text-[22px] font-semibold leading-none tracking-tight text-fg tabular">{children}</div>
+    <div className="min-w-0 rounded-lg border border-[#17344b] bg-[#081726]/80 px-2.5 py-2.5">
+      <p className="whitespace-nowrap text-[10.5px] text-fg-muted">{label}</p>
+      <div className="mt-1.5 whitespace-nowrap text-xl font-semibold leading-none tracking-tight text-fg tabular">{children}</div>
     </div>
   );
 }
@@ -17,7 +17,7 @@ function EquityChart() {
   const area = `0,100 ${line} 100,100`;
 
   return (
-    <div role="img" aria-label="Curva de equidade crescendo de $700 para cerca de $1,500 entre 21 de junho e 4 de setembro" className="relative mt-2 h-[158px]">
+    <div role="img" aria-label="Curva de equidade crescendo de $700 para cerca de $1,500 entre 21 de junho e 4 de setembro" className="relative mt-2 h-[150px]">
       <div className="absolute bottom-6 left-0 top-1 flex w-12 flex-col justify-between text-[11px] text-fg-muted tabular">
         {equityTicks.map((t) => <span key={t} className="leading-none">{t}</span>)}
       </div>
@@ -46,7 +46,7 @@ function EquityChart() {
 export default function BacktestResults() {
   return (
     <Panel title="Resultados do Backtest">
-      <div className="mt-2.5 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="mt-2.5 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-[1fr_1fr_1.25fr_1fr_1fr]">
         <MetricBox label="Total de Operações">{backtestMetrics.totalTrades}</MetricBox>
         <MetricBox label="Taxa de Vitória">{backtestMetrics.winRate}</MetricBox>
         <MetricBox label="Lucro Total">

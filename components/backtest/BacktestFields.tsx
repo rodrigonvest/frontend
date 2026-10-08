@@ -18,7 +18,7 @@ export function Panel({ title, children, className, action }: { title: string; c
 
 export function SelectField({
   className,
-  selectClassName,
+  selectClassName = "text-[13px]",
   children,
   ...props
 }: SelectHTMLAttributes<HTMLSelectElement> & { selectClassName?: string }) {
@@ -27,7 +27,7 @@ export function SelectField({
       <select
         {...props}
         className={cx(
-          "h-full w-full cursor-pointer appearance-none rounded-md border border-[#24435d] bg-[#091a2a] pl-3 pr-8 text-[13px] text-[#e3edf5] outline-none focus-visible:border-brand",
+          "h-full w-full cursor-pointer appearance-none rounded-md border border-[#24435d] bg-[#091a2a] pl-3 pr-8 text-[#e3edf5] outline-none focus-visible:border-brand",
           selectClassName,
         )}
       >

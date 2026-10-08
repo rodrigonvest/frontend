@@ -2,7 +2,7 @@ import { monthlyPerformance, monthlyTotal } from "../../lib/backtest-demo";
 import { Panel } from "./BacktestFields";
 
 const head = "px-2 pb-2 text-right text-[11px] font-normal text-fg-muted first:pl-3.5 first:text-left last:pr-3.5";
-const cell = "px-2 py-[7px] text-right tabular first:pl-3.5 first:text-left last:pr-3.5";
+const cell = "px-2 py-[6px] text-right align-middle tabular first:pl-3.5 first:text-left last:pr-3.5";
 const underline = "underline decoration-1 underline-offset-4";
 
 export default function MonthlyPerformance() {
@@ -24,7 +24,7 @@ export default function MonthlyPerformance() {
           <tbody>
             {monthlyPerformance.map((row) => (
               <tr key={row.month} className="border-t border-[#17344b] text-[#e0e8f0]">
-                <th scope="row" className={`${cell} font-normal`}>{row.month}</th>
+                <td className={cell}>{row.month}</td>
                 <td className={cell}>{row.trades}</td>
                 <td className={`${cell} text-success`}>{row.usd}</td>
                 <td className={`${cell} text-success`}>{row.r}</td>
@@ -33,7 +33,7 @@ export default function MonthlyPerformance() {
               </tr>
             ))}
             <tr className="border-t border-[#2a4c68] bg-[#0b2033] font-semibold text-fg">
-              <th scope="row" className={`${cell} font-semibold`}>{monthlyTotal.month}</th>
+              <td className={cell}>{monthlyTotal.month}</td>
               <td className={cell}><span className={underline}>{monthlyTotal.trades}</span></td>
               <td className={`${cell} text-success`}><span className={underline}>{monthlyTotal.usd}</span></td>
               <td className={`${cell} text-success`}><span className={underline}>{monthlyTotal.r}</span></td>
