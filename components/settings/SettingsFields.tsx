@@ -27,17 +27,17 @@ export function SettingsCard({
     <section
       aria-labelledby={id}
       className={cx(
-        "flex min-w-0 flex-col rounded-xl border px-5 pb-5 pt-4",
-        danger ? "border-danger/35 bg-danger/[.06]" : "border-line bg-surface/70",
+        "flex min-w-0 flex-col rounded-xl border px-[18px] pb-4 pt-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,.03)]",
+        danger ? "border-danger/35 bg-danger/[.06]" : "border-brand/20 bg-surface/70",
         className,
       )}
     >
-      <header className="mb-4 flex items-start gap-3">
+      <header className="mb-3.5 flex items-start gap-2.5">
         <span className={cx("mt-0.5 flex size-8 shrink-0 items-center justify-center", danger ? "text-danger" : "text-brand")}>
-          <SettingsIcon name={icon} size={26} stroke={1.7} />
+          <SettingsIcon name={icon} size={28} stroke={1.7} />
         </span>
         <div className="min-w-0">
-          <h2 id={id} className={cx("text-[18px] font-semibold leading-6 tracking-tight", danger ? "text-danger" : "text-fg")}>
+          <h2 id={id} className={cx("text-[17px] font-semibold leading-6 tracking-tight", danger ? "text-danger" : "text-fg")}>
             {title}
           </h2>
           <p className="mt-0.5 text-[13px] leading-5 text-fg-muted">{description}</p>
@@ -50,8 +50,8 @@ export function SettingsCard({
 
 export function FieldBlock({ label, htmlFor, compact, children }: { label: string; htmlFor: string; compact?: boolean; children: ReactNode }) {
   return (
-    <div className="flex min-w-0 flex-col gap-1.5">
-      <label htmlFor={htmlFor} className={cx("leading-4 text-fg-muted", compact ? "text-[11.5px]" : "text-[13px]")}>
+    <div className="flex min-w-0 flex-col gap-2">
+      <label htmlFor={htmlFor} className={cx("leading-4 text-fg-muted", compact ? "whitespace-nowrap text-[11px]" : "text-[13px]")}>
         {label}
       </label>
       {children}
@@ -59,7 +59,7 @@ export function FieldBlock({ label, htmlFor, compact, children }: { label: strin
   );
 }
 
-const fieldHeight = "!h-10";
+const fieldHeight = "!h-[38px]";
 
 export function TextField({
   label,
@@ -144,7 +144,7 @@ export function SwitchRow({
 }) {
   const id = useId();
   return (
-    <div className="flex items-center gap-3.5">
+    <div className="flex items-center gap-4">
       <button
         type="button"
         role="switch"
@@ -154,11 +154,11 @@ export function SwitchRow({
         aria-describedby={`${id}-desc`}
         onClick={() => onChange(!checked)}
         className={cx(
-          "relative h-[26px] w-[50px] shrink-0 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
-          checked ? "bg-success" : "bg-[#3b4a5a]",
+          "relative h-7 w-[52px] shrink-0 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
+          checked ? "bg-brand" : "bg-[#3b4a5a]",
         )}
       >
-        <span className={cx("absolute top-[3px] size-5 rounded-full bg-white shadow transition-[left]", checked ? "left-[27px]" : "left-[3px]")} />
+        <span className={cx("absolute top-[3px] size-[22px] rounded-full bg-white shadow transition-[left]", checked ? "left-[27px]" : "left-[3px]")} />
       </button>
       <div className="min-w-0">
         <p id={`${id}-title`} className="text-[13.5px] font-medium leading-5 text-fg">

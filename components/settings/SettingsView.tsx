@@ -27,7 +27,7 @@ export default function SettingsView() {
 
       {tab === "general" && (
         <div className="pointer-events-none sticky bottom-4 z-10 mt-4 flex justify-end">
-          <Button variant="primary" className="pointer-events-auto h-12 rounded-lg px-6 text-[15px] font-semibold shadow-lg shadow-black/40">
+          <Button variant="primary" className="pointer-events-auto !h-[44px] rounded-lg px-5 text-[14px] font-semibold shadow-lg shadow-black/40">
             <SettingsIcon name="save" size={18} />
             Salvar Configurações
           </Button>
