@@ -15,7 +15,8 @@ export default function SettingsView() {
   const isSecurity = tab === "security";
 
   return (
-    <Shell wide={isSecurity}>
+    <Shell>
+      <div className={isSecurity ? "lg:-mx-2" : undefined} data-settings-layout={tab}>
       <PageHeader
         breadcrumb={
           isSecurity ? (
@@ -58,6 +59,7 @@ export default function SettingsView() {
           </Button>
         </div>
       )}
+      </div>
     </Shell>
   );
 }
