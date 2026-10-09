@@ -1,19 +1,8 @@
 import type { SystemRoute } from "./systems-catalog";
 
-export const SYSTEM_DISPLAY_NAME = "KIM GOLD SECRET";
-
 export function getSystemDisplayName(route: SystemRoute) {
-  return route.routeId === "telegram-to-oanda" ? SYSTEM_DISPLAY_NAME : route.name;
+  return route.name;
 }
-
-export const systemProfile = {
-  description: "Sinais de XAUUSD com foco em scalping. Entradas, TPs e SLs enviados em tempo real.",
-  type: "Sinais Manuais",
-  mainSymbol: "XAUUSD",
-  defaultAccount: "Hantec - Instant Lite",
-  createdAt: "10/06/2026 14:22",
-  lastActivity: "Hoje, 10:24",
-};
 
 export const systemKpis = [
   { id: "trades", label: "Total de Operações", value: "167", delta: "+12.8%", tone: "success" as const },
@@ -88,30 +77,3 @@ export const assets = [
   { symbol: "Outros", count: 3, share: "1.8%", color: "#a45cf2" },
 ];
 
-export const automationRows = [
-  { label: "Modo de Execução", value: "Tempo Real (Copier)" },
-  { label: "Filtro de Símbolos", value: "XAUUSD", symbol: true },
-  { label: "Filtro de Horário", value: "10:00 - 23:00 (BRT)" },
-  { label: "Distância Máx. de Entrada", value: "5.0 pips" },
-  { label: "Spread Máximo", value: "0.60 pips" },
-  { label: "Gerenciamento de Risco", value: "1.0% por operação" },
-  { label: "Conta Padrão", value: "Hantec - Instant Lite" },
-];
-
-export const entryRules = [
-  "Executar apenas sinais com símbolo permitido",
-  "Validar distância de entrada (≤ 5.0 pips)",
-  "Validar spread (≤ 0.60 pips)",
-  "Calcular volume por risco (1.0%)",
-  "Definir SL e TPs conforme o sinal",
-  "Mover SL para Break Even (+20 pips)",
-  "Fechar parcialmente conforme TPs",
-  "Fechar no horário definido (se configurado)",
-];
-
-export const linkedAccounts = [
-  { name: "Hantec - Instant Lite", active: true, main: true },
-  { name: "FundedNext - Stellar 50k", active: true, main: false },
-  { name: "Zero Markets - Real", active: false, main: false },
-  { name: "Pepperstone - Demo", active: false, main: false },
-];

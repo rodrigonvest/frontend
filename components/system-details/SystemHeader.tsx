@@ -58,12 +58,14 @@ export function StatusBadge({ status }: { status: SystemRouteStatus }) {
 export default function SystemHeader({
   routeId,
   name,
+  description = "Detalhes completos do sistema, desempenho, configurações e histórico de operações.",
   status,
   onTogglePause,
   onToggleActive,
 }: {
   routeId: string;
   name: string;
+  description?: string;
   status: SystemRouteStatus;
   onTogglePause: () => void;
   onToggleActive: () => void;
@@ -118,7 +120,7 @@ export default function SystemHeader({
             <StatusBadge status={status} />
           </div>
           <p className="mt-1 max-w-2xl text-pretty text-[15px] leading-6 text-fg-muted">
-            Detalhes completos do sistema, desempenho, configurações e histórico de operações.
+            {description}
           </p>
         </div>
         {actions}

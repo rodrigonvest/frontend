@@ -1,9 +1,10 @@
 import { Icon } from "../Icons";
 import DetailPanel from "../trade-details/DetailPanel";
 import { CheckCircle } from "../trade-details/TradeIcons";
-import { entryRules } from "../../lib/system-details-demo";
+import type { RouteDetails } from "../../lib/system-route-details";
 
-export default function SystemRulesCard({ className }: { className?: string }) {
+export default function SystemRulesCard({ details, className }: { details: RouteDetails; className?: string }) {
+  const entryRules = details.entryRules;
   return (
     <DetailPanel title="Regras de Entrada e Execução" icon={<Icon name="clipboard" size={19} />} className={className}>
       <ul className="mx-3.5 mb-3.5 mt-2.5 flex flex-1 flex-col justify-between gap-1.5">
