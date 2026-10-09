@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "./Icons";
 import { cx } from "./UI";
 
@@ -48,10 +48,11 @@ function Logo({ compact }: { compact: boolean }) {
   );
 }
 
-function NavLink({ item, active, compact, onNavigate }: { item: NavItem; active: boolean; compact: boolean; onNavigate: () => void }) {
+function NavLink({ item, active, compact, onNavigate, wrap = false }: { item: NavItem; active: boolean; compact: boolean; onNavigate: () => void; wrap?: boolean }) {
   const base = cx(
-    "group relative flex h-10 items-center gap-3 rounded-lg text-[13.5px] transition-colors",
-    compact ? "justify-center px-0" : "px-3",
+    "group relative flex items-center rounded-lg text-[13.5px] transition-colors",
+    wrap ? "min-h-10 gap-2.5 py-1.5" : "h-10 gap-3",
+    compact ? "justify-center px-0" : wrap ? "px-2.5" : "px-3",
   );
   const content = (
     <>
@@ -59,7 +60,7 @@ function NavLink({ item, active, compact, onNavigate }: { item: NavItem; active:
       <span className={cx("flex size-6 shrink-0 items-center justify-center", item.icon === "telegram" && "telegram-nav-icon", active ? "text-brand" : "text-fg-subtle group-hover:text-fg-muted")}>
         <Icon name={item.icon} size={18} stroke={item.icon === "telegram" ? 1.7 : 1.8} />
       </span>
-      {!compact && <span className="truncate">{item.label}</span>}
+      {!compact && <span className={wrap ? "leading-snug" : "truncate"}>{item.label}</span>}
       {!compact && item.soon && (
         <span className="ml-auto rounded-full border border-line-strong px-2 text-[10px] leading-5 text-fg-subtle">Em breve</span>
       )}
@@ -87,16 +88,72 @@ function NavLink({ item, active, compact, onNavigate }: { item: NavItem; active:
   );
 }
 
+const channelAnalysis: NavItem = { icon: "analytics", label: "Análise Automática de Canais", href: "/sistemas/analise-canais" };
+
+const systemsSubmenu: NavItem[] = [
+  { icon: "systems", label: "Automações", href: "/sistemas" },
+  { icon: "layers", label: "Templates", href: "/sistemas/templates" },
+  { icon: "accounts", label: "Multi-Conta Avançado", href: "/sistemas/multi-conta" },
+  { icon: "shield", label: "Risk Management Pro", href: "/sistemas/risk-management-pro" },
+  { icon: "settings", label: "Smart Entry", href: "/sistemas/smart-entry" },
+  { icon: "filter", label: "Filtros Avançados", href: "/sistemas/filtros-avancados" },
+  channelAnalysis,
+  { icon: "brain", label: "Copytrix Intelligence", href: "/sistemas/copytrix-intelligence" },
+];
+
 function NavContent({ compact, onNavigate }: { compact: boolean; onNavigate: () => void }) {
   const pathname = usePathname();
-  const isActive = (href?: string) => (href ? (href === "/" ? pathname === "/" : pathname.startsWith(href)) : false);
+  const [systemsOpen, setSystemsOpen] = useState(false);
+  const inSystems = pathname === "/sistemas" || pathname.startsWith("/sistemas/");
+  const systemsExpanded = systemsOpen || inSystems;
+  const isSystemsSubActive = (href: string) => {
+    if (href !== "/sistemas") return pathname === href || pathname.startsWith(`${href}/`);
+    const dedicated = systemsSubmenu.slice(1).some((sub) => pathname.startsWith(sub.href!));
+    return inSystems && !dedicated;
+  };
+  const isActive = (href?: string) => {
+    if (!href) return false;
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  };
   return (
     <>
       <nav aria-label="Navegação principal" className="flex-1 overflow-y-auto px-3 py-4">
         <ul className="flex flex-col gap-0.5">
           {primary.map((item) => (
             <li key={item.label}>
-              <NavLink item={item} active={isActive(item.href)} compact={compact} onNavigate={onNavigate} />
+              {item.href === "/sistemas" ? (
+                <>
+                  <div className="relative">
+                    <NavLink item={item} active={inSystems} compact={compact} onNavigate={onNavigate} />
+                    {!compact && (
+                      <button
+                        type="button"
+                        onClick={() => setSystemsOpen((open) => !open)}
+                        aria-expanded={systemsExpanded}
+                        aria-controls="systems-submenu"
+                        aria-label={systemsExpanded ? "Recolher Sistemas" : "Expandir Sistemas"}
+                        className="absolute right-1.5 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center rounded-md text-fg-subtle hover:bg-white/[.06] hover:text-fg"
+                      >
+                        <span className={cx("transition-transform", systemsExpanded ? "rotate-90" : "")}>
+                          <Icon name="chevron" size={13} />
+                        </span>
+                      </button>
+                    )}
+                  </div>
+                  {systemsExpanded && (
+                    <ul id="systems-submenu" className={cx("mt-0.5 flex flex-col gap-0.5", !compact && "ml-5 border-l border-line pl-2")}>
+                      {systemsSubmenu.map((sub) => (
+                        <li key={sub.label}>
+                          <NavLink item={sub} active={isSystemsSubActive(sub.href!)} compact={compact} onNavigate={onNavigate} wrap />
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              ) : (
+                <NavLink item={item} active={isActive(item.href)} compact={compact} onNavigate={onNavigate} />
+              )}
             </li>
           ))}
         </ul>
