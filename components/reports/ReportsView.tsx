@@ -9,7 +9,7 @@ import ReportsCustomCard from "./ReportsCustomCard";
 
 export default function ReportsView() {
   return (
-    <Shell>
+    <Shell wide>
       <div className="lg:-mt-3">
         <ReportsHeader />
         <ReportsKpiCards />
