@@ -70,7 +70,7 @@ function KpiIcon({ id, progress }: { id: string; progress?: number }) {
 
 export default function SystemKpiCards() {
   return (
-    <section aria-label="Indicadores do sistema" className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
+    <section aria-label="Indicadores da rota / automação" className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
       {systemKpis.map((k) => (
         <article key={k.id} className={cx(panelClass, "flex min-w-0 items-center gap-2 px-2.5 py-3.5 min-[1700px]:gap-3 min-[1700px]:px-3")}>
           <KpiIcon id={k.id} progress={"progress" in k ? k.progress : undefined} />

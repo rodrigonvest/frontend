@@ -30,7 +30,7 @@ export default function SystemProfileCard({
   const channel = route.source === "telegram" ? `Canal ${details.specifics[0].value}` : `Origem ${details.source.label}`;
 
   return (
-    <section aria-label="Resumo do sistema" className={cx(panelClass, "flex min-w-0 flex-col p-3.5", className)}>
+    <section aria-label="Resumo da rota / automação" className={cx(panelClass, "flex min-w-0 flex-col p-3.5", className)}>
       <div className="flex items-center gap-3">
         <SystemLogo logo={route.icon.source} size={46} />
         <div className="min-w-0 leading-tight">

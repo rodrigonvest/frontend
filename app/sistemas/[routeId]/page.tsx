@@ -9,7 +9,11 @@ type Params = Promise<{ routeId: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const route = getRouteById((await params).routeId);
-  return { title: route ? `${getSystemDisplayName(route)} — Detalhes do Sistema — Copytrix` : "Detalhes do Sistema — Copytrix" };
+  return {
+    title: route
+      ? `Detalhes da Rota / Automação — ${getSystemDisplayName(route)} — Copytrix`
+      : "Detalhes da Rota / Automação — Copytrix",
+  };
 }
 
 export default async function SystemDetailsPage({ params }: { params: Params }) {
