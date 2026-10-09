@@ -74,6 +74,7 @@ export function NumberBox({
   max,
   label,
   className,
+  decimals,
 }: {
   value: number;
   onChange: (next: number) => void;
@@ -82,9 +83,11 @@ export function NumberBox({
   max?: number;
   label: string;
   className?: string;
+  decimals?: number;
 }) {
-  const [draft, setDraft] = useState(String(value));
-  const shown = draft === "" || Number(draft.replace(",", ".")) === value ? draft : String(value);
+  const format = (n: number) => (decimals === undefined ? String(n) : n.toFixed(decimals));
+  const [draft, setDraft] = useState(format(value));
+  const shown = draft === "" || Number(draft.replace(",", ".")) === value ? draft : format(value);
 
   return (
     <label className={cx("flex h-9 items-center rounded-md border border-line bg-canvas px-2.5 text-sm text-fg focus-within:border-brand", className)}>
