@@ -100,10 +100,10 @@ export const TIMEFRAMES = [
 export type TimeframeId = (typeof TIMEFRAMES)[number]["id"];
 
 export const SPEEDS = [
-  { value: 0.5, label: "0.5x - Lento" },
-  { value: 1, label: "1x - Normal" },
-  { value: 2, label: "2x - Rápido" },
-  { value: 4, label: "4x - Muito rápido" },
+  { value: 0.5, label: "0.5x", name: "Lento" },
+  { value: 1, label: "1x", name: "Normal" },
+  { value: 2, label: "2x", name: "Rápido" },
+  { value: 4, label: "4x", name: "Muito rápido" },
 ] as const;
 
 export const INDICATORS = [
@@ -135,7 +135,7 @@ export const channels: ReplayChannel[] = [
   },
   {
     id: "fx",
-    name: "FX PREMIUM SIGNALS",
+    name: "FX PREMIUM",
     asset: "EURUSD",
     word: "EURUSD",
     decimals: 5,
@@ -152,26 +152,26 @@ export const channels: ReplayChannel[] = [
     seed: 23,
   },
   {
-    id: "crypto",
-    name: "CRYPTO TREND VIP",
-    asset: "BTCUSDT",
-    word: "BTC",
+    id: "gold",
+    name: "GOLD SIGNALS",
+    asset: "XAUUSD",
+    word: "GOLD",
     decimals: 2,
-    tick: 0.5,
-    base: 98420,
-    slDist: 600,
-    slPips: 600,
-    tpPips: [150, 300, 450],
-    spread: 1.5,
+    tick: 0.05,
+    base: 3585,
+    slDist: 15,
+    slPips: 15,
+    tpPips: [20, 40, 60],
+    spread: 0.42,
     countFactor: 0.8,
-    winRate: 0.58,
+    winRate: 0.62,
     ignoredRate: 0.05,
-    rr: 2.3,
+    rr: 1.6,
     seed: 37,
   },
   {
     id: "us",
-    name: "US INDICES SWING",
+    name: "TRADER ZONE",
     asset: "US100",
     word: "NAS100",
     decimals: 2,
@@ -417,7 +417,7 @@ export function buildSession(channelId: string, periodId: string): ReplaySession
   const executed = signals.filter((signal) => signal.status === "Executado");
   const wins = executed.filter((signal) => signal.outcome !== "SL").length;
   const losses = executed.length - wins;
-  const resultR = useHead ? 137.6 : Number((wins * channel.rr * 0.9 - losses).toFixed(1));
+  const resultR = Number(executed.reduce((sum, signal) => sum + signal.r, 0).toFixed(2));
   const summary: ReplaySummary = {
     total: signals.length,
     executed: executed.length,

@@ -73,12 +73,20 @@ export function HeartGlyph({ size = 14, className }: GlyphProps) {
   );
 }
 
-export function RpSelect({ className, children, ...props }: SelectHTMLAttributes<HTMLSelectElement>) {
+export function RpSelect({ className, children, icon, ...props }: SelectHTMLAttributes<HTMLSelectElement> & { icon?: ReactNode }) {
   return (
     <span className={cx("relative block", className)}>
+      {icon && (
+        <span aria-hidden className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-fg-muted">
+          {icon}
+        </span>
+      )}
       <select
         {...props}
-        className="h-10 w-full cursor-pointer appearance-none rounded-lg border border-line-strong bg-surface pl-3 pr-8 text-[13px] text-fg outline-none transition-colors [color-scheme:dark] hover:border-brand/50 focus-visible:border-brand focus-visible:outline-2 focus-visible:outline-brand/60"
+        className={cx(
+          "h-10 w-full cursor-pointer appearance-none rounded-lg border border-line-strong bg-surface pr-8 text-[13px] text-fg outline-none transition-colors [color-scheme:dark] hover:border-brand/50 focus-visible:border-brand focus-visible:outline-2 focus-visible:outline-brand/60",
+          icon ? "pl-9" : "pl-3",
+        )}
       >
         {children}
       </select>
@@ -191,6 +199,8 @@ const accentStyles = {
   green: "bg-success/15 text-success",
   red: "bg-danger/15 text-danger",
   amber: "bg-warning/15 text-warning",
+  purple: "bg-[#9b63ff]/15 text-[#a77bff]",
+  gold: "bg-warning/15 text-success",
 };
 
 export function SummaryCard({
@@ -211,11 +221,11 @@ export function SummaryCard({
   noteTone?: string;
 }) {
   return (
-    <div className="flex min-h-[84px] items-center gap-3.5 rounded-xl border border-line bg-gradient-to-b from-surface-2/70 to-surface px-4 py-3.5">
-      <span className={cx("flex size-12 shrink-0 items-center justify-center rounded-xl", accentStyles[accent])}>{icon}</span>
+    <div className="flex min-h-[84px] min-w-0 items-center gap-3 rounded-xl border border-line bg-gradient-to-b from-surface-2/70 to-surface px-3.5 py-3.5">
+      <span className={cx("flex size-11 shrink-0 items-center justify-center rounded-xl", accentStyles[accent])}>{icon}</span>
       <div className="min-w-0">
         <div className="truncate text-[12.5px] leading-4 text-fg-muted">{label}</div>
-        <div className={cx("tabular mt-1 truncate text-2xl font-semibold leading-none tracking-tight", valueTone)}>{value}</div>
+        <div className={cx("tabular mt-1 truncate text-[22px] font-semibold leading-none tracking-tight", valueTone)}>{value}</div>
         {note && <div className={cx("tabular mt-1.5 truncate text-[12px] leading-4", noteTone)}>{note}</div>}
       </div>
     </div>
@@ -226,7 +236,9 @@ export function DirectionLabel({ direction }: { direction: Direction }) {
   const buy = direction === "Buy";
   return (
     <span className={cx("inline-flex items-center gap-1.5 font-medium", buy ? "text-success" : "text-danger")}>
-      <Icon name={buy ? "arrowUpRight" : "arrowDownRight"} size={14} stroke={2.4} />
+      <span aria-hidden className={cx("inline-flex", buy ? "-rotate-45" : "rotate-45")}>
+        <Icon name="arrowRight" size={14} stroke={2.4} />
+      </span>
       {direction}
     </span>
   );

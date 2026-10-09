@@ -101,6 +101,7 @@ const systemsSubmenu: NavItem[] = [
   { icon: "brain", label: "Copytrix Intelligence", href: "/sistemas/copytrix-intelligence" },
   { icon: "trophy", label: "Marketplace de Estratégias", href: "/sistemas/marketplace" },
   { icon: "replay", label: "Replay de Sinais", href: "/sistemas/replay-de-sinais" },
+  { icon: "sparkles", label: "Copytrix AI", href: "/sistemas/copytrix-ai" },
 ];
 
 function NavContent({ compact, onNavigate }: { compact: boolean; onNavigate: () => void }) {
