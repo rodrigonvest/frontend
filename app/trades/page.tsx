@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import Shell from "../../components/Shell";
 import PageHeader from "../../components/PageHeader";
 import TradeChart from "../../components/trades/TradeChart";
@@ -118,6 +119,7 @@ function RowMenu({ trade, up, onDetails, onChart }: { trade: TradeRecord; up: bo
 }
 
 export default function TradesPage() {
+  const router = useRouter();
   const [trades, setTrades] = useState<TradeRecord[]>([]);
   const [summary, setSummary] = useState<TradeSummary>(emptySummary);
   const [selected, setSelected] = useState<TradeRecord | null>(null);
@@ -448,7 +450,7 @@ export default function TradesPage() {
                           >
                             <Icon name="analytics" size={15} stroke={2.2} />
                           </button>
-                          <RowMenu trade={t} up={i >= rows.length - 3 && rows.length > 4} onDetails={() => setSelected(t)} onChart={() => showChart(t)} />
+                          <RowMenu trade={t} up={i >= rows.length - 3 && rows.length > 4} onDetails={() => router.push(`/trades/${numberOf(t)}`)} onChart={() => showChart(t)} />
                         </span>
                       </td>
                     </tr>

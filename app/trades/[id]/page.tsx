@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "Visualize todas as informações desta operação, desde o sinal original até o fechamento.",
 };
 
-export default function TradeDetailsPage() {
-  return <TradeDetailsView />;
+export default async function TradeDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  return <TradeDetailsView id={id} />;
 }

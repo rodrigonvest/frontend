@@ -9,7 +9,7 @@ import { ExecutionCard, ManagementCard, NotesCard, SignalCard } from "./TradeLow
 const navButton =
   "inline-flex h-10 items-center justify-center gap-2.5 rounded-lg border border-[#24435d] bg-[#091a2a] px-4 text-[13.5px] font-medium text-fg transition-colors hover:border-brand";
 
-export default function TradeDetailsView() {
+export default function TradeDetailsView({ id }: { id: string }) {
   return (
     <Shell wide>
       <div className="relative rounded-xl border border-[#17344b] bg-[#071827]/60 p-4 shadow-[0_8px_24px_rgba(0,0,0,.18)] lg:-mt-3">
@@ -24,7 +24,7 @@ export default function TradeDetailsView() {
         <header className="flex flex-col gap-4 pr-7 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-balance text-2xl font-semibold tracking-tight text-fg sm:text-[28px] sm:leading-9">Detalhes da Operação #45782</h1>
+              <h1 className="text-balance text-2xl font-semibold tracking-tight text-fg sm:text-[28px] sm:leading-9">Detalhes da Operação #{id}</h1>
               <Badge tone="green" className="rounded-full px-3 py-0.5 text-[13px] font-semibold">TP3</Badge>
             </div>
             <p className="mt-1.5 max-w-3xl text-pretty text-[15px] leading-6 text-fg-muted">
