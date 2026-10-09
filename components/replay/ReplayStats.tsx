@@ -37,7 +37,7 @@ export default function ReplayStats({ summary }: { summary: ReplaySummary }) {
       <SummaryCard label="R:R Médio" value={`${summary.rrAvg.toFixed(1)}R`} icon={<Icon name="growth" size={22} />} accent="purple" />
       <SummaryCard
         label="Resultado Total"
-        value={`${sign}${Math.abs(summary.resultR).toFixed(1)}R`}
+        value={`${sign}${Math.abs(summary.resultR).toFixed(2)}R`}
         note={`${sign}$${Math.abs(summary.resultUsd).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
         noteTone={positive ? "text-success" : "text-danger"}
         icon={<Icon name="dollar" size={22} />}

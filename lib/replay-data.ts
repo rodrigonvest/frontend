@@ -417,7 +417,7 @@ export function buildSession(channelId: string, periodId: string): ReplaySession
   const executed = signals.filter((signal) => signal.status === "Executado");
   const wins = executed.filter((signal) => signal.outcome !== "SL").length;
   const losses = executed.length - wins;
-  const resultR = useHead ? 137.6 : Number((wins * channel.rr * 0.9 - losses).toFixed(1));
+  const resultR = Number(executed.reduce((sum, signal) => sum + signal.r, 0).toFixed(2));
   const summary: ReplaySummary = {
     total: signals.length,
     executed: executed.length,
