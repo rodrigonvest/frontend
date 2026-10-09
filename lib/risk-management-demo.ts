@@ -119,7 +119,7 @@ export const NOTIONAL_PER_LOT = 20700;
 
 export type SimulatorResult = { lot: number; pipValue: number; riskAmount: number; exposure: number; exposurePct: number };
 
-export const initialSimulatorResult: SimulatorResult = { lot: 0.25, pipValue: 2.5, riskAmount: 500, exposure: 5175, exposurePct: 10.4 };
+export const initialSimulatorResult: SimulatorResult = calcPositionSize(initialSimulator);
 
 export function calcPositionSize(inputs: SimulatorInputs): SimulatorResult {
   const riskAmount = (inputs.balance * inputs.riskPct) / 100;
