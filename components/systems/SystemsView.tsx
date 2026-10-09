@@ -130,6 +130,14 @@ export default function SystemsView() {
             <Icon name="shield" size={15} />
             Risk Management Pro
           </Link>
+
+          <Link
+            href="/sistemas/smart-entry"
+            className="inline-flex h-9 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-brand/40 bg-brand-soft/60 px-3 text-[12px] font-semibold text-[#cfe3ff] transition-colors hover:bg-brand-soft focus-visible:outline-2 focus-visible:outline-brand min-[1800px]:px-4"
+          >
+            <Icon name="settings" size={15} />
+            Smart Entry
+          </Link>
         </div>
       </header>
 
