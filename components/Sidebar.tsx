@@ -102,10 +102,7 @@ const systemsSubmenu: NavItem[] = [
 
 function NavContent({ compact, onNavigate }: { compact: boolean; onNavigate: () => void }) {
   const pathname = usePathname();
-  const [telegramOpen, setTelegramOpen] = useState(false);
   const [systemsOpen, setSystemsOpen] = useState(false);
-  const channelAnalysisActive = pathname.startsWith(channelAnalysis.href!);
-  const telegramExpanded = telegramOpen || pathname.startsWith("/connectors") || channelAnalysisActive;
   const inSystems = pathname === "/sistemas" || pathname.startsWith("/sistemas/");
   const systemsExpanded = systemsOpen || inSystems;
   const isSystemsSubActive = (href: string) => {
@@ -124,34 +121,7 @@ function NavContent({ compact, onNavigate }: { compact: boolean; onNavigate: () 
         <ul className="flex flex-col gap-0.5">
           {primary.map((item) => (
             <li key={item.label}>
-              {item.href === "/connectors" ? (
-                <>
-                  <div className="relative">
-                    <NavLink item={item} active={isActive(item.href)} compact={compact} onNavigate={onNavigate} />
-                    {!compact && (
-                      <button
-                        type="button"
-                        onClick={() => setTelegramOpen((open) => !open)}
-                        aria-expanded={telegramExpanded}
-                        aria-controls="telegram-submenu"
-                        aria-label={telegramExpanded ? "Recolher Canais Telegram" : "Expandir Canais Telegram"}
-                        className="absolute right-1.5 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center rounded-md text-fg-subtle hover:bg-white/[.06] hover:text-fg"
-                      >
-                        <span className={cx("transition-transform", telegramExpanded ? "rotate-90" : "")}>
-                          <Icon name="chevron" size={13} />
-                        </span>
-                      </button>
-                    )}
-                  </div>
-                  {telegramExpanded && (
-                    <ul id="telegram-submenu" className={cx("mt-0.5 flex flex-col gap-0.5", !compact && "ml-5 border-l border-line pl-2")}>
-                      <li>
-                        <NavLink item={channelAnalysis} active={channelAnalysisActive} compact={compact} onNavigate={onNavigate} wrap />
-                      </li>
-                    </ul>
-                  )}
-                </>
-              ) : item.href === "/sistemas" ? (
+              {item.href === "/sistemas" ? (
                 <>
                   <div className="relative">
                     <NavLink item={item} active={inSystems} compact={compact} onNavigate={onNavigate} />
