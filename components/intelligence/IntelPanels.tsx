@@ -80,7 +80,7 @@ export function SummaryCard({ card, active }: { card: SummaryCardData; active: b
   );
 }
 
-export function SummaryPanel({ periodLabel, className }: { periodLabel: string; className?: string }) {
+export function SummaryPanel({ periodLabel, signalsValue, className }: { periodLabel: string; signalsValue?: string; className?: string }) {
   return (
     <IPanel title="Resumo da Inteligência" icon="brain" iconColor={colors.blue} className={className}>
       <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
@@ -91,7 +91,7 @@ export function SummaryPanel({ periodLabel, className }: { periodLabel: string; 
             </span>
             <div className="min-w-0">
               <p className="truncate text-[12px] text-fg-muted">{metric.label}</p>
-              <p className="tabular text-[22px] font-semibold leading-7 text-fg">{metric.value}</p>
+              <p className="tabular text-[22px] font-semibold leading-7 text-fg">{metric.period && signalsValue ? signalsValue : metric.value}</p>
               <p className="truncate text-[11.5px] text-fg-muted">{metric.period ? periodLabel : metric.caption}</p>
             </div>
           </li>

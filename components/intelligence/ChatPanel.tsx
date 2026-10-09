@@ -19,18 +19,12 @@ function AiAvatar() {
   );
 }
 
-export function ChatPanel({ messagesHeight = 250, className }: { messagesHeight?: number; className?: string }) {
+export function useChat() {
   const [messages, setMessages] = useState<Message[]>([{ id: 0, role: "ai", text: chatGreeting }]);
   const [draft, setDraft] = useState("");
   const [typing, setTyping] = useState(false);
-  const listRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<number | null>(null);
   const idRef = useRef(1);
-
-  useEffect(() => {
-    const list = listRef.current;
-    if (list) list.scrollTo({ top: list.scrollHeight, behavior: "smooth" });
-  }, [messages, typing]);
 
   useEffect(
     () => () => {
@@ -50,6 +44,20 @@ export function ChatPanel({ messagesHeight = 250, className }: { messagesHeight?
       setTyping(false);
     }, 900);
   };
+
+  return { messages, draft, setDraft, typing, send };
+}
+
+export type ChatState = ReturnType<typeof useChat>;
+
+export function ChatPanel({ chat, messagesHeight = 250, className }: { chat: ChatState; messagesHeight?: number; className?: string }) {
+  const { messages, draft, setDraft, typing, send } = chat;
+  const listRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const list = listRef.current;
+    if (list) list.scrollTo({ top: list.scrollHeight, behavior: "smooth" });
+  }, [messages, typing]);
 
   return (
     <IPanel

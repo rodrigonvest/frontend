@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import Shell from "../Shell";
 import { Toast } from "../multi-account/MaPrimitives";
 import { colors, performanceSeries, periodOptions, periodResults, recommendations, type IntelligenceTab, type Period } from "../../lib/intelligence-demo";
-import { IntelligenceHeader, IntelligenceTabs, SummaryCards } from "./IntelligenceHeader";
+import { IntelligenceHeader, IntelligenceTabs, SummaryCards, formatIsoDate, type CustomRange } from "./IntelligenceHeader";
 import { InsightsPanel, IPanel, RecommendationsPanel, SummaryPanel } from "./IntelPanels";
 import { ChannelScoreTable, PatternsTable } from "./IntelTables";
-import { ChatPanel } from "./ChatPanel";
+import { ChatPanel, useChat } from "./ChatPanel";
 import { LegendDot, PerformanceChart, ResultsChart } from "./IntelCharts";
 
 function PerformancePanel({ className }: { className?: string }) {
@@ -50,6 +50,8 @@ export default function IntelligenceView() {
   const [tab, setTab] = useState<IntelligenceTab>("overview");
   const [applied, setApplied] = useState<string[]>([]);
   const [toast, setToast] = useState<string | null>(null);
+  const [customRange, setCustomRange] = useState<CustomRange | null>(null);
+  const chat = useChat();
 
   useEffect(() => {
     if (!toast) return;
@@ -57,7 +59,12 @@ export default function IntelligenceView() {
     return () => window.clearTimeout(timer);
   }, [toast]);
 
-  const periodLabel = periodOptions.find((option) => option.id === period)?.summary ?? "";
+  const customDays = customRange ? Math.round((Date.parse(customRange.to) - Date.parse(customRange.from)) / 86_400_000) + 1 : 0;
+  const periodLabel =
+    period === "custom" && customRange
+      ? `${formatIsoDate(customRange.from)} – ${formatIsoDate(customRange.to)}`
+      : (periodOptions.find((option) => option.id === period)?.summary ?? "");
+  const signalsValue = Math.round((period === "custom" ? customDays || 30 : Number(period)) * 61.4).toLocaleString("pt-BR");
 
   const apply = (id: string) => {
     setApplied((current) => (current.includes(id) ? current : [...current, id]));
@@ -71,7 +78,7 @@ export default function IntelligenceView() {
 
   return (
     <Shell wide>
-      <IntelligenceHeader period={period} onPeriod={setPeriod} />
+      <IntelligenceHeader period={period} onPeriod={setPeriod} customRange={customRange} onCustomRange={setCustomRange} />
       <SummaryCards />
       <IntelligenceTabs value={tab} onChange={setTab} />
 
@@ -80,13 +87,13 @@ export default function IntelligenceView() {
           <>
             <div className="grid grid-cols-1 gap-3 xl:grid-cols-[minmax(0,2fr)_minmax(0,1.1fr)]">
               <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                <SummaryPanel periodLabel={periodLabel} className="md:col-span-2" />
+                <SummaryPanel periodLabel={periodLabel} signalsValue={signalsValue} className="md:col-span-2" />
                 <InsightsPanel />
                 {recs()}
               </div>
               <div className="flex min-w-0 flex-col gap-3">
                 <PerformancePanel />
-                <ChatPanel className="flex-1" />
+                <ChatPanel chat={chat} className="flex-1" />
               </div>
             </div>
             <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 xl:grid-cols-3">
@@ -101,7 +108,7 @@ export default function IntelligenceView() {
           <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
             <InsightsPanel />
             <div className="flex min-w-0 flex-col gap-3">
-              <SummaryPanel periodLabel={periodLabel} />
+              <SummaryPanel periodLabel={periodLabel} signalsValue={signalsValue} />
               <PatternsTable onSeeAll={seeAllPatterns} className="flex-1" />
             </div>
           </div>
@@ -141,7 +148,7 @@ export default function IntelligenceView() {
 
         {tab === "chat" && (
           <div className="grid grid-cols-1 gap-3 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-            <ChatPanel messagesHeight={460} />
+            <ChatPanel chat={chat} messagesHeight={460} />
             <InsightsPanel />
           </div>
         )}
