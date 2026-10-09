@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
   SYSTEM_ROUTES,
@@ -113,6 +114,14 @@ export default function SystemsView() {
               );
             })}
           </div>
+
+          <Link
+            href="/sistemas/multi-conta"
+            className="inline-flex h-9 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-brand/40 bg-brand-soft/60 px-3 text-[12px] font-semibold text-[#cfe3ff] transition-colors hover:bg-brand-soft focus-visible:outline-2 focus-visible:outline-brand min-[1800px]:px-4"
+          >
+            <Icon name="accounts" size={15} />
+            Multi-Conta Avançado
+          </Link>
         </div>
       </header>
 
