@@ -99,6 +99,8 @@ const systemsSubmenu: NavItem[] = [
   { icon: "filter", label: "Filtros Avançados", href: "/sistemas/filtros-avancados" },
   channelAnalysis,
   { icon: "brain", label: "Copytrix Intelligence", href: "/sistemas/copytrix-intelligence" },
+  { icon: "trophy", label: "Marketplace de Estratégias", href: "/sistemas/marketplace" },
+  { icon: "replay", label: "Replay de Sinais", href: "/sistemas/replay-de-sinais" },
 ];
 
 function NavContent({ compact, onNavigate }: { compact: boolean; onNavigate: () => void }) {

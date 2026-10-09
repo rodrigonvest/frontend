@@ -61,6 +61,7 @@ export function Icon({ name, size = 18, stroke = 1.8 }: { name: string; size?: n
     growth: <><path d="M5 20v-4M11 20v-7M17 20V10"/><path d="m4 9 5-5 3 3 7-6"/><path d="M15 1h4v4"/></>,
     shieldCheck: <><path d="M12 3 5 6v5.5c0 4.3 2.9 7.6 7 9.5 4.1-1.9 7-5.2 7-9.5V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></>,
     sparkles: <><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/><path d="M19 3v4M17 5h4"/></>,
+    replay: <><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1"/><path d="M3.5 4v4.5H8"/><path d="m10.2 8.7 5 3.3-5 3.3Z"/></>,
   };
   return <svg {...common}>{paths[name] ?? paths.dashboard}</svg>;
 }
