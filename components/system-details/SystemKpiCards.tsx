@@ -6,7 +6,7 @@ import { systemKpis } from "../../lib/system-details-demo";
 
 function IconBox({ tone, children }: { tone: string; children: ReactNode }) {
   return (
-    <span aria-hidden className={cx("flex size-10 shrink-0 items-center justify-center rounded-xl 2xl:size-[46px]", tone)}>
+    <span aria-hidden className={cx("flex size-9 shrink-0 items-center justify-center rounded-xl min-[1700px]:size-[46px]", tone)}>
       {children}
     </span>
   );
@@ -16,7 +16,7 @@ function ProgressRing({ value }: { value: number }) {
   const r = 19;
   const c = 2 * Math.PI * r;
   return (
-    <span aria-hidden className="relative flex size-10 shrink-0 items-center justify-center 2xl:size-[50px]">
+    <span aria-hidden className="relative flex size-9 shrink-0 items-center justify-center min-[1700px]:size-[50px]">
       <svg viewBox="0 0 50 50" className="size-full -rotate-90">
         <circle cx="25" cy="25" r={r} fill="none" stroke="#12384a" strokeWidth="5" />
         <circle
@@ -72,11 +72,11 @@ export default function SystemKpiCards() {
   return (
     <section aria-label="Indicadores do sistema" className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
       {systemKpis.map((k) => (
-        <article key={k.id} className={cx(panelClass, "flex min-w-0 items-center gap-2.5 px-2.5 py-3.5 2xl:gap-3 2xl:px-3")}>
+        <article key={k.id} className={cx(panelClass, "flex min-w-0 items-center gap-2 px-2.5 py-3.5 min-[1700px]:gap-3 min-[1700px]:px-3")}>
           <KpiIcon id={k.id} progress={"progress" in k ? k.progress : undefined} />
-          <div className="min-w-0 leading-tight">
-            <p className="text-[11.5px] leading-[14px] text-fg-muted">{k.label}</p>
-            <p className={cx("mt-1 whitespace-nowrap text-[19px] font-semibold tabular 2xl:text-[22px]", k.tone === "danger" ? "text-danger" : "text-fg")}>{k.value}</p>
+          <div className="min-w-0 flex-1 leading-tight">
+            <p className="truncate text-[11px] leading-[14px] text-fg-muted min-[1700px]:text-[11.5px]">{k.label}</p>
+            <p className={cx("mt-1 whitespace-nowrap text-[16px] font-semibold tabular min-[1700px]:text-[22px]", k.tone === "danger" ? "text-danger" : "text-fg")}>{k.value}</p>
             <p className={cx("mt-1 text-[11.5px] font-medium tabular", k.tone === "danger" ? "text-danger" : "text-success")}>
               <span aria-hidden>{k.tone === "danger" ? "↓" : "↑"}</span> {k.delta}
             </p>
