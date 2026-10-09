@@ -33,17 +33,23 @@ export default function RouteCard({ route }: { route: SystemRoute }) {
       data-route-id={route.routeId}
       className="group flex h-full min-w-0 flex-col items-center rounded-lg border border-line bg-gradient-to-b from-surface-2/70 to-surface px-1.5 pb-1.5 pt-1.5 text-center transition-colors hover:border-brand/50 focus-within:border-brand/70"
     >
-      <div className="flex items-center justify-center gap-2">
-        <SystemLogo logo={route.icon.source} size={30} />
-        <Arrow />
-        <SystemLogo logo={route.icon.destination} size={30} />
-      </div>
+      <Link
+        href={`/sistemas/${route.routeId}`}
+        aria-label={`Ver detalhes da rota ${route.name}`}
+        className="flex w-full flex-col items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+      >
+        <div className="flex items-center justify-center gap-2">
+          <SystemLogo logo={route.icon.source} size={30} />
+          <Arrow />
+          <SystemLogo logo={route.icon.destination} size={30} />
+        </div>
 
-      <h3 className="mt-1 flex min-h-[30px] flex-col items-center justify-center text-[12px] font-medium leading-[15px] text-fg min-[1800px]:min-h-[34px] min-[1800px]:flex-row min-[1800px]:flex-wrap min-[1800px]:gap-x-1 min-[1800px]:text-[13px] min-[1800px]:font-semibold">
-        <span className="sr-only">{route.name}</span>
-        <span aria-hidden>{from}</span>
-        <span aria-hidden>→&nbsp;{to}</span>
-      </h3>
+        <h3 className="mt-1 flex min-h-[30px] flex-col items-center justify-center text-[12px] font-medium leading-[15px] text-fg min-[1800px]:min-h-[34px] min-[1800px]:flex-row min-[1800px]:flex-wrap min-[1800px]:gap-x-1 min-[1800px]:text-[13px] min-[1800px]:font-semibold">
+          <span className="sr-only">{route.name}</span>
+          <span aria-hidden>{from}</span>
+          <span aria-hidden>→&nbsp;{to}</span>
+        </h3>
+      </Link>
 
       <p className="mt-1 hidden min-h-[48px] text-pretty px-1 text-[12px] leading-4 text-fg-muted min-[1800px]:block">
         {route.description}
