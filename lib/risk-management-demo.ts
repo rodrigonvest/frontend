@@ -135,6 +135,12 @@ export function calcPositionSize(inputs: SimulatorInputs): SimulatorResult {
   };
 }
 
+export function maxLotByExposure(balance: number, exposureLimitPct: number): number {
+  if (balance <= 0 || exposureLimitPct <= 0) return 0;
+  const maxExposure = (balance * exposureLimitPct) / 100;
+  return Math.floor((maxExposure / NOTIONAL_PER_LOT) * 100 + 1e-9) / 100;
+}
+
 export const lossStreaks = [5, 10, 15, 20];
 
 export type RiskEvent = { when: string; type: "Limite" | "Bloqueio" | "Ajuste" | "Alerta"; detail: string; account: string };

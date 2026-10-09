@@ -6,6 +6,7 @@ import {
   calcPositionSize,
   initialSimulatorResult,
   lossStreaks,
+  maxLotByExposure,
   type CustomRule,
   type SimulatorInputs,
   type SimulatorResult,
@@ -13,9 +14,11 @@ import {
 import { NumberBox } from "../multi-account/MaPrimitives";
 import { FieldRow, HelpTip, Panel } from "./RiskFields";
 
-export function RiskSimulator({ inputs, onChange }: { inputs: SimulatorInputs; onChange: (patch: Partial<SimulatorInputs>) => void }) {
+export function RiskSimulator({ inputs, exposureLimit, onChange }: { inputs: SimulatorInputs; exposureLimit: number; onChange: (patch: Partial<SimulatorInputs>) => void }) {
   const [result, setResult] = useState<SimulatorResult>(initialSimulatorResult);
   const [flash, setFlash] = useState(false);
+  const exceedsExposure = result.exposurePct > exposureLimit;
+  const maxAllowedLot = maxLotByExposure(inputs.balance, exposureLimit);
   const riskAmount = (inputs.balance * inputs.riskPct) / 100;
 
   useEffect(() => {
@@ -75,8 +78,23 @@ export function RiskSimulator({ inputs, onChange }: { inputs: SimulatorInputs; o
           <dl className="tabular mt-2 space-y-1 text-[12px] text-fg-muted">
             <div className="flex justify-between gap-2"><dt>Valor por Pip:</dt><dd className="text-fg">{money(result.pipValue)}</dd></div>
             <div className="flex justify-between gap-2"><dt>Risco da Operação:</dt><dd className="text-fg">{money(result.riskAmount)}</dd></div>
-            <div className="flex justify-between gap-2"><dt>Exposição:</dt><dd className="text-fg">{money(result.exposure)} ({result.exposurePct.toFixed(1)}%)</dd></div>
+            <div className="flex justify-between gap-2"><dt>Exposição Calculada:</dt><dd className={cx(exceedsExposure ? "text-danger" : "text-fg")}>{money(result.exposure)} ({result.exposurePct.toFixed(1)}%)</dd></div>
+            <div className="flex justify-between gap-2"><dt>Limite de Exposição:</dt><dd className="text-fg">{exposureLimit.toFixed(1)}%</dd></div>
+            <div className="flex justify-between gap-2"><dt>Lote Calculado:</dt><dd className="text-fg">{result.lot.toFixed(2)}</dd></div>
+            <div className="flex justify-between gap-2"><dt>Lote Máximo Permitido:</dt><dd className="text-fg">{maxAllowedLot.toFixed(2)}</dd></div>
+            <div className="flex justify-between gap-2">
+              <dt>Status:</dt>
+              <dd className={cx("font-medium", exceedsExposure ? "text-danger" : "text-success")}>
+                {exceedsExposure ? "Excede limite de exposição" : "Dentro do limite"}
+              </dd>
+            </div>
           </dl>
+          {exceedsExposure && (
+            <div role="alert" className="mt-2.5 rounded-md border border-danger/50 bg-danger/15 px-2.5 py-2 text-[12px] leading-4 text-danger">
+              <span aria-hidden>⚠ </span>
+              Excede o limite de exposição de {exposureLimit.toFixed(0)}%. O lote calculado ({result.lot.toFixed(2)}) ultrapassa o máximo permitido ({maxAllowedLot.toFixed(2)}).
+            </div>
+          )}
         </div>
       </div>
     </Panel>
