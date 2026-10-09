@@ -98,6 +98,7 @@ const systemsSubmenu: NavItem[] = [
   { icon: "settings", label: "Smart Entry", href: "/sistemas/smart-entry" },
   { icon: "filter", label: "Filtros Avançados", href: "/sistemas/filtros-avancados" },
   channelAnalysis,
+  { icon: "brain", label: "Copytrix Intelligence", href: "/sistemas/copytrix-intelligence" },
 ];
 
 function NavContent({ compact, onNavigate }: { compact: boolean; onNavigate: () => void }) {
