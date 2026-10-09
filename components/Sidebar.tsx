@@ -90,15 +90,32 @@ function NavLink({ item, active, compact, onNavigate, wrap = false }: { item: Na
 
 const channelAnalysis: NavItem = { icon: "analytics", label: "Análise Automática de Canais", href: "/sistemas/analise-canais" };
 
+const systemsSubmenu: NavItem[] = [
+  { icon: "systems", label: "Automações", href: "/sistemas" },
+  { icon: "layers", label: "Templates", href: "/sistemas/templates" },
+  { icon: "accounts", label: "Multi-Conta Avançado", href: "/sistemas/multi-conta" },
+  { icon: "shield", label: "Risk Management Pro", href: "/sistemas/risk-management-pro" },
+  { icon: "settings", label: "Smart Entry", href: "/sistemas/smart-entry" },
+  { icon: "filter", label: "Filtros Avançados", href: "/sistemas/filtros-avancados" },
+  channelAnalysis,
+];
+
 function NavContent({ compact, onNavigate }: { compact: boolean; onNavigate: () => void }) {
   const pathname = usePathname();
   const [telegramOpen, setTelegramOpen] = useState(false);
+  const [systemsOpen, setSystemsOpen] = useState(false);
   const channelAnalysisActive = pathname.startsWith(channelAnalysis.href!);
   const telegramExpanded = telegramOpen || pathname.startsWith("/connectors") || channelAnalysisActive;
+  const inSystems = pathname === "/sistemas" || pathname.startsWith("/sistemas/");
+  const systemsExpanded = systemsOpen || inSystems;
+  const isSystemsSubActive = (href: string) => {
+    if (href !== "/sistemas") return pathname === href || pathname.startsWith(`${href}/`);
+    const dedicated = systemsSubmenu.slice(1).some((sub) => pathname.startsWith(sub.href!));
+    return inSystems && !dedicated;
+  };
   const isActive = (href?: string) => {
     if (!href) return false;
     if (href === "/") return pathname === "/";
-    if (href === "/sistemas" && channelAnalysisActive) return false;
     return pathname.startsWith(href);
   };
   return (
@@ -131,6 +148,35 @@ function NavContent({ compact, onNavigate }: { compact: boolean; onNavigate: () 
                       <li>
                         <NavLink item={channelAnalysis} active={channelAnalysisActive} compact={compact} onNavigate={onNavigate} wrap />
                       </li>
+                    </ul>
+                  )}
+                </>
+              ) : item.href === "/sistemas" ? (
+                <>
+                  <div className="relative">
+                    <NavLink item={item} active={inSystems} compact={compact} onNavigate={onNavigate} />
+                    {!compact && (
+                      <button
+                        type="button"
+                        onClick={() => setSystemsOpen((open) => !open)}
+                        aria-expanded={systemsExpanded}
+                        aria-controls="systems-submenu"
+                        aria-label={systemsExpanded ? "Recolher Sistemas" : "Expandir Sistemas"}
+                        className="absolute right-1.5 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center rounded-md text-fg-subtle hover:bg-white/[.06] hover:text-fg"
+                      >
+                        <span className={cx("transition-transform", systemsExpanded ? "rotate-90" : "")}>
+                          <Icon name="chevron" size={13} />
+                        </span>
+                      </button>
+                    )}
+                  </div>
+                  {systemsExpanded && (
+                    <ul id="systems-submenu" className={cx("mt-0.5 flex flex-col gap-0.5", !compact && "ml-5 border-l border-line pl-2")}>
+                      {systemsSubmenu.map((sub) => (
+                        <li key={sub.label}>
+                          <NavLink item={sub} active={isSystemsSubActive(sub.href!)} compact={compact} onNavigate={onNavigate} wrap />
+                        </li>
+                      ))}
                     </ul>
                   )}
                 </>
