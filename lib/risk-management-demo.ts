@@ -119,7 +119,7 @@ export const NOTIONAL_PER_LOT = 20700;
 
 export type SimulatorResult = { lot: number; pipValue: number; riskAmount: number; exposure: number; exposurePct: number };
 
-export const initialSimulatorResult: SimulatorResult = { lot: 0.25, pipValue: 2.5, riskAmount: 500, exposure: 5175, exposurePct: 10.4 };
+export const initialSimulatorResult: SimulatorResult = calcPositionSize(initialSimulator);
 
 export function calcPositionSize(inputs: SimulatorInputs): SimulatorResult {
   const riskAmount = (inputs.balance * inputs.riskPct) / 100;
@@ -133,6 +133,12 @@ export function calcPositionSize(inputs: SimulatorInputs): SimulatorResult {
     exposure,
     exposurePct: inputs.balance > 0 ? Math.round((exposure / inputs.balance) * 1000) / 10 : 0,
   };
+}
+
+export function maxLotByExposure(balance: number, exposureLimitPct: number): number {
+  if (balance <= 0 || exposureLimitPct <= 0) return 0;
+  const maxExposure = (balance * exposureLimitPct) / 100;
+  return Math.floor((maxExposure / NOTIONAL_PER_LOT) * 100 + 1e-9) / 100;
 }
 
 export const lossStreaks = [5, 10, 15, 20];

@@ -63,7 +63,7 @@ export default function RiskManagementView() {
   const lots = <LotManagementCard config={config} onChange={patchConfig} />;
   const filters = <ExecutionFiltersCard config={config} onChange={patchConfig} />;
   const exposure = <ExposurePanel exposureLimit={config.exposure} />;
-  const simulator = <RiskSimulator inputs={sim} onChange={patchSim} />;
+  const simulator = <RiskSimulator inputs={sim} exposureLimit={config.exposure} onChange={patchSim} />;
   const scenarios = <LossScenarios balance={sim.balance} riskAmount={simRiskAmount} weeklyLimit={config.weekly} drawdownLimit={config.drawdown} />;
   const customRules = (
     <CustomRules rules={rules} onToggle={(id) => setRules((current) => current.map((rule) => (rule.id === id ? { ...rule, checked: !rule.checked } : rule)))} />
