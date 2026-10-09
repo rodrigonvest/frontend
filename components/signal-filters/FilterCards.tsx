@@ -21,7 +21,8 @@ const numberControl = "w-[112px]";
 
 export function AssetCard({ config, onChange }: CardProps) {
   const patch = usePatch(onChange);
-  const both = config.buy && config.sell;
+  const [bothSelected, setBothSelected] = useState(false);
+  const both = bothSelected && config.buy && config.sell;
   return (
     <Panel title="1. Ativo e Direção" icon="chart">
       <FieldLabel>Símbolos permitidos</FieldLabel>
@@ -29,9 +30,9 @@ export function AssetCard({ config, onChange }: CardProps) {
       <div className="mt-4">
         <FieldLabel>Direção do sinal</FieldLabel>
         <div role="group" aria-label="Direção do sinal" className="flex flex-wrap gap-x-5 gap-y-2">
-          <CheckField label="Buy" tone="buy" checked={config.buy} onChange={(checked) => (checked || config.sell) && patch({ buy: checked })} />
-          <CheckField label="Sell" tone="sell" checked={config.sell} onChange={(checked) => (checked || config.buy) && patch({ sell: checked })} />
-          <CheckField label="Ambos" checked={both} onChange={(checked) => patch(checked ? { buy: true, sell: true } : { buy: true, sell: false })} />
+          <CheckField label="Buy" tone="buy" checked={config.buy} onChange={(checked) => { if (checked || config.sell) { setBothSelected(false); patch({ buy: checked }); } }} />
+          <CheckField label="Sell" tone="sell" checked={config.sell} onChange={(checked) => { if (checked || config.buy) { setBothSelected(false); patch({ sell: checked }); } }} />
+          <CheckField label="Ambos" checked={both} onChange={(checked) => { setBothSelected(checked); patch(checked ? { buy: true, sell: true } : { buy: true, sell: false }); }} />
         </div>
       </div>
     </Panel>
