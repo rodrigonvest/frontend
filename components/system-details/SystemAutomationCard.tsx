@@ -4,7 +4,7 @@ import DetailPanel from "../trade-details/DetailPanel";
 import { GoldLogo } from "../trade-details/TradeIcons";
 import { cx } from "../UI";
 import { SYSTEM_STATUS_LABEL, type SystemRouteStatus } from "../../lib/systems-catalog";
-import { automationRows } from "../../lib/system-details-demo";
+import type { RouteDetails } from "../../lib/system-route-details";
 
 const statusText: Record<SystemRouteStatus, string> = {
   active: "text-success",
@@ -20,16 +20,19 @@ const statusDot: Record<SystemRouteStatus, string> = {
 
 export default function SystemAutomationCard({
   routeId,
+  details,
   status,
   onTogglePause,
   className,
 }: {
   routeId: string;
+  details: RouteDetails;
   status: SystemRouteStatus;
   onTogglePause: () => void;
   className?: string;
 }) {
   const paused = status === "paused";
+  const automationRows = details.automationRows;
 
   return (
     <DetailPanel title="Configurações da Automação" icon={<Icon name="settings" size={19} />} className={className}>

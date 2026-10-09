@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { Badge, cx } from "../UI";
 import { activeSessionsDemo } from "../../lib/security-demo";
 import SettingsIcon from "./SettingsIcons";
@@ -12,10 +13,18 @@ export default function SessionsCard() {
       title="Sessões Ativas"
       description="Gerencie os dispositivos que estão conectados à sua conta."
       action={
-        <button type="button" className={cx(dangerButtonClass, "h-9")}>
-          <SettingsIcon name="logout" size={15} />
-          Sair de Todas
-        </button>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/configuracoes/seguranca/historico-conexoes"
+            className="whitespace-nowrap text-[13.5px] font-medium text-brand underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          >
+            Ver histórico de conexões <span aria-hidden>&rarr;</span>
+          </Link>
+          <button type="button" className={cx(dangerButtonClass, "h-9")}>
+            <SettingsIcon name="logout" size={15} />
+            Sair de Todas
+          </button>
+        </div>
       }
     >
       <ul className="flex flex-1 flex-col gap-2">

@@ -58,12 +58,14 @@ export function StatusBadge({ status }: { status: SystemRouteStatus }) {
 export default function SystemHeader({
   routeId,
   name,
+  description = "Detalhes completos da rota / automação, desempenho, configurações e histórico de operações.",
   status,
   onTogglePause,
   onToggleActive,
 }: {
   routeId: string;
   name: string;
+  description?: string;
   status: SystemRouteStatus;
   onTogglePause: () => void;
   onToggleActive: () => void;
@@ -109,7 +111,9 @@ export default function SystemHeader({
       <nav aria-label="Trilha de navegação" className="mb-1 flex items-center gap-2 text-[13px] text-fg-muted">
         <Link href="/sistemas" className="hover:text-fg">Sistemas</Link>
         <Icon name="chevron" size={12} />
-        <span className="text-fg">{name}</span>
+        <span>Detalhes da Rota / Automação</span>
+        <Icon name="chevron" size={12} />
+        <span aria-current="page" className="text-fg">{name}</span>
       </nav>
       <header className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0">
@@ -118,7 +122,7 @@ export default function SystemHeader({
             <StatusBadge status={status} />
           </div>
           <p className="mt-1 max-w-2xl text-pretty text-[15px] leading-6 text-fg-muted">
-            Detalhes completos do sistema, desempenho, configurações e histórico de operações.
+            {description}
           </p>
         </div>
         {actions}

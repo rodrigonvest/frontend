@@ -1,7 +1,7 @@
 import { Icon } from "../Icons";
 import DetailPanel from "../trade-details/DetailPanel";
 import { cx } from "../UI";
-import { linkedAccounts } from "../../lib/system-details-demo";
+import type { RouteDetails } from "../../lib/system-route-details";
 
 const columns = "grid grid-cols-[minmax(0,1fr)_88px_92px_24px] items-center gap-x-2";
 
@@ -14,7 +14,8 @@ function LinkGlyph() {
   );
 }
 
-export default function SystemAccountsCard({ className }: { className?: string }) {
+export default function SystemAccountsCard({ details, className }: { details: RouteDetails; className?: string }) {
+  const linkedAccounts = details.linkedAccounts;
   return (
     <DetailPanel
       title="Sistemas e Contas Vinculadas"
