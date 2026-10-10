@@ -1,5 +1,5 @@
 "use client";
-import { useId, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, type ReactNode } from "react";
 import { Icon } from "../Icons";
 import { cx } from "../UI";
 import { API_TABS, type ApiTabId } from "../../lib/api-access-data";
@@ -8,11 +8,17 @@ interface Props {
   tab: ApiTabId;
   onTab: (tab: ApiTabId) => void;
   children: ReactNode;
+  panelFocusRequest?: number;
 }
 
-export default function ApiTabs({ tab, onTab, children }: Props) {
+export default function ApiTabs({ tab, onTab, children, panelFocusRequest = 0 }: Props) {
   const baseId = useId();
   const listRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (panelFocusRequest > 0) panelRef.current?.focus();
+  }, [panelFocusRequest]);
 
   const move = (event: React.KeyboardEvent, index: number) => {
     const last = API_TABS.length - 1;
@@ -69,7 +75,14 @@ export default function ApiTabs({ tab, onTab, children }: Props) {
         })}
       </div>
 
-      <div role="tabpanel" id={`${baseId}-panel`} aria-labelledby={`${baseId}-tab-${tab}`} className="min-w-0">
+      <div
+        ref={panelRef}
+        role="tabpanel"
+        id={`${baseId}-panel`}
+        aria-labelledby={`${baseId}-tab-${tab}`}
+        tabIndex={-1}
+        className="min-w-0 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+      >
         {children}
       </div>
     </div>

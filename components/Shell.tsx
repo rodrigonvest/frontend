@@ -33,6 +33,7 @@ export default function Shell({ children, wide = false }: { children: React.Reac
           collapsed={collapsed}
           onToggleCollapse={() => setCollapsed((v) => !v)}
           onOpenMobile={() => setMobileOpen(true)}
+          mobileOpen={mobileOpen}
           status={systemStatus}
         />
         <main

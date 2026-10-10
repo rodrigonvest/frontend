@@ -15,7 +15,7 @@ export default function EndpointsCard({ showViewAll = true }: { showViewAll?: bo
         showViewAll ? (
           <button
             type="button"
-            onClick={() => goToTab("rest")}
+            onClick={() => goToTab("rest", { focusPanel: true })}
             className="rounded-md px-1 py-0.5 text-[13px] font-medium text-[#5cc2ff] transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-brand"
           >
             Ver todos os endpoints <span aria-hidden>→</span>

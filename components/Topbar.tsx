@@ -87,11 +87,13 @@ export default function Topbar({
   collapsed,
   onToggleCollapse,
   onOpenMobile,
+  mobileOpen = false,
   status = UNAVAILABLE_SYSTEM_STATUS,
 }: {
   collapsed: boolean;
   onToggleCollapse: () => void;
   onOpenMobile: () => void;
+  mobileOpen?: boolean;
   status?: SystemStatus;
 }) {
   const s = DEMO_SESSION;
@@ -100,6 +102,7 @@ export default function Topbar({
       <button
         onClick={onOpenMobile}
         aria-label="Abrir menu"
+        aria-expanded={mobileOpen}
         className="flex size-10 items-center justify-center rounded-lg text-fg-muted hover:bg-white/[.05] hover:text-fg lg:hidden"
       >
         <Icon name="menu" size={20} />

@@ -5,11 +5,12 @@ import type { Notify } from "./Toast";
 
 export interface ApiAccessContextValue {
   apiKeyDisplay: string;
+  apiKeyValue: string;
   permissions: Record<string, boolean>;
   webhooks: WebhookItem[];
   notify: Notify;
   copy: (text: string, message: string) => void;
-  goToTab: (tab: ApiTabId) => void;
+  goToTab: (tab: ApiTabId, options?: { focusPanel?: boolean }) => void;
   openDocs: () => void;
   togglePermission: (id: string) => void;
   savePermissions: () => void;
