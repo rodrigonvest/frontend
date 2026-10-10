@@ -50,7 +50,7 @@ export default function HowItWorksModal({ open, returnFocusTo, onClose }: { open
   return (
     <div
       className="fixed inset-0 z-[60] flex items-center justify-center overflow-y-auto bg-black/65 p-4 backdrop-blur-sm"
-      onMouseDown={(event) => event.target === event.currentTarget && onClose()}
+      onClick={(event) => event.target === event.currentTarget && onClose()}
     >
       <div
         ref={dialogRef}
