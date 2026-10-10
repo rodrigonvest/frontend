@@ -9,12 +9,12 @@ export function PaymentMethodCard({ onChange }: { onChange: () => void }) {
     <section aria-labelledby="payment-title" className={cx(SURFACE, "flex flex-col gap-4 p-4 sm:p-5")}>
       <SectionHeader id="payment-title" title="Método de Pagamento" action={<SmallActionButton onClick={onChange}>Alterar</SmallActionButton>} />
       <div className="flex items-center gap-3 rounded-xl border border-line bg-canvas/35 p-3">
-        <span aria-hidden className="flex size-14 shrink-0 items-center justify-center rounded-xl bg-brand/12 text-[#32bcad]">
+        <span aria-hidden className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-brand/12 text-[#32bcad] sm:size-14">
           <PixMark size={34} />
         </span>
         <div className="min-w-0 flex-1">
           <p className="text-[17px] font-semibold text-fg">{PAYMENT_METHOD.name}</p>
-          <p className="truncate text-[13px] text-fg-muted">{PAYMENT_METHOD.maskedEmail}</p>
+          <p className="text-[13px] text-fg-muted [overflow-wrap:anywhere]">{PAYMENT_METHOD.maskedEmail}</p>
         </div>
         <span className="shrink-0 rounded-md border border-success/60 bg-success/5 px-3 py-1 text-[12.5px] font-semibold text-success">
           {PAYMENT_METHOD.badge}

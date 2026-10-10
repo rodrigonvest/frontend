@@ -33,7 +33,7 @@ function PlanCard({ plan, onUpgrade }: { plan: PlanOffer; onUpgrade: (plan: Plan
   const titleId = `plan-${plan.id}-title`;
   return (
     <li className="flex min-w-0">
-      <article aria-labelledby={titleId} className={cx("relative flex w-full flex-col rounded-xl border p-4", styles.card)}>
+      <article aria-labelledby={titleId} aria-current={plan.current ? "true" : undefined} className={cx("relative flex w-full flex-col rounded-xl border p-4", styles.card)}>
         {plan.current && (
           <span className="absolute -top-3 right-4 rounded-md bg-brand-strong px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white shadow-[0_0_16px_-2px_rgba(21,154,242,.9)]">
             Plano atual
@@ -46,6 +46,7 @@ function PlanCard({ plan, onUpgrade }: { plan: PlanOffer; onUpgrade: (plan: Plan
           <div className="min-w-0">
             <h3 id={titleId} className="text-[17px] font-semibold text-fg">
               {plan.name}
+              {plan.current && <span className="sr-only"> (plano atual)</span>}
             </h3>
             <p className="flex flex-wrap items-baseline gap-x-1">
               <span className="tabular text-[24px] font-bold leading-8 tracking-tight text-fg">{plan.price}</span>

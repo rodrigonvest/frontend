@@ -86,7 +86,7 @@ function MoreMenu({ items }: { items: MenuItem[] }) {
               role="menuitem"
               tabIndex={-1}
               onClick={() => {
-                setOpen(false);
+                closeAndRestore();
                 item.onSelect();
               }}
               className="flex h-10 w-full items-center rounded-lg px-3 text-left text-[13px] text-fg-muted outline-none transition-colors hover:bg-white/[.06] hover:text-fg focus-visible:bg-white/[.08] focus-visible:text-fg"
