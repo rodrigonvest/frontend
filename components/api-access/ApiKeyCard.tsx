@@ -23,7 +23,7 @@ export default function ApiKeyCard() {
           value={apiKeyDisplay}
           className="h-11 min-w-[220px] flex-1 rounded-lg border border-line bg-canvas/70 px-3.5 font-mono text-[13px] text-fg-muted outline-none transition-colors focus-visible:border-brand focus-visible:outline-2 focus-visible:outline-brand"
         />
-        <Button aria-label="Copiar API Key" onClick={() => copy(apiKeyValue, "API Key copiada para a área de transferência.")} className="h-11 px-4">
+        <Button aria-label="Copiar API Key" onClick={() => copy(apiKeyValue, "API Key copiada para a área de transferência (demonstrativo: chave de exemplo, sem máscara).")} className="h-11 px-4">
           <Icon name="copy" size={16} />
           Copiar
         </Button>

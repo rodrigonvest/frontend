@@ -206,8 +206,37 @@ export default function Sidebar({
   onCloseMobile: () => void;
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (mobileOpen) closeRef.current?.focus();
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      const dialog = dialogRef.current;
+      if (!dialog) return;
+      const focusables = Array.from(
+        dialog.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+      ).filter((el) => el.tabIndex >= 0 && el.getClientRects().length > 0);
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement;
+      if (!(active instanceof Node) || !dialog.contains(active)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+      } else if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   }, [mobileOpen]);
 
   return (
@@ -225,7 +254,7 @@ export default function Sidebar({
       </aside>
 
       {mobileOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="Menu de navegação">
+        <div ref={dialogRef} className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="Menu de navegação">
           <button aria-label="Fechar menu" tabIndex={-1} onClick={onCloseMobile} className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
           <aside className="relative flex h-full w-[280px] max-w-[85vw] flex-col border-r border-line bg-[#071522] shadow-2xl">
             <div className="flex h-16 shrink-0 items-center justify-between border-b border-line px-5">

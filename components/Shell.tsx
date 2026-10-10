@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import { cx } from "./UI";
@@ -9,6 +9,13 @@ export default function Shell({ children, wide = false }: { children: React.Reac
   const { status: systemStatus } = useSystemStatus();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const mobileOpenerRef = useRef<HTMLElement | null>(null);
+  const wasMobileOpen = useRef(false);
+
+  useEffect(() => {
+    if (wasMobileOpen.current && !mobileOpen) mobileOpenerRef.current?.focus();
+    wasMobileOpen.current = mobileOpen;
+  }, [mobileOpen]);
 
   useEffect(() => {
     if (!mobileOpen) return;
@@ -32,7 +39,10 @@ export default function Shell({ children, wide = false }: { children: React.Reac
         <Topbar
           collapsed={collapsed}
           onToggleCollapse={() => setCollapsed((v) => !v)}
-          onOpenMobile={() => setMobileOpen(true)}
+          onOpenMobile={() => {
+            mobileOpenerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+            setMobileOpen(true);
+          }}
           mobileOpen={mobileOpen}
           status={systemStatus}
         />
