@@ -1,16 +1,16 @@
 import AccountSummaryPanel from "./AccountSummaryPanel";
-import ChatPanel from "./ChatPanel";
+import ChatPanel, { type ChatState } from "./ChatPanel";
 import MarketInsightPanel from "./MarketInsightPanel";
 import RecommendationsPanel from "./RecommendationsPanel";
 import RiskPanel from "./RiskPanel";
 import SignalAnalysisPanel from "./SignalAnalysisPanel";
 import StrategyOptimizationPanel from "./StrategyOptimizationPanel";
 
-export default function ChatDashboard({ onToast }: { onToast: (message: string) => void }) {
+export default function ChatDashboard({ onToast, chat }: { onToast: (message: string) => void; chat: ChatState }) {
   return (
     <div className="grid gap-4 xl:grid-cols-[320px_minmax(0,1fr)]">
       <div className="relative h-[620px] xl:h-auto">
-        <ChatPanel />
+        <ChatPanel chat={chat} />
       </div>
 
       <div className="flex min-w-0 flex-col gap-4">

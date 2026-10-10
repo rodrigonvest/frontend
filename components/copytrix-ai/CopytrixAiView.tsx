@@ -6,6 +6,7 @@ import type { AiTabId } from "../../lib/copytrix-ai-data";
 import AiHeader from "./AiHeader";
 import AiTabs from "./AiTabs";
 import ChatDashboard from "./ChatDashboard";
+import { useChat } from "./ChatPanel";
 import HowItWorksModal from "./HowItWorksModal";
 import {
   MarketModule,
@@ -18,6 +19,7 @@ import {
 
 export default function CopytrixAiView() {
   const [tab, setTab] = useState<AiTabId>("chat");
+  const chat = useChat();
   const [modalOpen, setModalOpen] = useState(false);
   const [trigger, setTrigger] = useState<HTMLElement | null>(null);
   const [toast, setToast] = useState<{ id: number; message: string } | null>(null);
@@ -44,7 +46,7 @@ export default function CopytrixAiView() {
         <AiHeader onHowItWorks={openModal} />
 
         <AiTabs tab={tab} onTab={setTab}>
-          {tab === "chat" && <ChatDashboard onToast={notify} />}
+          {tab === "chat" && <ChatDashboard onToast={notify} chat={chat} />}
           {tab === "signals" && <SignalsModule onToast={notify} />}
           {tab === "market" && <MarketModule />}
           {tab === "optimization" && <OptimizationModule onToast={notify} />}

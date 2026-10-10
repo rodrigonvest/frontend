@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Icon } from "../Icons";
 import { cx } from "../UI";
 import {
@@ -23,11 +23,9 @@ function Avatar() {
   );
 }
 
-export default function ChatPanel() {
+export function useChat() {
   const [messages, setMessages] = useState<Message[]>([{ id: 1, role: "ai", text: CHAT_GREETING, time: CHAT_GREETING_TIME }]);
-  const [draft, setDraft] = useState("");
   const [typing, setTyping] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
   const nextId = useRef(2);
   const timers = useRef<Array<ReturnType<typeof setTimeout>>>([]);
 
@@ -36,12 +34,7 @@ export default function ChatPanel() {
     return () => pending.forEach(clearTimeout);
   }, []);
 
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
-  }, [messages, typing]);
-
-  const send = (userText: string, reply: string) => {
+  const send = useCallback((userText: string, reply: string) => {
     const userId = nextId.current++;
     const replyId = nextId.current++;
     setMessages((current) => [...current, { id: userId, role: "user", text: userText, time: nowLabel() }]);
@@ -51,7 +44,22 @@ export default function ChatPanel() {
       setMessages((current) => [...current, { id: replyId, role: "ai", text: reply, time: nowLabel() }]);
     }, 900);
     timers.current.push(timer);
-  };
+  }, []);
+
+  return { messages, typing, send };
+}
+
+export type ChatState = ReturnType<typeof useChat>;
+
+export default function ChatPanel({ chat }: { chat: ChatState }) {
+  const { messages, typing, send } = chat;
+  const [draft, setDraft] = useState("");
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+  }, [messages, typing]);
 
   const submit = (event: React.FormEvent) => {
     event.preventDefault();

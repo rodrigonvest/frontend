@@ -1,19 +1,16 @@
+import type { Metadata } from "next";
 import Shell from "../../components/Shell";
-import PageHeader from "../../components/PageHeader";
-import { FeatureGrid } from "../../components/FeatureCard";
+import ApiAccessView from "../../components/api-access/ApiAccessView";
 
-export default function Page() {
+export const metadata: Metadata = {
+  title: "Acesso à API — Copytrix",
+  description: "Integre o Copytrix com suas próprias aplicações, robôs e sistemas externos via API REST, webhooks e MCP.",
+};
+
+export default function ApiAccessPage() {
   return (
     <Shell>
-      <PageHeader eyebrow="Desenvolvedores" title="Acesso à API" description="Integrações para desenvolvedores, webhooks e endpoints de automação." />
-      <FeatureGrid
-        items={[
-          { title: "Webhooks", description: "Crie e gerencie webhooks de saída do Copytrix." },
-          { title: "Credenciais de API", description: "Credenciais seguras para desenvolvedores serão gerenciadas aqui." },
-          { title: "Eventos", description: "Assine eventos de sinais, execução e ciclo de vida das operações." },
-          { title: "Documentação", description: "Referência da API e exemplos de integração." },
-        ]}
-      />
+      <ApiAccessView />
     </Shell>
   );
 }
