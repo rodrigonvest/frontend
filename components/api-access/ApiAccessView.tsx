@@ -29,6 +29,7 @@ function generateKey() {
 
 export default function ApiAccessView() {
   const [tab, setTab] = useState<ApiTabId>("overview");
+  const [panelFocusRequest, setPanelFocusRequest] = useState(0);
   const [apiKey, setApiKey] = useState(INITIAL_API_KEY_VISIBLE);
   const [permissions, setPermissions] = useState(INITIAL_PERMISSIONS);
   const [webhooks, setWebhooks] = useState<WebhookItem[]>(INITIAL_WEBHOOKS);
@@ -58,11 +59,15 @@ export default function ApiAccessView() {
 
   const value: ApiAccessContextValue = {
     apiKeyDisplay,
+    apiKeyValue: apiKey,
     permissions,
     webhooks,
     notify,
     copy,
-    goToTab: setTab,
+    goToTab: (next, options) => {
+      setTab(next);
+      if (options?.focusPanel) setPanelFocusRequest((current) => current + 1);
+    },
     openDocs: () => notify("A documentação completa será publicada em breve (demonstrativo).", "info"),
     togglePermission: (id) => setPermissions((current) => ({ ...current, [id]: !current[id] })),
     savePermissions: () => {
@@ -121,7 +126,7 @@ export default function ApiAccessView() {
         <div>
           <ApiHeader />
         </div>
-        <ApiTabs tab={tab} onTab={setTab}>
+        <ApiTabs tab={tab} onTab={setTab} panelFocusRequest={panelFocusRequest}>
           {tab === "overview" && <OverviewTab />}
           {tab === "rest" && <RestTab />}
           {tab === "webhooks" && <WebhooksTab />}
