@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { Icon } from "./Icons";
 import { cx } from "./UI";
 import { ToastRegion, useToast } from "./api-access/Toast";
@@ -88,6 +89,7 @@ export default function NotificationDropdown({
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState(notifications);
   const [caretRight, setCaretRight] = useState(24);
+  const [mounted, setMounted] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -98,6 +100,7 @@ export default function NotificationDropdown({
   const unreadCount = items.filter((n) => n.unread).length;
 
   useEffect(() => setItems(notifications), [notifications]);
+  useEffect(() => setMounted(true), []);
 
   const close = useCallback((restoreFocus: boolean) => {
     setOpen(false);
@@ -153,7 +156,7 @@ export default function NotificationDropdown({
         aria-controls={open ? panelId : undefined}
         onClick={() => setOpen((v) => !v)}
         className={cx(
-          "relative flex size-10 items-center justify-center rounded-lg text-fg-muted outline-none hover:bg-white/[.05] hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
+          "relative flex size-10 items-center justify-center rounded-lg text-fg-muted hover:bg-white/[.05] hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
           open && "bg-white/[.05] text-fg",
         )}
       >
@@ -212,7 +215,7 @@ export default function NotificationDropdown({
           </div>
         </div>
       )}
-      <ToastRegion toast={toast} />
+      {mounted && createPortal(<ToastRegion toast={toast} />, document.body)}
     </div>
   );
 }
