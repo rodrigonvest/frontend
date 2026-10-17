@@ -1,5 +1,6 @@
 "use client";
 import { Icon } from "./Icons";
+import UserMenu from "./UserMenu";
 import { DEMO_SESSION } from "../lib/demo-data";
 import { UNAVAILABLE_SYSTEM_STATUS, type SystemStatus, type SystemStatusValue } from "../schemas/system-status";
 
@@ -144,18 +145,7 @@ export default function Topbar({
             </span>
           )}
         </button>
-        <button type="button" className="flex items-center gap-2.5 rounded-lg py-1 pl-1 pr-2 hover:bg-white/[.04]" aria-label={`Conta de ${s.user.name}`}>
-          <span aria-hidden className="flex size-9 items-center justify-center rounded-full bg-[#e6eaef] text-[14px] font-bold text-[#28313a]">
-            {s.user.name.charAt(0)}
-          </span>
-          <span className="hidden text-left leading-tight sm:block">
-            <span className="block text-[13px] font-semibold text-fg">{s.user.name}</span>
-            <span className="block text-[11px] text-fg-subtle">{s.user.role}</span>
-          </span>
-          <span className="hidden text-fg-subtle sm:block">
-            <Icon name="chevronDown" size={15} />
-          </span>
-        </button>
+        <UserMenu name={s.user.name} role={s.user.role} />
       </div>
     </header>
   );
