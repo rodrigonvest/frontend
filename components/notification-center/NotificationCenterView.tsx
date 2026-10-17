@@ -97,7 +97,7 @@ export default function NotificationCenterView() {
   };
 
   return (
-    <Shell>
+    <Shell wide>
       <div className="lg:-mt-3">
         <PageHeader
           title="Central de Notificações"
