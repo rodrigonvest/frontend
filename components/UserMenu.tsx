@@ -32,7 +32,18 @@ export default function UserMenu({ name, role }: { name: string; role: string })
   const initial = name.charAt(0);
   const itemCount = MENU_LINKS.length + 1;
 
-  const isActive = (link: MenuLink) => link.matches.some((m) => pathname === m || pathname.startsWith(`${m}/`));
+  // Only the most specific match is active, so "/settings/seguranca" does not also highlight "/settings".
+  let activeHref: string | null = null;
+  let longestMatch = -1;
+  for (const link of MENU_LINKS) {
+    for (const m of link.matches) {
+      if ((pathname === m || pathname.startsWith(`${m}/`)) && m.length > longestMatch) {
+        longestMatch = m.length;
+        activeHref = link.href;
+      }
+    }
+  }
+  const isActive = (link: MenuLink) => link.href === activeHref;
 
   const close = useCallback((restoreFocus: boolean) => {
     setOpen(false);

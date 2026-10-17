@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { Icon } from "./Icons";
 import UserMenu from "./UserMenu";
 import { DEMO_SESSION } from "../lib/demo-data";
@@ -134,7 +135,8 @@ export default function Topbar({
             <span className="block text-[11px] text-fg-subtle">Válido até {s.planValidUntil}</span>
           </span>
         </div>
-        <button
+        <Link
+          href="/notificacoes"
           aria-label={`Notificações (${s.notifications} novas)`}
           className="relative flex size-10 items-center justify-center rounded-lg text-fg-muted hover:bg-white/[.05] hover:text-fg"
         >
@@ -144,7 +146,7 @@ export default function Topbar({
               {s.notifications}
             </span>
           )}
-        </button>
+        </Link>
         <UserMenu name={s.user.name} role={s.user.role} />
       </div>
     </header>
