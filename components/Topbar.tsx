@@ -1,6 +1,6 @@
 "use client";
-import Link from "next/link";
 import { Icon } from "./Icons";
+import NotificationDropdown from "./NotificationDropdown";
 import UserMenu from "./UserMenu";
 import { DEMO_SESSION } from "../lib/demo-data";
 import { UNAVAILABLE_SYSTEM_STATUS, type SystemStatus, type SystemStatusValue } from "../schemas/system-status";
@@ -135,18 +135,7 @@ export default function Topbar({
             <span className="block text-[11px] text-fg-subtle">Válido até {s.planValidUntil}</span>
           </span>
         </div>
-        <Link
-          href="/notificacoes"
-          aria-label={`Notificações (${s.notifications} novas)`}
-          className="relative flex size-10 items-center justify-center rounded-lg text-fg-muted hover:bg-white/[.05] hover:text-fg"
-        >
-          <Icon name="bell" size={19} />
-          {s.notifications > 0 && (
-            <span aria-hidden className="absolute right-1 top-1 flex size-[18px] items-center justify-center rounded-full bg-danger text-[10px] font-bold text-white ring-2 ring-[#071522]">
-              {s.notifications}
-            </span>
-          )}
-        </Link>
+        <NotificationDropdown />
         <UserMenu name={s.user.name} role={s.user.role} />
       </div>
     </header>
