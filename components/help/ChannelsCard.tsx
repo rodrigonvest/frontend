@@ -12,7 +12,7 @@ export default function ChannelsCard({ onSelect }: { onSelect: (channel: Support
       <h2 id="help-channels-title" tabIndex={-1} className="rounded text-[17px] font-semibold tracking-tight text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">
         Canais de Suporte
       </h2>
-      <ul className="mt-3 grid gap-2.5 @sm:grid-cols-[1fr_1.35fr_1fr]">
+      <ul className="mt-3 grid gap-2.5 @3xl:grid-cols-[1fr_1.35fr_1fr]">
         {CHANNELS.map((channel) => (
           <li key={channel.id} className="min-w-0">
             <button
@@ -27,7 +27,7 @@ export default function ChannelsCard({ onSelect }: { onSelect: (channel: Support
               <span className="flex w-full items-center justify-between gap-2">
                 <span className="flex min-w-0 items-center gap-2">
                   <HelpTile name={CHANNEL_ICONS[channel.id]} accent={channel.accent} size={18} className="size-9" />
-                  <span className="truncate text-[14px] font-semibold text-fg">{channel.title}</span>
+                  <span className="text-[14px] font-semibold text-fg">{channel.title}</span>
                 </span>
                 <span aria-hidden className="flex shrink-0 text-fg-subtle group-hover:text-fg">
                   <Icon name="external" size={15} />
