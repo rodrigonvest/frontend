@@ -71,6 +71,7 @@ export function Icon({ name, size = 18, stroke = 1.8 }: { name: string; size?: n
     book: <><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2V5Z"/><path d="M4 21h15"/><path d="M9 7h6"/></>,
     lock: <><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></>,
     box: <><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4 7.5 8 4.5 8-4.5"/><path d="M12 12v9"/></>,
+    logout: <><path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4"/><path d="m16 8 4 4-4 4"/><path d="M20 12H9"/></>,
   };
   return <svg {...common}>{paths[name] ?? paths.dashboard}</svg>;
 }
