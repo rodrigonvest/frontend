@@ -58,15 +58,36 @@ export function ProfileCard({ onEdit, onChangePhoto }: { onEdit: () => void; onC
   );
 }
 
-function PlanFact({ icon, label, value, note }: { icon: string; label: string; value: string; note?: string }) {
+function PlanFact({
+  icon,
+  label,
+  value,
+  note,
+  valueFirst = false,
+}: {
+  icon: string;
+  label: string;
+  value: string;
+  note?: string;
+  valueFirst?: boolean;
+}) {
   return (
     <div className="flex min-w-0 items-center gap-2.5 rounded-xl border border-line bg-surface/70 p-3">
       <span aria-hidden className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-surface-3 text-fg-muted">
         <AccountIcon name={icon} size={18} />
       </span>
       <div className="min-w-0 leading-tight">
-        <p className="truncate text-[12px] text-fg-muted">{label}</p>
-        <p className="tabular mt-1 whitespace-nowrap text-[15px] font-semibold text-fg">{value}</p>
+        {valueFirst ? (
+          <>
+            <p className="tabular whitespace-nowrap text-[15px] font-semibold text-fg">{value}</p>
+            <p className="mt-1 truncate text-[12px] text-fg-muted">{label}</p>
+          </>
+        ) : (
+          <>
+            <p className="truncate text-[12px] text-fg-muted">{label}</p>
+            <p className="tabular mt-1 whitespace-nowrap text-[15px] font-semibold text-fg">{value}</p>
+          </>
+        )}
         {note && <p className="mt-0.5 text-[11.5px] text-fg-subtle">{note}</p>}
       </div>
     </div>
@@ -101,7 +122,7 @@ export function PlanCard({ onManage, onInvoices }: { onManage: () => void; onInv
 
       <div className="mt-5 grid gap-2.5 @md:grid-cols-3">
         <PlanFact icon="calendar" label="Válido até" value={plan.validUntil} note={`(${plan.daysLeft})`} />
-        <PlanFact icon="dollar" label={plan.priceNote} value={plan.price} />
+        <PlanFact icon="dollar" label={plan.priceNote} value={plan.price} valueFirst />
         <PlanFact icon="refresh" label="Renovação" value={plan.renewal} />
       </div>
 
