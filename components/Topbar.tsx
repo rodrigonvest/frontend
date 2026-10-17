@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { Icon } from "./Icons";
 import NotificationDropdown from "./NotificationDropdown";
 import UserMenu from "./UserMenu";
@@ -18,13 +19,19 @@ const COPIER_STATUS: Record<SystemStatusValue, CopierPresentation> = {
 function CopierChip({ status }: { status: SystemStatusValue }) {
   const cfg = COPIER_STATUS[status];
   return (
-    <span role="status" className={`inline-flex h-8 items-center gap-2 rounded-full border px-3.5 text-xs font-medium ${cfg.chip}`}>
-      <span aria-hidden className="relative flex size-2">
-        {cfg.ping && <span className={`absolute inline-flex size-full animate-ping rounded-full opacity-60 ${cfg.dot}`} />}
-        <span className={`relative inline-flex size-2 rounded-full ${cfg.dot} ${cfg.pulse ? "animate-pulse" : ""}`} />
+    <Link
+      href="/settings/seguranca/historico-conexoes"
+      title="Ver status do Copier e histórico de conexões"
+      className="rounded-full transition-[filter] hover:brightness-125 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+    >
+      <span role="status" className={`inline-flex h-8 items-center gap-2 rounded-full border px-3.5 text-xs font-medium ${cfg.chip}`}>
+        <span aria-hidden className="relative flex size-2">
+          {cfg.ping && <span className={`absolute inline-flex size-full animate-ping rounded-full opacity-60 ${cfg.dot}`} />}
+          <span className={`relative inline-flex size-2 rounded-full ${cfg.dot} ${cfg.pulse ? "animate-pulse" : ""}`} />
+        </span>
+        {cfg.label}
       </span>
-      {cfg.label}
-    </span>
+    </Link>
   );
 }
 
@@ -39,7 +46,11 @@ const TELEGRAM_STATUS: Record<SystemStatusValue, { label: string; text: string }
 function IntegrationChip({ icon, label, status, iconClass }: { icon: string; label: string; status: SystemStatusValue; iconClass: string }) {
   const cfg = TELEGRAM_STATUS[status];
   return (
-    <div className="flex h-10 items-center gap-2.5 rounded-lg px-2" title={`${label}: ${cfg.label}`}>
+    <Link
+      href="/connectors"
+      className="flex h-10 items-center gap-2.5 rounded-lg px-2 transition-colors hover:bg-white/[.05] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+      title={`${label}: ${cfg.label}`}
+    >
       <span className={`flex size-9 shrink-0 items-center justify-center rounded-[10px] ${iconClass}`}>
         <Icon name={icon} size={icon === "telegram" ? 19 : 16} stroke={icon === "telegram" ? 1.9 : 2} />
       </span>
@@ -47,7 +58,7 @@ function IntegrationChip({ icon, label, status, iconClass }: { icon: string; lab
         <span className="block text-xs font-medium text-fg">{label}</span>
         <span className={`block text-[11px] ${cfg.text}`}>{cfg.label}</span>
       </span>
-    </div>
+    </Link>
   );
 }
 
@@ -80,7 +91,12 @@ function TerminalStatusIndicator({ mt4Status, mt5Status }: { mt4Status: SystemSt
     >
       <TerminalStatusItem terminal="MT4" status={mt4Status} />
       <span aria-hidden className="h-4 w-px bg-line" />
-      <TerminalStatusItem terminal="MT5" status={mt5Status} />
+      <Link
+        href="/accounts"
+        className="-mx-1.5 rounded-md px-1.5 py-1 transition-colors hover:bg-white/[.05] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+      >
+        <TerminalStatusItem terminal="MT5" status={mt5Status} />
+      </Link>
     </div>
   );
 }
@@ -126,7 +142,11 @@ export default function Topbar({
       </div>
 
       <div className="ml-auto flex items-center gap-2 md:ml-0">
-        <div className="hidden h-11 items-center gap-2.5 rounded-lg border border-line bg-surface px-3 xl:flex">
+        <Link
+          href="/billing"
+          aria-label={`${s.plan}, válido até ${s.planValidUntil}. Abrir Plano e Cobrança`}
+          className="hidden h-11 items-center gap-2.5 rounded-lg border border-line bg-surface px-3 transition-colors hover:border-line-strong hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand xl:flex"
+        >
           <span aria-hidden className="flex size-8 items-center justify-center rounded-lg bg-warning/15 text-warning">
             <Icon name="crown" size={17} stroke={2} />
           </span>
@@ -134,7 +154,7 @@ export default function Topbar({
             <span className="block text-xs font-semibold text-fg">{s.plan}</span>
             <span className="block text-[11px] text-fg-subtle">Válido até {s.planValidUntil}</span>
           </span>
-        </div>
+        </Link>
         <NotificationDropdown />
         <UserMenu name={s.user.name} role={s.user.role} />
       </div>
