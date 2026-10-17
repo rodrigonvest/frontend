@@ -89,7 +89,12 @@ function TerminalStatusIndicator({ mt4Status, mt5Status }: { mt4Status: SystemSt
       aria-label="Status dos terminais MetaTrader"
       className="inline-flex h-10 items-center gap-3 rounded-lg border border-line bg-surface px-3 lg:gap-4"
     >
-      <TerminalStatusItem terminal="MT4" status={mt4Status} />
+      <Link
+        href="/accounts"
+        className="-mx-1.5 rounded-md px-1.5 py-1 transition-colors hover:bg-white/[.05] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+      >
+        <TerminalStatusItem terminal="MT4" status={mt4Status} />
+      </Link>
       <span aria-hidden className="h-4 w-px bg-line" />
       <Link
         href="/accounts"
