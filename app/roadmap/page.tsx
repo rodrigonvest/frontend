@@ -1,18 +1,16 @@
+import type { Metadata } from "next";
 import Shell from "../../components/Shell";
-import PageHeader from "../../components/PageHeader";
-import { FeatureGrid } from "../../components/FeatureCard";
+import RoadmapView from "../../components/roadmap/RoadmapView";
+
+export const metadata: Metadata = {
+  title: "Roadmap — Copytrix",
+  description: "Acompanhe o desenvolvimento do Copytrix: o que já foi lançado, o que está em desenvolvimento e o que vem por aí.",
+};
 
 export default function Page() {
   return (
     <Shell>
-      <PageHeader eyebrow="Produto" title="Roadmap" description="Veja o que vem a seguir na plataforma Copytrix." />
-      <FeatureGrid
-        items={[
-          { title: "Agora", status: "Em andamento", description: "Dashboard, sistemas, execução em múltiplas contas receptoras e controles de ciclo de vida." },
-          { title: "Próximo", status: "Planejado", description: "Autenticação SaaS, persistência em PostgreSQL e analytics de produção." },
-          { title: "Futuro", status: "Planejado", description: "Novos adaptadores de fonte e de destino, além de ferramentas avançadas de automação." },
-        ]}
-      />
+      <RoadmapView />
     </Shell>
   );
 }
