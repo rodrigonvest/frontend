@@ -34,7 +34,7 @@ export default function SystemConfigView({ route }: { route: SystemRoute }) {
     <div className="flex flex-col gap-3">
       <div className="flex flex-col gap-1">
         <Link
-          href="/sistemas"
+          href="/systems"
           className="inline-flex w-fit items-center gap-1.5 text-[13px] font-medium text-fg-muted transition-colors hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
         >
           <Icon name="arrowLeft" size={14} />

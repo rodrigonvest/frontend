@@ -1,5 +1,5 @@
 /**
- * Demonstration data for the Notification Center (/notificacoes).
+ * Demonstration data for the Notification Center (/notifications).
  * Shapes are kept close to what a future Core/API endpoint would return,
  * so the view layer can switch to real data without structural changes.
  */
@@ -187,7 +187,7 @@ export const notificationsDemo: NotificationItem[] = [
         { label: "Conta", value: ACCOUNT_1 },
       ],
       primaryAction: { label: "Ver operação", href: "/trades" },
-      secondaryAction: { label: "Ver desempenho", href: "/desempenho" },
+      secondaryAction: { label: "Ver desempenho", href: "/performance" },
       related: signalThread,
     },
   },
@@ -209,8 +209,8 @@ export const notificationsDemo: NotificationItem[] = [
         { label: "Resultado", value: "+2.40R (+$120.00)" },
         { label: "Taxa de acerto", value: "66,7%" },
       ],
-      primaryAction: { label: "Abrir relatório", href: "/relatorios" },
-      secondaryAction: { label: "Ver desempenho", href: "/desempenho" },
+      primaryAction: { label: "Abrir relatório", href: "/reports" },
+      secondaryAction: { label: "Ver desempenho", href: "/performance" },
     },
   },
   {
@@ -277,7 +277,7 @@ export const notificationsDemo: NotificationItem[] = [
         { label: "Status", value: "Ativo" },
         { label: "Criado em", value: `${DATE} às 12:36` },
       ],
-      primaryAction: { label: "Ver sistemas", href: "/sistemas" },
+      primaryAction: { label: "Ver sistemas", href: "/systems" },
       secondaryAction: { label: "Ver logs", href: "/logs" },
     },
   },
@@ -320,7 +320,7 @@ export const notificationsDemo: NotificationItem[] = [
         { label: "Conta", value: ACCOUNT_1 },
         { label: "Ação sugerida", value: "Revisar tamanho de lote" },
       ],
-      primaryAction: { label: "Gerenciar risco", href: "/sistemas/risk-management-pro" },
+      primaryAction: { label: "Gerenciar risco", href: "/systems/risk-management-pro" },
       secondaryAction: { label: "Ver contas", href: "/accounts" },
     },
   },
@@ -342,7 +342,7 @@ export const notificationsDemo: NotificationItem[] = [
         { label: "Horário", value: `${DATE} às 09:22` },
         { label: "Endereço IP", value: "189.xxx.xxx.12" },
       ],
-      primaryAction: { label: "Histórico de conexões", href: "/settings/seguranca/historico-conexoes" },
+      primaryAction: { label: "Histórico de conexões", href: "/settings/security/connection-history" },
       secondaryAction: { label: "Revisar segurança", href: "/settings" },
     },
   },

@@ -82,7 +82,7 @@ export default function SystemHeader({
         {status === "paused" ? <PlayGlyph /> : <PauseGlyph />}
         {status === "paused" ? "Retomar" : "Pausar"}
       </button>
-      <Link href={`/sistemas/${routeId}/configuracao`} className={cx(actionClass, "border-brand-strong/70 bg-[#0a1b2b] text-fg hover:border-brand")}>
+      <Link href={`/systems/${routeId}/configuration`} className={cx(actionClass, "border-brand-strong/70 bg-[#0a1b2b] text-fg hover:border-brand")}>
         <PencilGlyph />
         Editar
       </Link>
@@ -109,7 +109,7 @@ export default function SystemHeader({
   return (
     <>
       <nav aria-label="Trilha de navegação" className="mb-1 flex items-center gap-2 text-[13px] text-fg-muted">
-        <Link href="/sistemas" className="hover:text-fg">Sistemas</Link>
+        <Link href="/systems" className="hover:text-fg">Sistemas</Link>
         <Icon name="chevron" size={12} />
         <span>Detalhes da Rota / Automação</span>
         <Icon name="chevron" size={12} />

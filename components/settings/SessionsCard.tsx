@@ -15,7 +15,7 @@ export default function SessionsCard() {
       action={
         <div className="flex items-center gap-4">
           <Link
-            href="/configuracoes/seguranca/historico-conexoes"
+            href="/settings/security/connection-history"
             className="whitespace-nowrap text-[13.5px] font-medium text-brand underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             Ver histórico de conexões <span aria-hidden>&rarr;</span>

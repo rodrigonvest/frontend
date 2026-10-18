@@ -20,7 +20,7 @@ function CopierChip({ status }: { status: SystemStatusValue }) {
   const cfg = COPIER_STATUS[status];
   return (
     <Link
-      href="/settings/seguranca/historico-conexoes"
+      href="/settings/security/connection-history"
       title="Ver status do Copier e histórico de conexões"
       className="rounded-full transition-[filter] hover:brightness-125 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
     >
