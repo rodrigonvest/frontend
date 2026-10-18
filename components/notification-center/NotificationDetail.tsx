@@ -145,15 +145,17 @@ export default function NotificationDetail({
         <Link href={detail.primaryAction.href} className={cx(actionLinkClass, "bg-brand-strong text-white hover:bg-brand")}>
           {detail.primaryAction.label}
         </Link>
-        <Link
-          href={detail.secondaryAction.href}
-          className={cx(actionLinkClass, "border border-brand/50 bg-brand/5 text-fg hover:border-brand hover:bg-brand/10")}
-        >
-          <span aria-hidden className="text-brand">
-            <Icon name="external" size={16} />
-          </span>
-          {detail.secondaryAction.label}
-        </Link>
+        {detail.secondaryAction && (
+          <Link
+            href={detail.secondaryAction.href}
+            className={cx(actionLinkClass, "border border-brand/50 bg-brand/5 text-fg hover:border-brand hover:bg-brand/10")}
+          >
+            <span aria-hidden className="text-brand">
+              <Icon name="external" size={16} />
+            </span>
+            {detail.secondaryAction.label}
+          </Link>
+        )}
         <Menu
           menuLabel="Ações adicionais"
           triggerClassName={cx(actionLinkClass, "w-full border border-brand/50 bg-brand/5 text-fg hover:border-brand hover:bg-brand/10")}

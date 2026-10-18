@@ -56,7 +56,7 @@ export type NotificationItem = {
     signal?: NotificationSignal;
     rows: NotificationDetailRow[];
     primaryAction: NotificationAction;
-    secondaryAction: NotificationAction;
+    secondaryAction?: NotificationAction;
     related?: RelatedStep[];
   };
 };
@@ -342,8 +342,7 @@ export const notificationsDemo: NotificationItem[] = [
         { label: "Horário", value: `${DATE} às 09:22` },
         { label: "Endereço IP", value: "189.xxx.xxx.12" },
       ],
-      primaryAction: { label: "Histórico de conexões", href: "/settings/security/connection-history" },
-      secondaryAction: { label: "Revisar segurança", href: "/settings" },
+      primaryAction: { label: "Revisar segurança", href: "/settings" },
     },
   },
 ];
