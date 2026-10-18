@@ -26,8 +26,6 @@ const routeRedirects = [
 ] as const;
 
 const routeRewrites = [
-  { source: "/systems/:routeId/configuration", destination: "/sistemas/:routeId/configuracao" },
-  { source: "/systems/:routeId", destination: "/sistemas/:routeId" },
   { source: "/systems/automations", destination: "/sistemas" },
   { source: "/settings/security/connection-history", destination: "/settings/seguranca/historico-conexoes" },
 ] as const;
