@@ -1,9 +1,8 @@
 /**
  * Future English URL map for the Copytrix UI.
  *
- * This module is intentionally not consumed by the current navigation yet.
- * Existing App Router paths, links, redirects, APIs, and components remain
- * unchanged until the route migration is explicitly implemented.
+ * This module is consumed by the route-compatibility configuration while
+ * current App Router pages and navigation remain on their legacy paths.
  */
 
 export const routes = {
@@ -133,7 +132,7 @@ export const routeMigrationRules = {
   apiAccess: "/api-access remains /api-access.",
   queryStrings: "/sistemas/templates?t=... must migrate to /systems/templates?t=... while preserving the query string.",
   apiScope: "Routes under /api/... and technical Core endpoints are excluded from UI route migration.",
-  implementation: "This map is preparatory only; no redirects or route changes are implemented in this stage.",
+  implementation: "Compatibility redirects and internal rewrites are centralized in next.config.ts; physical page migration remains deferred.",
 } as const;
 
 export type RouteMigrationRule = keyof typeof routeMigrationRules;
