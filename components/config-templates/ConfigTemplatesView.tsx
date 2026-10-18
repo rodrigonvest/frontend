@@ -109,7 +109,7 @@ export default function ConfigTemplatesView() {
   };
 
   const share = async () => {
-    const link = `${window.location.origin}/sistemas/templates?t=${selected.id}`;
+    const link = `${window.location.origin}/systems/templates?t=${selected.id}`;
     try {
       await navigator.clipboard.writeText(link);
       setToast("Link do template copiado.");

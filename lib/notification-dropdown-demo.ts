@@ -16,7 +16,7 @@ export type NotificationPreview = {
   href: string;
 };
 
-export const NOTIFICATIONS_CENTER_HREF = "/notificacoes";
+export const NOTIFICATIONS_CENTER_HREF = "/notifications";
 
 export const notificationPreviewsDemo: NotificationPreview[] = [
   {

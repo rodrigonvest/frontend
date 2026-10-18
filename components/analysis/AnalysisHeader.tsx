@@ -30,7 +30,7 @@ export default function AnalysisHeader() {
     <header className="mb-4 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
       <div className="min-w-0">
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[13px] text-fg-muted">
-          <Link href="/desempenho" className="transition-colors hover:text-fg">Desempenho</Link>
+          <Link href="/performance" className="transition-colors hover:text-fg">Desempenho</Link>
           <Icon name="chevron" size={12} stroke={2.2} />
           <span aria-current="page" className="text-fg">Análise de Desempenho</span>
         </nav>

@@ -105,7 +105,7 @@ export function IntelligenceHeader({
   return (
     <>
       <nav aria-label="Trilha de navegação" className="mb-1 flex items-center gap-2 text-[13px] text-fg-muted">
-        <Link href="/sistemas" className="hover:text-fg focus-visible:outline-2 focus-visible:outline-brand">
+        <Link href="/systems" className="hover:text-fg focus-visible:outline-2 focus-visible:outline-brand">
           Sistemas
         </Link>
         <Icon name="chevron" size={12} />

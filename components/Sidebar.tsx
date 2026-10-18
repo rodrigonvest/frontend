@@ -12,12 +12,12 @@ const primary: NavItem[] = [
   { icon: "trades", label: "Operações", href: "/trades" },
   { icon: "telegram", label: "Canais Telegram", href: "/connectors" },
   { icon: "accounts", label: "Contas", href: "/accounts" },
-  { icon: "systems", label: "Sistemas", href: "/sistemas" },
-  { icon: "analytics", label: "Desempenho", href: "/desempenho" },
-  { icon: "pulse", label: "Análise de Desempenho", href: "/analise-desempenho" },
+  { icon: "systems", label: "Sistemas", href: "/systems" },
+  { icon: "analytics", label: "Desempenho", href: "/performance" },
+  { icon: "pulse", label: "Análise de Desempenho", href: "/performance-analysis" },
   { icon: "backtest", label: "Backtest", href: "/backtester" },
   { icon: "logs", label: "Logs", href: "/logs" },
-  { icon: "fileText", label: "Relatórios", href: "/relatorios" },
+  { icon: "fileText", label: "Relatórios", href: "/reports" },
   { icon: "settings", label: "Configurações", href: "/settings" },
 ];
 
@@ -88,29 +88,29 @@ function NavLink({ item, active, compact, onNavigate, wrap = false }: { item: Na
   );
 }
 
-const channelAnalysis: NavItem = { icon: "analytics", label: "Análise Automática de Canais", href: "/sistemas/analise-canais" };
+const channelAnalysis: NavItem = { icon: "analytics", label: "Análise Automática de Canais", href: "/systems/analise-canais" };
 
 const systemsSubmenu: NavItem[] = [
-  { icon: "systems", label: "Automações", href: "/sistemas" },
-  { icon: "layers", label: "Templates", href: "/sistemas/templates" },
-  { icon: "accounts", label: "Multi-Conta Avançado", href: "/sistemas/multi-conta" },
-  { icon: "shield", label: "Risk Management Pro", href: "/sistemas/risk-management-pro" },
-  { icon: "settings", label: "Smart Entry", href: "/sistemas/smart-entry" },
-  { icon: "filter", label: "Filtros Avançados", href: "/sistemas/filtros-avancados" },
+  { icon: "systems", label: "Automações", href: "/systems" },
+  { icon: "layers", label: "Templates", href: "/systems/templates" },
+  { icon: "accounts", label: "Multi-Conta Avançado", href: "/systems/multi-conta" },
+  { icon: "shield", label: "Risk Management Pro", href: "/systems/risk-management-pro" },
+  { icon: "settings", label: "Smart Entry", href: "/systems/smart-entry" },
+  { icon: "filter", label: "Filtros Avançados", href: "/systems/filtros-avancados" },
   channelAnalysis,
-  { icon: "brain", label: "Copytrix Intelligence", href: "/sistemas/copytrix-intelligence" },
-  { icon: "trophy", label: "Marketplace de Estratégias", href: "/sistemas/marketplace" },
-  { icon: "replay", label: "Replay de Sinais", href: "/sistemas/replay-de-sinais" },
-  { icon: "sparkles", label: "Copytrix AI", href: "/sistemas/copytrix-ai" },
+  { icon: "brain", label: "Copytrix Intelligence", href: "/systems/copytrix-intelligence" },
+  { icon: "trophy", label: "Marketplace de Estratégias", href: "/systems/marketplace" },
+  { icon: "replay", label: "Replay de Sinais", href: "/systems/replay-de-sinais" },
+  { icon: "sparkles", label: "Copytrix AI", href: "/systems/copytrix-ai" },
 ];
 
 function NavContent({ compact, onNavigate }: { compact: boolean; onNavigate: () => void }) {
   const pathname = usePathname();
   const [systemsOpen, setSystemsOpen] = useState(false);
-  const inSystems = pathname === "/sistemas" || pathname.startsWith("/sistemas/");
+  const inSystems = pathname === "/systems" || pathname.startsWith("/systems/");
   const systemsExpanded = systemsOpen || inSystems;
   const isSystemsSubActive = (href: string) => {
-    if (href !== "/sistemas") return pathname === href || pathname.startsWith(`${href}/`);
+    if (href !== "/systems") return pathname === href || pathname.startsWith(`${href}/`);
     const dedicated = systemsSubmenu.slice(1).some((sub) => pathname.startsWith(sub.href!));
     return inSystems && !dedicated;
   };
@@ -125,7 +125,7 @@ function NavContent({ compact, onNavigate }: { compact: boolean; onNavigate: () 
         <ul className="flex flex-col gap-0.5">
           {primary.map((item) => (
             <li key={item.label}>
-              {item.href === "/sistemas" ? (
+              {item.href === "/systems" ? (
                 <>
                   <div className="relative">
                     <NavLink item={item} active={inSystems} compact={compact} onNavigate={onNavigate} />

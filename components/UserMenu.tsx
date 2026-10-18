@@ -10,10 +10,10 @@ import { ToastRegion, useToast } from "./api-access/Toast";
 type MenuLink = { icon: string; label: string; href: string; matches: string[] };
 
 const MENU_LINKS: MenuLink[] = [
-  { icon: "user", label: "Minha Conta", href: "/minha-conta", matches: ["/minha-conta"] },
+  { icon: "user", label: "Minha Conta", href: "/account", matches: ["/account"] },
   { icon: "settings", label: "Configurações", href: "/settings", matches: ["/settings"] },
   { icon: "dollar", label: "Plano e Cobrança", href: "/billing", matches: ["/billing"] },
-  { icon: "shield", label: "Segurança", href: "/configuracoes/seguranca/historico-conexoes", matches: ["/configuracoes/seguranca", "/settings/seguranca"] },
+  { icon: "shield", label: "Segurança", href: "/settings/security/connection-history", matches: ["/settings/security"] },
 ];
 
 const ITEM_BASE =
@@ -32,7 +32,7 @@ export default function UserMenu({ name, role }: { name: string; role: string })
   const initial = name.charAt(0);
   const itemCount = MENU_LINKS.length + 1;
 
-  // Only the most specific match is active, so "/settings/seguranca" does not also highlight "/settings".
+  // Only the most specific match is active, so "/settings/security" does not also highlight "/settings".
   let activeHref: string | null = null;
   let longestMatch = -1;
   for (const link of MENU_LINKS) {

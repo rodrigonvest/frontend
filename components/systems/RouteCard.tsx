@@ -34,7 +34,7 @@ export default function RouteCard({ route }: { route: SystemRoute }) {
       className="group flex h-full min-w-0 flex-col items-center rounded-lg border border-line bg-gradient-to-b from-surface-2/70 to-surface px-1.5 pb-1.5 pt-1.5 text-center transition-colors hover:border-brand/50 focus-within:border-brand/70"
     >
       <Link
-        href={`/sistemas/${route.routeId}`}
+        href={`/systems/${route.routeId}`}
         aria-label={`Ver detalhes da rota ${route.name}`}
         className="flex w-full flex-col items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
       >
@@ -61,7 +61,7 @@ export default function RouteCard({ route }: { route: SystemRoute }) {
           {SYSTEM_STATUS_LABEL[route.status]}
         </div>
         <Link
-          href={`/sistemas/${route.routeId}/configuracao`}
+          href={`/systems/${route.routeId}/configuration`}
           aria-label={`Configurar rota ${route.name}`}
           className="inline-flex h-6 w-full items-center justify-center rounded-md bg-brand-strong text-[11.5px] font-semibold text-white transition-colors hover:bg-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand min-[1800px]:h-8 min-[1800px]:text-xs"
         >

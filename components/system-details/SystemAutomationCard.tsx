@@ -88,7 +88,7 @@ export default function SystemAutomationCard({
       </dl>
       <div className="px-3.5 pb-3.5 pt-2">
         <Link
-          href={`/sistemas/${routeId}/configuracao`}
+          href={`/systems/${routeId}/configuration`}
           className="flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-brand-strong/70 bg-[#0b2238] px-3 text-[13px] font-medium text-fg transition-colors hover:border-brand focus-visible:outline-2 focus-visible:outline-brand"
         >
           <svg aria-hidden width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

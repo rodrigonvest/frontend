@@ -2,7 +2,7 @@
  * Future English URL map for the Copytrix UI.
  *
  * This module is consumed by the route-compatibility configuration while
- * navigation links remain on their legacy paths during the physical migration.
+ * navigation links use canonical paths while legacy redirects remain available.
  */
 
 export const routes = {
@@ -132,7 +132,7 @@ export const routeMigrationRules = {
   apiAccess: "/api-access remains /api-access.",
   queryStrings: "/sistemas/templates?t=... must migrate to /systems/templates?t=... while preserving the query string.",
   apiScope: "Routes under /api/... and technical Core endpoints are excluded from UI route migration.",
-  implementation: "Compatibility redirects and internal rewrites are centralized in next.config.ts; physical page migration remains deferred.",
+  implementation: "Physical migrations are complete for the validated UI routes; legacy redirects remain centralized in next.config.ts.",
 } as const;
 
 export type RouteMigrationRule = keyof typeof routeMigrationRules;

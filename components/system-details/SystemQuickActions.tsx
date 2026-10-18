@@ -62,7 +62,7 @@ export default function SystemQuickActions({
           <span aria-hidden className="shrink-0 text-brand"><Icon name="download" size={16} /></span>
           Exportar Logs
         </button>
-        <Link href={`/sistemas/${routeId}/configuracao`} className={tileClass}>
+        <Link href={`/systems/${routeId}/configuration`} className={tileClass}>
           <span aria-hidden className="shrink-0 text-brand"><Icon name="settings" size={16} /></span>
           Editar Configurações
         </Link>
