@@ -142,9 +142,11 @@ export default function NotificationDetail({
       </div>
 
       <div className="mt-4 grid gap-2.5 sm:grid-cols-3">
-        <Link href={detail.primaryAction.href} className={cx(actionLinkClass, "bg-brand-strong text-white hover:bg-brand")}>
-          {detail.primaryAction.label}
-        </Link>
+        {detail.primaryAction && (
+          <Link href={detail.primaryAction.href} className={cx(actionLinkClass, "bg-brand-strong text-white hover:bg-brand")}>
+            {detail.primaryAction.label}
+          </Link>
+        )}
         <Link
           href={detail.secondaryAction.href}
           className={cx(actionLinkClass, "border border-brand/50 bg-brand/5 text-fg hover:border-brand hover:bg-brand/10")}
