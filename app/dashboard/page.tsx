@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Shell from "../components/Shell";
-import { Icon } from "../components/Icons";
-import { Badge, Card, cx } from "../components/UI";
-import { DashboardData, getDashboard } from "../lib/api";
+import Shell from "../../components/Shell";
+import { Icon } from "../../components/Icons";
+import { Badge, Card, cx } from "../../components/UI";
+import { DashboardData, getDashboard } from "../../lib/api";
 
 const equity = [9240, 9410, 9520, 9780, 9650, 10010, 10080, 9940, 10120, 10040, 10180, 10020, 9950, 10080, 9870, 10030, 10020, 10230, 10600, 10540, 10700, 10820, 10950, 10820, 11080, 11030, 11200, 11060, 11320, 11400, 11680, 11950, 12100, 11800, 12180, 12240, 12480, 12320, 12540, 12400, 12650];
 const monthly = [{ month: "Jun/26", value: 1225 }, { month: "Jul/26", value: 777 }, { month: "Ago/26", value: 1392 }, { month: "Set/26", value: 792 }];

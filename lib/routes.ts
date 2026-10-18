@@ -7,6 +7,7 @@
 
 export const routes = {
   home: "/",
+  dashboard: "/dashboard",
   account: "/account",
   accounts: "/accounts",
   notifications: "/notifications",
@@ -81,7 +82,7 @@ export type RouteMigration = {
  * are prepared for migration.
  */
 export const routeMigration: readonly RouteMigration[] = [
-  { current: "/", future: "/", status: "kept-in-english" },
+  { current: "/dashboard", future: "/dashboard", status: "kept-in-english", notes: "Dashboard moved from / to /dashboard. / is reserved for the future public site; there is no / to /dashboard redirect." },
   { current: "/trades", future: "/trades", status: "kept-in-english" },
   { current: "/trades/[id]", future: "/trades/[id]", status: "kept-in-english" },
   { current: "/connectors", future: "/connectors", status: "kept-in-english", notes: "Explicitly remains /connectors." },
@@ -123,6 +124,7 @@ export const routeMigration: readonly RouteMigration[] = [
  * Special migration rules, documented before implementation in the App Router.
  */
 export const routeMigrationRules = {
+  dashboard: "The Dashboard lives at /dashboard. / is reserved for the future public site and does not redirect.",
   analytics: "/analytics consolidates into /performance.",
   automations: "/automations consolidates into /systems/automations.",
   configuration: "/configuracoes/... consolidates into /settings/....",

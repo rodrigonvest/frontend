@@ -8,7 +8,7 @@ import { cx } from "./UI";
 type NavItem = { icon: string; label: string; href?: string; soon?: boolean };
 
 const primary: NavItem[] = [
-  { icon: "dashboard", label: "Dashboard", href: "/" },
+  { icon: "dashboard", label: "Dashboard", href: "/dashboard" },
   { icon: "trades", label: "Operações", href: "/trades" },
   { icon: "telegram", label: "Canais Telegram", href: "/connectors" },
   { icon: "accounts", label: "Contas", href: "/accounts" },
@@ -31,7 +31,7 @@ const helpItem: NavItem = { icon: "help", label: "Ajuda & Suporte", href: "/help
 
 function Logo({ compact }: { compact: boolean }) {
   return (
-    <Link href="/" className="flex min-w-0 items-center gap-2.5" aria-label="Copytrix — início">
+    <Link href="/dashboard" className="flex min-w-0 items-center gap-2.5" aria-label="Copytrix — início">
       <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand/15 text-brand">
         <svg width="24" height="24" viewBox="0 0 27 27" fill="none" aria-hidden>
           <path d="M22.6 9.2a9.8 9.8 0 1 1-4.1-4.1" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
@@ -116,7 +116,6 @@ function NavContent({ compact, onNavigate }: { compact: boolean; onNavigate: () 
   };
   const isActive = (href?: string) => {
     if (!href) return false;
-    if (href === "/") return pathname === "/";
     return pathname.startsWith(href);
   };
   return (

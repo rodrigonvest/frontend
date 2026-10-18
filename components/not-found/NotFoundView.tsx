@@ -101,7 +101,7 @@ export default function NotFoundView() {
 
   const goBack = () => {
     if (window.history.length > 1) router.back();
-    else router.push("/");
+    else router.push("/dashboard");
   };
 
   return (
@@ -121,7 +121,7 @@ export default function NotFoundView() {
 
         <div className="mt-8 flex w-full flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
           <Link
-            href="/"
+            href="/dashboard"
             className={cx(actionBase, "border-brand bg-brand-strong text-white shadow-[0_0_28px_rgba(8,127,240,.5)] hover:bg-brand sm:min-w-[330px]")}
           >
             <HomeIcon />
