@@ -2,7 +2,7 @@
  * Future English URL map for the Copytrix UI.
  *
  * This module is consumed by the route-compatibility configuration while
- * current App Router pages and navigation remain on their legacy paths.
+ * navigation links remain on their legacy paths during the physical migration.
  */
 
 export const routes = {

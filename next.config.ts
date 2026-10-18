@@ -27,18 +27,7 @@ const routeRedirects = [
 
 const routeRewrites = [
   { source: "/systems/:routeId/configuration", destination: "/sistemas/:routeId/configuracao" },
-  { source: "/systems/channel-analysis", destination: "/sistemas/analise-canais" },
-  { source: "/systems/advanced-filters", destination: "/sistemas/filtros-avancados" },
-  { source: "/systems/multi-account", destination: "/sistemas/multi-conta" },
-  { source: "/systems/templates", destination: "/sistemas/templates" },
-  { source: "/systems/marketplace", destination: "/sistemas/marketplace" },
-  { source: "/systems/signal-replay", destination: "/sistemas/replay-de-sinais" },
-  { source: "/systems/risk-management-pro", destination: "/sistemas/risk-management-pro" },
-  { source: "/systems/smart-entry", destination: "/sistemas/smart-entry" },
-  { source: "/systems/copytrix-ai", destination: "/sistemas/copytrix-ai" },
-  { source: "/systems/copytrix-intelligence", destination: "/sistemas/copytrix-intelligence" },
   { source: "/systems/:routeId", destination: "/sistemas/:routeId" },
-  { source: "/systems", destination: "/sistemas" },
   { source: "/systems/automations", destination: "/sistemas" },
   { source: "/settings/security/connection-history", destination: "/settings/seguranca/historico-conexoes" },
 ] as const;
