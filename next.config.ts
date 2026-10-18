@@ -25,10 +25,6 @@ const routeRedirects = [
   { source: "/relatorios", destination: "/reports" },
 ] as const;
 
-const routeRewrites = [
-  { source: "/systems/automations", destination: "/sistemas" },
-] as const;
-
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   async redirects() {
@@ -36,9 +32,6 @@ const nextConfig: NextConfig = {
       ...route,
       permanent: true,
     }));
-  },
-  async rewrites() {
-    return [...routeRewrites];
   },
 };
 

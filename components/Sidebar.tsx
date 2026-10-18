@@ -88,19 +88,19 @@ function NavLink({ item, active, compact, onNavigate, wrap = false }: { item: Na
   );
 }
 
-const channelAnalysis: NavItem = { icon: "analytics", label: "Análise Automática de Canais", href: "/systems/analise-canais" };
+const channelAnalysis: NavItem = { icon: "analytics", label: "Análise Automática de Canais", href: "/systems/channel-analysis" };
 
 const systemsSubmenu: NavItem[] = [
   { icon: "systems", label: "Automações", href: "/systems" },
   { icon: "layers", label: "Templates", href: "/systems/templates" },
-  { icon: "accounts", label: "Multi-Conta Avançado", href: "/systems/multi-conta" },
+  { icon: "accounts", label: "Multi-Conta Avançado", href: "/systems/multi-account" },
   { icon: "shield", label: "Risk Management Pro", href: "/systems/risk-management-pro" },
   { icon: "settings", label: "Smart Entry", href: "/systems/smart-entry" },
-  { icon: "filter", label: "Filtros Avançados", href: "/systems/filtros-avancados" },
+  { icon: "filter", label: "Filtros Avançados", href: "/systems/advanced-filters" },
   channelAnalysis,
   { icon: "brain", label: "Copytrix Intelligence", href: "/systems/copytrix-intelligence" },
   { icon: "trophy", label: "Marketplace de Estratégias", href: "/systems/marketplace" },
-  { icon: "replay", label: "Replay de Sinais", href: "/systems/replay-de-sinais" },
+  { icon: "replay", label: "Replay de Sinais", href: "/systems/signal-replay" },
   { icon: "sparkles", label: "Copytrix AI", href: "/systems/copytrix-ai" },
 ];
 
