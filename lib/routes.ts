@@ -50,6 +50,15 @@ export const routes = {
 
 export type Routes = typeof routes;
 
+/** Future destinations that are planned but are not current App Router pages. */
+export const futurePlannedRoutes = {
+  systems: {
+    automations: "/systems/automations",
+  },
+} as const;
+
+export type FuturePlannedRoutes = typeof futurePlannedRoutes;
+
 export type RouteMigrationStatus =
   | "kept-in-english"
   | "portuguese-to-english"
@@ -65,9 +74,10 @@ export type RouteMigration = {
 };
 
 /**
- * Current UI routes mapped to their future English URLs.
+ * Current, validated UI routes and real redirects mapped to future English URLs.
  *
- * API routes and technical Core endpoints are intentionally excluded.
+ * API routes and technical Core endpoints are intentionally excluded. Planned
+ * destinations without a current page are kept in futurePlannedRoutes instead.
  * Dynamic route values keep their current identifiers; only the URL segments
  * are prepared for migration.
  */
@@ -82,7 +92,6 @@ export const routeMigration: readonly RouteMigration[] = [
   { current: "/sistemas", future: "/systems", status: "portuguese-to-english" },
   { current: "/sistemas/[routeId]", future: "/systems/[routeId]", status: "portuguese-to-english" },
   { current: "/sistemas/[routeId]/configuracao", future: "/systems/[routeId]/configuration", status: "mixed-to-english" },
-  { current: "/sistemas/automacoes", future: "/systems/automations", status: "portuguese-to-english", notes: "Future automation route." },
   { current: "/automations", future: "/systems/automations", status: "consolidated", notes: "Legacy route consolidates into the future automation route." },
   { current: "/sistemas/analise-canais", future: "/systems/channel-analysis", status: "mixed-to-english" },
   { current: "/sistemas/filtros-avancados", future: "/systems/advanced-filters", status: "mixed-to-english" },
@@ -104,8 +113,6 @@ export const routeMigration: readonly RouteMigration[] = [
   { current: "/minha-conta", future: "/account", status: "portuguese-to-english" },
   { current: "/settings", future: "/settings", status: "kept-in-english" },
   { current: "/settings/seguranca/historico-conexoes", future: "/settings/security/connection-history", status: "mixed-to-english" },
-  { current: "/configuracoes", future: "/settings", status: "consolidated", notes: "Future settings root." },
-  { current: "/configuracoes/seguranca", future: "/settings/security", status: "consolidated" },
   { current: "/configuracoes/seguranca/historico-conexoes", future: "/settings/security/connection-history", status: "consolidated" },
   { current: "/billing", future: "/billing", status: "kept-in-english", notes: "Explicitly remains /billing." },
   { current: "/api-access", future: "/api-access", status: "kept-in-english", notes: "Explicitly remains /api-access." },
