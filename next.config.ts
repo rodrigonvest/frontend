@@ -26,8 +26,6 @@ const routeRedirects = [
 ] as const;
 
 const routeRewrites = [
-  { source: "/account", destination: "/minha-conta" },
-  { source: "/notifications", destination: "/notificacoes" },
   { source: "/systems/:routeId/configuration", destination: "/sistemas/:routeId/configuracao" },
   { source: "/systems/channel-analysis", destination: "/sistemas/analise-canais" },
   { source: "/systems/advanced-filters", destination: "/sistemas/filtros-avancados" },
@@ -41,11 +39,8 @@ const routeRewrites = [
   { source: "/systems/copytrix-intelligence", destination: "/sistemas/copytrix-intelligence" },
   { source: "/systems/:routeId", destination: "/sistemas/:routeId" },
   { source: "/systems", destination: "/sistemas" },
-  { source: "/performance-analysis", destination: "/analise-desempenho" },
-  { source: "/performance", destination: "/desempenho" },
   { source: "/systems/automations", destination: "/sistemas" },
   { source: "/settings/security/connection-history", destination: "/settings/seguranca/historico-conexoes" },
-  { source: "/reports", destination: "/relatorios" },
 ] as const;
 
 const nextConfig: NextConfig = {
