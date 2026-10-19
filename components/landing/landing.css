@@ -102,6 +102,18 @@ html:has(.lp) { scroll-behavior: smooth; }
 .lp-ping { position: relative; }
 .lp-ping::after { content: ""; position: absolute; inset: 0; border-radius: 999px; background: inherit; animation: lp-ping 2s cubic-bezier(0, 0, .2, 1) infinite; }
 
+/* ---------- Seções complementares ---------- */
+.lp-section { position: relative; padding: 5.5rem 1.25rem; }
+.lp-section > :first-child { margin-left: auto; margin-right: auto; max-width: 1100px; }
+.lp-section-icon { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 48px; height: 48px; border: 1px solid rgba(38, 177, 255, .45); border-radius: 14px; color: #38bdf8; background: linear-gradient(135deg, rgba(15, 110, 240, .22), rgba(104, 55, 230, .16)); box-shadow: 0 0 24px rgba(21, 122, 255, .18); transition: transform .3s ease, box-shadow .3s ease; }
+.lp-card-hover:hover .lp-section-icon { transform: translateY(-2px) scale(1.06); box-shadow: 0 0 28px rgba(21, 160, 255, .38); }
+.lp-plan-featured { border-color: rgba(15, 176, 255, .8); box-shadow: 0 0 28px rgba(20, 120, 255, .18); }
+.lp-section details summary::-webkit-details-marker { display: none; }
+.lp-section details[open] summary svg { transform: rotate(180deg); }
+.lp-section details summary svg { transition: transform .25s ease; color: #6ecbff; }
+@media (min-width: 640px) { .lp-section { padding-left: 2rem; padding-right: 2rem; } }
+@media (max-width: 639px) { .lp-section { padding-top: 4rem; padding-bottom: 4rem; } }
+
 /* ---------- Movimento reduzido ---------- */
 @media (prefers-reduced-motion: reduce) {
   html:has(.lp) { scroll-behavior: auto; }

@@ -5,6 +5,7 @@ import { Hero } from "../components/landing/Hero";
 import { Metrics } from "../components/landing/Metrics";
 import { Navbar } from "../components/landing/Navbar";
 import { PlatformStrip } from "../components/landing/PlatformStrip";
+import { ContinuationSections } from "../components/landing/ContinuationSections";
 
 export const metadata: Metadata = {
   title: { absolute: "Copytrix — Sinais do Telegram em resultados reais com IA" },
@@ -24,6 +25,7 @@ export default function HomePage() {
         <Hero />
         <PlatformStrip />
         <Metrics />
+        <ContinuationSections />
       </main>
     </div>
   );
