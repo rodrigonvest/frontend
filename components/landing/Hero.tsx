@@ -53,7 +53,7 @@ export function Hero() {
             </div>
             <ul className="lp-in mt-7 flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-300" style={delay(750)}>
               {[
-                { icon: "check", label: "Teste grátis" },
+                { icon: "check", label: "Grátis para sempre" },
                 { icon: "message", label: "Sem cartão de crédito" },
                 { icon: "check", label: "Configuração em minutos" },
               ].map((item) => (
