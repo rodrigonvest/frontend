@@ -42,6 +42,7 @@ export function HowItWorks() {
       <ol className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
         <Reveal as="li">
           <div className="lp-card h-full p-5">
+            <span aria-hidden className="absolute -right-[18px] top-1/2 z-10 hidden -translate-y-1/2 text-sky-400 drop-shadow-[0_0_8px_rgba(56,170,255,.8)] xl:block"><Icon name="chevron" size={22} /></span>
             <StepHead n={1} title="Conecte suas fontes" text="Conecte seus canais do Telegram e escolha quais sinais copiar." />
             <div className="mt-5 rounded-xl border border-sky-400/15 bg-[#06122a]/80 p-3">
               <div className="mb-2.5 flex items-center justify-between text-[13px] font-semibold text-white">
@@ -70,6 +71,7 @@ export function HowItWorks() {
 
         <Reveal as="li" delay={90}>
           <div className="lp-card h-full p-5">
+            <span aria-hidden className="absolute -right-[18px] top-1/2 z-10 hidden -translate-y-1/2 text-sky-400 drop-shadow-[0_0_8px_rgba(56,170,255,.8)] xl:block"><Icon name="chevron" size={22} /></span>
             <StepHead n={2} title="Configure e filtre" text="Defina regras, gerenciamento de risco e filtros avançados para operar do seu jeito." />
             <div className="mt-5 rounded-xl border border-sky-400/15 bg-[#06122a]/80 p-3">
               <p className="mb-2 flex items-center gap-2 text-[13px] font-semibold text-white">
@@ -107,9 +109,10 @@ export function HowItWorks() {
 
         <Reveal as="li" delay={180}>
           <div className="lp-card h-full p-5">
+            <span aria-hidden className="absolute -right-[18px] top-1/2 z-10 hidden -translate-y-1/2 text-sky-400 drop-shadow-[0_0_8px_rgba(56,170,255,.8)] xl:block"><Icon name="chevron" size={22} /></span>
             <StepHead n={3} title="Copytrix processa com IA" text="Nossa IA interpreta, valida e executa os sinais com precisão e segurança." />
-            <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-2 rounded-xl border border-sky-400/15 bg-[#06122a]/80 p-3">
-              <div className="space-y-2 text-[10px] leading-snug text-slate-200">
+            <div className="mt-5 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-1.5 rounded-xl border border-sky-400/15 bg-[#06122a]/80 p-3">
+              <div className="min-w-0 space-y-2 text-[9px] leading-snug text-slate-200">
                 <p className="rounded-lg border border-sky-400/15 bg-[#050e22] p-2">
                   <span className="font-bold text-white">XAUUSD BUY</span>
                   <br />
@@ -127,12 +130,12 @@ export function HowItWorks() {
                   SL: 3665.20
                 </p>
               </div>
-              <span aria-hidden className="lp-node flex size-14 items-center justify-center rounded-xl bg-[#08183a] text-sky-300">
+              <span aria-hidden className="lp-node flex size-12 items-center justify-center rounded-xl bg-[#08183a] text-sky-300">
                 <Icon name="brain" size={26} />
               </span>
-              <ul className="space-y-1.5 text-[11px] text-slate-100">
+              <ul className="min-w-0 space-y-1.5 text-[10px] leading-tight text-slate-100">
                 {["Lê o sinal", "Interpreta", "Valida regras", "Aplica filtros", "Executa ordem"].map((t) => (
-                  <li key={t} className="flex items-center gap-1.5 rounded-md border border-sky-400/15 bg-[#050e22] px-2 py-1.5">
+                  <li key={t} className="flex items-center gap-1 rounded-md border border-sky-400/15 bg-[#050e22] px-1.5 py-1.5">
                     <CheckDot tone="blue" /> {t}
                   </li>
                 ))}

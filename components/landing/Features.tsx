@@ -26,18 +26,18 @@ export function CompleteIntro() {
 function FeatureCard({ icon, tone, title, text, badge, delay = 0, children }: { icon: string; tone: ToneName; title: string; text: string; badge?: string; delay?: number; children: ReactNode }) {
   return (
     <Reveal delay={delay} className="h-full">
-      <article className="lp-card lp-card-hover flex h-full flex-col gap-4 p-4 sm:p-5">
-        <header className="flex items-start gap-3.5">
-          <IconTile name={icon} tone={tone} size={46} />
+      <article className="lp-card lp-card-hover flex h-full flex-col gap-3.5 p-4">
+        <header className="flex items-start gap-3">
+          <IconTile name={icon} tone={tone} size={44} />
           <div className="min-w-0">
-            <h3 className="flex flex-wrap items-center gap-2 text-[17px] font-bold leading-tight text-white">
+            <h3 className="flex flex-wrap items-center gap-2 text-[16px] font-bold leading-tight text-white">
               {title}
               {badge && <span className="rounded-md bg-violet-500/30 px-1.5 py-0.5 text-[10px] font-bold text-violet-200">{badge}</span>}
             </h3>
-            <p className="mt-1 text-[13px] leading-snug text-slate-300/90">{text}</p>
+            <p className="mt-1 text-[12.5px] leading-snug text-slate-300/90">{text}</p>
           </div>
         </header>
-        <div className="mt-auto">{children}</div>
+        <div className="flex flex-1 flex-col [&>*]:flex-1">{children}</div>
       </article>
     </Reveal>
   );
@@ -45,9 +45,9 @@ function FeatureCard({ icon, tone, title, text, badge, delay = 0, children }: { 
 
 function PlatformRow({ id, name }: { id: BrandId; name: string }) {
   return (
-    <li className="flex items-center gap-2 text-[10px] text-slate-200">
+    <li className="flex items-center gap-1.5 text-[9.5px] leading-tight text-slate-200">
       <BrandMark id={id} size={16} />
-      <span className="min-w-0 flex-1 truncate">{name}</span>
+      <span className="min-w-0 flex-1">{name}</span>
       <Dot />
     </li>
   );
@@ -80,8 +80,8 @@ export function Features() {
       />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <FeatureCard icon="send" tone="blue" title="Trade Copier" text="Copie sinais do Telegram automaticamente nas suas contas.">
-          <div className="grid grid-cols-[1fr_auto_1fr] items-stretch gap-1.5">
-            <Mini title="Canal Telegram" icon={<BrandMark id="telegram" size={18} />} right={<span className="text-[9px] text-slate-400">Agora</span>}>
+          <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1.08fr)] items-stretch gap-1">
+            <Mini className="!p-2.5" title={<span className="text-[10px]">Canal Telegram</span>} icon={<BrandMark id="telegram" size={16} />} right={<span className="text-[8px] text-slate-400">Agora</span>}>
               <p className="text-[10px] leading-relaxed text-slate-200">
                 <strong className="text-white">XAUUSD BUY</strong>
                 <br />
@@ -97,9 +97,9 @@ export function Features() {
               </p>
             </Mini>
             <span aria-hidden className="flex items-center text-sky-400">
-              <Icon name="chevron" size={22} />
+              <Icon name="chevron" size={18} />
             </span>
-            <Mini title="Execução Automática">
+            <Mini className="!p-2.5" title={<span className="text-[10px]">Execução Automática</span>}>
               <ul className="space-y-2.5">
                 <PlatformRow id="mt5" name="MetaTrader 5" />
                 <PlatformRow id="ninja" name="NinjaTrader" />

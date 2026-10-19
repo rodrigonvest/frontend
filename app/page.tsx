@@ -36,8 +36,8 @@ export default function HomePage() {
       <Navbar />
       <main>
         <Hero />
-        <PlatformStrip />
         <Metrics />
+        <PlatformStrip />
         <CompleteIntro />
         <HowItWorks />
         <Features />
