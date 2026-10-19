@@ -191,7 +191,7 @@ export function HowItWorks() {
           Comece agora grátis
         </CtaButton>
         <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-slate-300">
-          {["Teste grátis", "Sem cartão de crédito", "Configuração em minutos"].map((t) => (
+          {["Grátis para sempre", "Sem cartão de crédito", "Configuração em minutos"].map((t) => (
             <li key={t} className="flex items-center gap-2">
               <CheckDot tone="blue" /> {t}
             </li>
