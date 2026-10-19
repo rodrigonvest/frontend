@@ -96,7 +96,7 @@ export function Features() {
                 TP3: 3642.50
               </p>
             </Mini>
-            <span aria-hidden className="flex items-center text-sky-400">
+            <span aria-hidden className="flex items-center text-sky-400 drop-shadow-[0_0_8px_rgba(56,170,255,.85)]">
               <Icon name="chevron" size={18} />
             </span>
             <Mini className="!p-2.5" title={<span className="text-[10px]">Execução Automática</span>}>
@@ -117,11 +117,16 @@ export function Features() {
               <span className="flex items-center gap-1"><Dot /> Resultado Otimizado (IA)</span>
             </div>
             <Lines id="ft-ai" w={300} h={92} series={[{ points: aiNow, color: "#2f8bff" }, { points: aiOpt, color: "#12d99e", area: true }]} />
+            <div className="mt-2 grid grid-cols-3 gap-2 border-t border-sky-400/10 pt-2">
+              <Stat label="Win Rate" value="+8.7%" tone="green" />
+              <Stat label="Drawdown" value="-18%" tone="green" />
+              <Stat label="Profit Factor" value="3.10" tone="blue" />
+            </div>
           </Mini>
         </FeatureCard>
 
         <FeatureCard icon="backtest" tone="green" title="Backtest Avançado" text="Teste seus sinais com dados reais e veja os resultados antes de operar." delay={120}>
-          <Mini title="Resultado do Backtest">
+          <Mini title="Resultado do Backtest" right={<Pill tone="blue">Dados reais</Pill>}>
             <div className="grid grid-cols-4 gap-2">
               <Stat label="Total de Trades" value="167" />
               <Stat label="Win Rate" value="52.69%" />
@@ -129,11 +134,16 @@ export function Features() {
               <Stat label="Lucro Líquido" value="$4,187.50" tone="green" />
             </div>
             <Bars values={backtestBars} className="mt-3 h-14" />
+            <div className="mt-1.5 flex justify-between text-[8px] text-slate-400" aria-hidden>
+              <span>01/01</span>
+              <span>Período: 12 meses</span>
+              <span>30/09</span>
+            </div>
           </Mini>
         </FeatureCard>
 
         <FeatureCard icon="shieldCheck" tone="gold" title="Gerenciamento de Risco" text="Proteja seu capital com regras e controles avançados." delay={180}>
-          <Mini title="Configuração de Risco">
+          <Mini title="Configuração de Risco" right={<Pill>Protegido</Pill>}>
             <div className="space-y-2">
               <Kv k="Tamanho do Lote" v="0.01" caret />
               <Kv k="Risco por operação" v="0.5%" caret />
@@ -142,22 +152,32 @@ export function Features() {
             <ul className="mt-2.5">
               <ToggleRow label="Stop Loss Automático" on />
             </ul>
+            <div className="mt-2.5" aria-hidden>
+              <div className="mb-1 flex justify-between text-[9px] text-slate-400">
+                <span>Exposição atual</span>
+                <span className="text-emerald-400">0.5% / 1.0%</span>
+              </div>
+              <div className="h-1.5 overflow-hidden rounded-full bg-[#050e22]">
+                <span className="lp-barh block h-full w-1/2 rounded-full bg-gradient-to-r from-sky-400 to-emerald-400" />
+              </div>
+            </div>
           </Mini>
         </FeatureCard>
 
         <FeatureCard icon="filter" tone="purple" title="Filtros Avançados" text="Filtre sinais por spread, horário, notícias e muito mais." delay={0}>
-          <Mini title="Filtros de Sinais">
+          <Mini title="Filtros de Sinais" right={<Pill tone="blue">2 ativos</Pill>}>
             <ul className="space-y-1.5">
               <ToggleRow label="Filtro por Spread (máx. 0.60)" on />
               <ToggleRow label="Apenas horário de alta liquidez" on />
               <ToggleRow label="Evitar notícias de alto impacto" on={false} />
               <ToggleRow label="Filtrar por ativo" on={false} />
             </ul>
+            <p className="mt-2 flex items-center gap-1.5 text-[9px] text-slate-400"><Dot tone="gold" /> 12 sinais filtrados hoje</p>
           </Mini>
         </FeatureCard>
 
         <FeatureCard icon="accounts" tone="cyan" title="Multi-Conta e Multi-Plataforma" text="Opere em várias contas e plataformas ao mesmo tempo." delay={60}>
-          <Mini title="Contas Conectadas">
+          <Mini title="Contas Conectadas" right={<Pill>5 online</Pill>}>
             <ul className="space-y-2">
               {([["mt5", "MetaTrader 5"], ["mt4", "MetaTrader 4"], ["ninja", "NinjaTrader"], ["tradelocker", "TradeLocker"], ["binance", "Binance Futures"]] as const).map(([id, name]) => (
                 <li key={id} className="flex items-center gap-2 text-[11px] text-slate-200">
@@ -201,11 +221,15 @@ export function Features() {
               <ToggleRow label="Ignorar sinais com SL muito curto" on />
               <ToggleRow label="Mover SL para BE (+20 pips)" on />
             </ul>
+            <div className="mt-2.5 flex items-center justify-between gap-2 rounded-lg border border-emerald-400/20 bg-emerald-500/5 px-2.5 py-1.5 text-[10px]">
+              <span className="min-w-0 truncate text-slate-300">Entrada 3627.50 → <strong className="text-white">3627.52</strong></span>
+              <Pill>Executada</Pill>
+            </div>
           </Mini>
         </FeatureCard>
 
         <FeatureCard icon="bell" tone="blue" title="Alertas e Notificações" text="Receba alertas em tempo real sobre sinais, execuções e eventos importantes." delay={0}>
-          <Mini className="!p-2">
+          <Mini className="!p-2.5" title="Notificações" right={<Pill tone="blue">3 novas</Pill>}>
             <ul className="divide-y divide-sky-400/10">
               {alerts.map((a) => (
                 <li key={a.title} className="flex items-center gap-2.5 py-2">
@@ -234,6 +258,11 @@ export function Features() {
                 </div>
               </div>
             </div>
+            <div className="mt-2 grid grid-cols-3 gap-2 border-t border-sky-400/10 pt-2">
+              <Stat label="Lucro no período" value="+$4.2k" tone="green" />
+              <Stat label="Drawdown máx." value="6.8%" tone="red" />
+              <Stat label="Sharpe" value="1.84" tone="blue" />
+            </div>
           </Mini>
         </FeatureCard>
 
@@ -244,6 +273,7 @@ export function Features() {
                 <ToggleRow key={r} on label={<span className="flex items-center gap-2"><Icon name="chevron" size={11} />{r}</span>} />
               ))}
             </ul>
+            <p className="mt-2 flex items-center gap-1.5 text-[9px] text-slate-400"><Dot /> 4 regras ativas · última execução 14:32</p>
           </Mini>
         </FeatureCard>
 
@@ -257,6 +287,10 @@ export function Features() {
                 </li>
               ))}
             </ul>
+            <div className="mt-2.5 flex flex-wrap gap-1.5">
+              <Pill tone="blue">TLS 1.3</Pill>
+              <Pill tone="purple">AES-256</Pill>
+            </div>
           </Mini>
         </FeatureCard>
       </div>

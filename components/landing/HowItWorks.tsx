@@ -1,7 +1,24 @@
 import { Icon } from "../Icons";
 import { BrandMark } from "./brands";
 import { Reveal } from "./Reveal";
+import { Pill } from "./parts";
 import { CheckDot, CtaButton, Section, SectionHeader, StatusPill, Toggle, APP_HREF } from "./ui";
+
+function Connector() {
+  return (
+    <>
+      <span aria-hidden className="absolute -right-[29px] top-1/2 z-10 hidden w-[38px] -translate-y-1/2 items-center xl:flex">
+        <span className="lp-conn lp-conn-r" />
+        <span className="-ml-2 text-sky-400 drop-shadow-[0_0_8px_rgba(56,170,255,.9)]">
+          <Icon name="chevron" size={22} />
+        </span>
+      </span>
+      <span aria-hidden className="absolute -bottom-[19px] left-1/2 z-10 -translate-x-1/2 rotate-90 text-sky-400 drop-shadow-[0_0_8px_rgba(56,170,255,.9)] md:hidden">
+        <Icon name="chevron" size={22} />
+      </span>
+    </>
+  );
+}
 
 const stepTone = [
   "border-sky-400/60 text-sky-300 shadow-[0_0_24px_-4px_rgba(30,160,255,.7)]",
@@ -42,7 +59,7 @@ export function HowItWorks() {
       <ol className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
         <Reveal as="li">
           <div className="lp-card h-full p-5">
-            <span aria-hidden className="absolute -right-[18px] top-1/2 z-10 hidden -translate-y-1/2 text-sky-400 drop-shadow-[0_0_8px_rgba(56,170,255,.8)] xl:block"><Icon name="chevron" size={22} /></span>
+            <Connector />
             <StepHead n={1} title="Conecte suas fontes" text="Conecte seus canais do Telegram e escolha quais sinais copiar." />
             <div className="mt-5 rounded-xl border border-sky-400/15 bg-[#06122a]/80 p-3">
               <div className="mb-2.5 flex items-center justify-between text-[13px] font-semibold text-white">
@@ -71,7 +88,7 @@ export function HowItWorks() {
 
         <Reveal as="li" delay={90}>
           <div className="lp-card h-full p-5">
-            <span aria-hidden className="absolute -right-[18px] top-1/2 z-10 hidden -translate-y-1/2 text-sky-400 drop-shadow-[0_0_8px_rgba(56,170,255,.8)] xl:block"><Icon name="chevron" size={22} /></span>
+            <Connector />
             <StepHead n={2} title="Configure e filtre" text="Defina regras, gerenciamento de risco e filtros avançados para operar do seu jeito." />
             <div className="mt-5 rounded-xl border border-sky-400/15 bg-[#06122a]/80 p-3">
               <p className="mb-2 flex items-center gap-2 text-[13px] font-semibold text-white">
@@ -109,9 +126,10 @@ export function HowItWorks() {
 
         <Reveal as="li" delay={180}>
           <div className="lp-card h-full p-5">
-            <span aria-hidden className="absolute -right-[18px] top-1/2 z-10 hidden -translate-y-1/2 text-sky-400 drop-shadow-[0_0_8px_rgba(56,170,255,.8)] xl:block"><Icon name="chevron" size={22} /></span>
+            <Connector />
             <StepHead n={3} title="Copytrix processa com IA" text="Nossa IA interpreta, valida e executa os sinais com precisão e segurança." />
-            <div className="mt-5 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-1.5 rounded-xl border border-sky-400/15 bg-[#06122a]/80 p-3">
+            <div className="mt-5 rounded-xl border border-sky-400/15 bg-[#06122a]/80 p-3">
+            <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-1.5">
               <div className="min-w-0 space-y-2 text-[9px] leading-snug text-slate-200">
                 <p className="rounded-lg border border-sky-400/15 bg-[#050e22] p-2">
                   <span className="font-bold text-white">XAUUSD BUY</span>
@@ -130,16 +148,40 @@ export function HowItWorks() {
                   SL: 3665.20
                 </p>
               </div>
-              <span aria-hidden className="lp-node flex size-12 items-center justify-center rounded-xl bg-[#08183a] text-sky-300">
-                <Icon name="brain" size={26} />
+              <span aria-hidden className="flex flex-col items-center gap-1">
+                <span className="lp-node flex size-12 items-center justify-center rounded-xl bg-[#08183a] text-sky-300">
+                  <Icon name="brain" size={26} />
+                </span>
+                <span className="text-[8px] font-semibold uppercase tracking-wider text-sky-300">Processando</span>
               </span>
               <ul className="min-w-0 space-y-1.5 text-[10px] leading-tight text-slate-100">
-                {["Lê o sinal", "Interpreta", "Valida regras", "Aplica filtros", "Executa ordem"].map((t) => (
+                {["Lê o sinal", "Interpreta", "Valida regras", "Aplica filtros", "Executa ordem"].map((t, i, all) => (
                   <li key={t} className="flex items-center gap-1 rounded-md border border-sky-400/15 bg-[#050e22] px-1.5 py-1.5">
-                    <CheckDot tone="blue" /> {t}
+                    {i === all.length - 1 ? (
+                      <span aria-hidden className="flex size-4 shrink-0 items-center justify-center">
+                        <span className="lp-ping size-2 rounded-full bg-sky-400" />
+                      </span>
+                    ) : (
+                      <CheckDot tone="blue" />
+                    )}
+                    {t}
                   </li>
                 ))}
               </ul>
+            </div>
+            <div className="mt-3 rounded-lg border border-emerald-400/25 bg-emerald-500/5 p-2.5">
+              <div className="flex items-center justify-between gap-2 text-[10px]">
+                <span className="text-slate-300">Decisão da IA</span>
+                <Pill>Executar ordem</Pill>
+              </div>
+              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[#050e22]" aria-hidden>
+                <span className="lp-barh block h-full w-[99.8%] rounded-full bg-gradient-to-r from-sky-400 to-emerald-400" />
+              </div>
+              <div className="mt-1.5 flex justify-between text-[9px] text-slate-400">
+                <span>Confiança 99.8%</span>
+                <span>Latência 0.4s</span>
+              </div>
+            </div>
             </div>
           </div>
         </Reveal>
