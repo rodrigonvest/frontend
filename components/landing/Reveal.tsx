@@ -1,9 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ElementType, type ReactNode } from "react";
 
-export function Reveal({ children, delay = 0, className = "" }: { children: ReactNode; delay?: number; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
+export function Reveal({
+  children,
+  delay = 0,
+  className = "",
+  as: Tag = "div",
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+  as?: ElementType;
+}) {
+  const ref = useRef<HTMLElement>(null);
   const [shown, setShown] = useState(false);
 
   useEffect(() => {
@@ -27,8 +37,8 @@ export function Reveal({ children, delay = 0, className = "" }: { children: Reac
   }, []);
 
   return (
-    <div ref={ref} data-in={shown} className={`lp-reveal ${className}`} style={{ "--d": `${delay}ms` } as CSSProperties}>
+    <Tag ref={ref} data-in={shown} className={`lp-reveal ${className}`} style={{ "--d": `${delay}ms` } as CSSProperties}>
       {children}
-    </div>
+    </Tag>
   );
 }
