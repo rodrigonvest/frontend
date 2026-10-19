@@ -42,111 +42,153 @@ function drawChart(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
 
 function drawBackground(ctx: CanvasRenderingContext2D) {
   const base = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT);
-  base.addColorStop(0, "#020c1b");
-  base.addColorStop(0.48, "#03152c");
-  base.addColorStop(1, "#010812");
+  base.addColorStop(0, "#010713");
+  base.addColorStop(0.42, "#03172f");
+  base.addColorStop(0.72, "#041025");
+  base.addColorStop(1, "#01050d");
   ctx.fillStyle = base;
   ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
-  const glow = ctx.createRadialGradient(1250, 210, 20, 1250, 210, 600);
-  glow.addColorStop(0, "rgba(0, 151, 255, .3)");
-  glow.addColorStop(0.42, "rgba(0, 68, 180, .11)");
-  glow.addColorStop(1, "transparent");
-  ctx.fillStyle = glow;
-  ctx.fillRect(700, 0, 940, 650);
+  const leftGlow = ctx.createRadialGradient(250, 360, 0, 250, 360, 560);
+  leftGlow.addColorStop(0, "rgba(0, 105, 255, .22)");
+  leftGlow.addColorStop(0.58, "rgba(0, 52, 155, .08)");
+  leftGlow.addColorStop(1, "transparent");
+  ctx.fillStyle = leftGlow;
+  ctx.fillRect(0, 0, 820, HEIGHT);
+  const rightGlow = ctx.createRadialGradient(1330, 280, 0, 1330, 280, 620);
+  rightGlow.addColorStop(0, "rgba(22, 188, 255, .24)");
+  rightGlow.addColorStop(0.52, "rgba(0, 75, 185, .1)");
+  rightGlow.addColorStop(1, "transparent");
+  ctx.fillStyle = rightGlow;
+  ctx.fillRect(650, 0, 990, HEIGHT);
 
   ctx.save();
-  ctx.globalAlpha = 0.14;
-  ctx.strokeStyle = "#168fff";
+  ctx.globalAlpha = 0.11;
+  ctx.strokeStyle = "#188dff";
   ctx.lineWidth = 1;
-  for (let x = 0; x < WIDTH; x += 64) {
+  for (let x = 0; x < WIDTH; x += 62) {
     ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, HEIGHT); ctx.stroke();
   }
-  for (let y = 0; y < HEIGHT; y += 64) {
+  for (let y = 24; y < HEIGHT; y += 58) {
     ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(WIDTH, y); ctx.stroke();
   }
   ctx.restore();
 
   ctx.save();
-  ctx.globalAlpha = 0.35;
-  ctx.strokeStyle = "#0b7ee8";
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.moveTo(0, 690);
-  ctx.bezierCurveTo(240, 610, 360, 760, 610, 620);
-  ctx.bezierCurveTo(820, 500, 990, 580, 1180, 355);
-  ctx.bezierCurveTo(1320, 188, 1450, 200, WIDTH, 80);
-  ctx.stroke();
+  ctx.globalAlpha = 0.22;
+  ctx.strokeStyle = "#20a7ef";
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 7; i += 1) {
+    ctx.beginPath();
+    ctx.moveTo(0, 720 + i * 18);
+    ctx.bezierCurveTo(250, 660 + i * 15, 430, 790 + i * 10, 700, 670 + i * 8);
+    ctx.bezierCurveTo(940, 560 + i * 12, 1130, 660 + i * 10, WIDTH, 430 + i * 15);
+    ctx.stroke();
+  }
   ctx.restore();
 
   const candles = [
-    [116, 600, 26, 138, "#138de8"], [164, 540, 23, 106, "#20c8e9"], [215, 622, 24, 124, "#155ed0"],
-    [1280, 380, 28, 142, "#0b6dde"], [1340, 290, 26, 220, "#0ba8ea"], [1400, 352, 26, 170, "#1c68d8"],
+    [82, 482, 24, 128, "#128bde"], [128, 420, 22, 98, "#20c5df"], [174, 516, 24, 150, "#185bd1"],
+    [230, 388, 22, 104, "#24b9d9"], [276, 448, 24, 142, "#1a70e2"],
+    [1370, 80, 22, 102, "#1ac5df"], [1416, 54, 24, 164, "#1889ed"], [1468, 104, 22, 125, "#20ccb1"],
   ] as const;
   ctx.save();
-  ctx.globalAlpha = 0.22;
+  ctx.globalAlpha = 0.2;
   for (const [x, y, w, h, color] of candles) {
     ctx.fillStyle = color;
     ctx.fillRect(x, y, w, h);
-    ctx.fillRect(x + w / 2 - 2, y - 34, 4, h + 68);
-  }
-  ctx.restore();
-
-  const globe = ctx.createRadialGradient(1300, 50, 40, 1300, 50, 360);
-  globe.addColorStop(0, "rgba(34, 201, 255, .22)");
-  globe.addColorStop(0.55, "rgba(15, 89, 213, .08)");
-  globe.addColorStop(1, "transparent");
-  ctx.fillStyle = globe;
-  ctx.beginPath(); ctx.arc(1300, 50, 360, 0, Math.PI * 2); ctx.fill();
-
-  ctx.save();
-  ctx.strokeStyle = "rgba(36, 184, 255, .32)";
-  ctx.lineWidth = 2;
-  for (let i = -2; i <= 2; i += 1) {
-    ctx.beginPath(); ctx.ellipse(1300, 50, 330, 90 + i * 38, i * 0.18, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillRect(x + w / 2 - 2, y - 32, 4, h + 64);
   }
   ctx.restore();
 
   ctx.save();
-  ctx.fillStyle = "rgba(3, 19, 41, .86)";
-  ctx.strokeStyle = "rgba(52, 173, 255, .44)";
+  ctx.globalAlpha = 0.3;
+  ctx.strokeStyle = "#1187f0";
   ctx.lineWidth = 2;
-  roundRect(ctx, 905, 102, 570, 390, 22); ctx.fill(); ctx.stroke();
-  ctx.fillStyle = "rgba(9, 35, 65, .9)";
-  roundRect(ctx, 930, 132, 520, 72, 12); ctx.fill();
-  ctx.fillStyle = "#e5f4ff";
-  ctx.fillRect(956, 156, 75, 10); ctx.fillRect(1060, 156, 72, 10); ctx.fillRect(1162, 156, 72, 10); ctx.fillRect(1264, 156, 72, 10);
-  ctx.fillStyle = "rgba(20, 71, 116, .7)";
-  roundRect(ctx, 930, 226, 320, 228, 12); ctx.fill();
-  roundRect(ctx, 1270, 226, 180, 228, 12); ctx.fill();
-  drawChart(ctx, 958, 265, 265, 145);
-  for (let i = 0; i < 6; i += 1) {
-    ctx.fillStyle = i % 2 ? "#12caa5" : "#168dff";
-    ctx.fillRect(1296 + i * 22, 405 - (i % 4) * 28, 10, 35 + (i % 4) * 28);
-  }
+  ctx.beginPath();
+  ctx.moveTo(24, 650);
+  ctx.bezierCurveTo(210, 580, 330, 720, 520, 610);
+  ctx.bezierCurveTo(700, 508, 828, 610, 1005, 438);
+  ctx.bezierCurveTo(1120, 324, 1260, 332, 1600, 106);
+  ctx.stroke();
   ctx.restore();
 
   ctx.save();
-  ctx.fillStyle = "rgba(2, 15, 32, .92)";
-  ctx.strokeStyle = "rgba(63, 182, 255, .5)";
-  ctx.lineWidth = 2;
-  roundRect(ctx, 1220, 360, 260, 370, 30); ctx.fill(); ctx.stroke();
-  ctx.fillStyle = "rgba(15, 42, 72, .92)";
-  roundRect(ctx, 1240, 405, 220, 58, 10); ctx.fill();
-  roundRect(ctx, 1240, 480, 220, 58, 10); ctx.fill();
-  roundRect(ctx, 1240, 555, 220, 58, 10); ctx.fill();
-  ctx.fillStyle = "#28d8bd";
-  ctx.fillRect(1262, 426, 80, 8); ctx.fillRect(1262, 501, 100, 8); ctx.fillRect(1262, 576, 72, 8);
-  ctx.restore();
-
-  ctx.save();
-  ctx.globalAlpha = 0.7;
-  ctx.strokeStyle = "#0f75d8";
-  ctx.lineWidth = 2;
-  for (let i = 0; i < 14; i += 1) {
-    ctx.beginPath(); ctx.moveTo(i * 130, 812); ctx.lineTo(i * 130 + 90, 758 - (i % 3) * 20); ctx.stroke();
+  ctx.globalAlpha = 0.35;
+  ctx.strokeStyle = "#0f8fe9";
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 12; i += 1) {
+    const x = 800 + i * 76;
+    ctx.beginPath(); ctx.moveTo(x, 770); ctx.lineTo(x + 76, 770 - (i % 4) * 24); ctx.stroke();
+    ctx.beginPath(); ctx.arc(x + 76, 770 - (i % 4) * 24, 3, 0, Math.PI * 2); ctx.fillStyle = "#1abff1"; ctx.fill();
   }
   ctx.restore();
+
+  // A restrained product dashboard in the right third of the cover.
+  ctx.save();
+  ctx.shadowColor = "rgba(0, 142, 255, .22)";
+  ctx.shadowBlur = 26;
+  ctx.fillStyle = "rgba(2, 13, 29, .9)";
+  ctx.strokeStyle = "rgba(54, 174, 255, .62)";
+  ctx.lineWidth = 2;
+  roundRect(ctx, 850, 112, 590, 380, 22); ctx.fill(); ctx.stroke();
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "rgba(9, 30, 57, .95)";
+  roundRect(ctx, 876, 138, 538, 54, 10); ctx.fill();
+  ctx.fillStyle = "#42c9ff";
+  ctx.fillRect(900, 161, 84, 7); ctx.fillRect(1020, 161, 94, 7); ctx.fillRect(1152, 161, 72, 7); ctx.fillRect(1260, 161, 82, 7);
+  ctx.fillStyle = "rgba(8, 42, 77, .92)";
+  roundRect(ctx, 876, 216, 346, 238, 12); ctx.fill();
+  roundRect(ctx, 1244, 216, 170, 238, 12); ctx.fill();
+  drawChart(ctx, 906, 252, 286, 154);
+  ctx.strokeStyle = "rgba(26, 203, 169, .38)";
+  ctx.beginPath(); ctx.moveTo(906, 410); ctx.lineTo(1192, 410); ctx.stroke();
+  for (let i = 0; i < 7; i += 1) {
+    ctx.fillStyle = i % 2 ? "#15c6a8" : "#268cff";
+    ctx.fillRect(1270 + i * 17, 408 - (i % 4) * 24, 8, 28 + (i % 4) * 24);
+  }
+  for (let i = 0; i < 3; i += 1) {
+    ctx.fillStyle = i === 1 ? "#19cfaa" : "rgba(126, 204, 255, .55)";
+    roundRect(ctx, 1270, 252 + i * 48, 116, 25, 6); ctx.fill();
+  }
+  ctx.restore();
+
+  // A slim mobile trading view creates a premium device pairing without crowding the mark.
+  ctx.save();
+  ctx.shadowColor = "rgba(0, 125, 255, .3)";
+  ctx.shadowBlur = 24;
+  ctx.fillStyle = "rgba(1, 10, 22, .96)";
+  ctx.strokeStyle = "rgba(56, 185, 255, .72)";
+  ctx.lineWidth = 2;
+  roundRect(ctx, 1292, 438, 190, 312, 25); ctx.fill(); ctx.stroke();
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "rgba(11, 39, 68, .95)";
+  roundRect(ctx, 1312, 486, 150, 74, 9); ctx.fill();
+  roundRect(ctx, 1312, 579, 150, 74, 9); ctx.fill();
+  roundRect(ctx, 1312, 672, 150, 47, 9); ctx.fill();
+  ctx.fillStyle = "#22d8b5";
+  ctx.fillRect(1332, 512, 60, 7); ctx.fillRect(1332, 605, 82, 7); ctx.fillRect(1332, 691, 52, 7);
+  ctx.fillStyle = "#7ddcff";
+  ctx.fillRect(1408, 512, 30, 7); ctx.fillRect(1428, 605, 18, 7);
+  ctx.restore();
+
+  // Fine circuit paths and nodes keep the technology layer subordinate to the logo.
+  ctx.save();
+  ctx.globalAlpha = 0.5;
+  ctx.strokeStyle = "#159fe7";
+  ctx.lineWidth = 1;
+  const paths = [[690, 190, 786, 190, 824, 228], [716, 308, 778, 308, 824, 266], [686, 535, 774, 535, 824, 472], [500, 760, 610, 760, 676, 694]] as const;
+  for (const [x1, y1, x2, y2, x3, y3] of paths) {
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.lineTo(x3, y3); ctx.stroke();
+    ctx.fillStyle = "#23c9e9"; ctx.beginPath(); ctx.arc(x3, y3, 4, 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.restore();
+
+  const vignette = ctx.createRadialGradient(WIDTH / 2, HEIGHT / 2, 260, WIDTH / 2, HEIGHT / 2, 950);
+  vignette.addColorStop(0.62, "transparent");
+  vignette.addColorStop(1, "rgba(0, 3, 10, .68)");
+  ctx.fillStyle = vignette;
+  ctx.fillRect(0, 0, WIDTH, HEIGHT);
 }
 
 export default function CopytrixFacebookPage() {
