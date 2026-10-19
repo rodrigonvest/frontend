@@ -11,6 +11,9 @@ function StepCard({ n, title, text, children, delay }: { n: number; title: strin
   return (
     <Reveal delay={delay} className="h-full">
       <section aria-label={title} className="lp-card flex h-full flex-col gap-3 p-4">
+        <span aria-hidden className="absolute -left-[13px] top-1/2 z-10 hidden -translate-y-1/2 text-sky-400 drop-shadow-[0_0_8px_rgba(56,170,255,.8)] xl:block">
+          <Icon name="chevron" size={20} />
+        </span>
         <header className="flex items-start gap-3">
           <span className={`flex size-10 shrink-0 items-center justify-center rounded-full border-2 bg-[#06122a] text-base font-extrabold ${stepRing[n - 1]}`}>{n}</span>
           <div className="min-w-0">

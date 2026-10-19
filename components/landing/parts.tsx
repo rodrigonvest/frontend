@@ -55,7 +55,7 @@ export function Mini({ title, icon, right, children, className = "" }: { title?:
         <div className="mb-2.5 flex items-center justify-between gap-2">
           <div className="flex min-w-0 items-center gap-2 text-[12px] font-semibold text-white">
             {icon}
-            <span className="truncate">{title}</span>
+            <span className="min-w-0 leading-tight">{title}</span>
           </div>
           {right}
         </div>
@@ -81,7 +81,7 @@ export function Stat({ label, value, tone = "white", className = "" }: { label: 
   const color = { white: "text-white", green: "text-emerald-400", red: "text-rose-400", blue: "text-sky-300", gold: "text-amber-300" }[tone];
   return (
     <div className={`min-w-0 ${className}`}>
-      <p className="truncate text-[9px] leading-tight text-slate-400">{label}</p>
+      <p className="line-clamp-2 text-[9px] leading-tight text-slate-400">{label}</p>
       <p className={`text-[15px] font-bold leading-tight ${color}`}>{value}</p>
     </div>
   );
